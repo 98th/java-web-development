@@ -21,8 +21,9 @@ public class ParagraphComposite implements TextComposite {
         StringBuilder str = new StringBuilder();
         for (TextLeaf i : sentences) {
             str.append(i.getText());
-            str.append(" ");
+       //     str.append(" ");
         }
         return str.toString();
     }
+
 }

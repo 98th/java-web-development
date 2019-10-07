@@ -11,16 +11,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParagraphParser extends TextParser {
-    private final Pattern paragraphPattern = Pattern.compile("(\\t)(.+)(\\n+)?");
+   // private final Pattern paragraphPattern = Pattern.compile("(\\t)(.+)(\\n+)?");
+   private final Pattern paragraphPattern = Pattern.compile("(\\t|\\s)(.+)(\\n+)?");
 
     @Override
-    public List<TextComposite> parse(String line) {
-        List<TextComposite> output = new LinkedList<>();
+    public List<TextLeaf> parse(String line) {
+        List<TextLeaf> output = new LinkedList<>();
         List<String> lines = new ArrayList<>();
         Matcher matcher = paragraphPattern.matcher(line);
         while (matcher.find()) {
             lines.add(matcher.group());
         }
+      //  long id = 1;
         for (String i : lines) {
             TextComposite paragraph = new ParagraphComposite();
             for (TextLeaf j : nextParse(i)) {
@@ -30,6 +32,7 @@ public class ParagraphParser extends TextParser {
         }
         return output;
     }
+
 
 /*
     @Override

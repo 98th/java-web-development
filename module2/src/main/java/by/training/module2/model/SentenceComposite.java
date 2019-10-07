@@ -8,8 +8,10 @@ public class SentenceComposite implements TextComposite {
     private List<TextLeaf> words;
     private boolean isNewLine;
 
-    public SentenceComposite() {
+
+    public SentenceComposite(boolean isEndOfLine) {
         words = new LinkedList<>();
+        this.isNewLine = isEndOfLine;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class SentenceComposite implements TextComposite {
     public String getText() {
         StringBuilder str = new StringBuilder();
         if(isNewLine) {
-            str.append("\n");
+            str.append("\t");
         }
         for (TextLeaf i : words) {
             str.append(i.getText());
@@ -29,4 +31,5 @@ public class SentenceComposite implements TextComposite {
         }
         return str.toString();
     }
+
 }

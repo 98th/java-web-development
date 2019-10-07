@@ -13,7 +13,7 @@ public abstract class TextParser implements ParserChain<TextLeaf> {
         return next;
     }
 
-    protected List<? extends TextLeaf> nextParse (String line) {
+    protected List<TextLeaf> nextParse (String line) {
         if (next != null) {
             return next.parse(line);
         } else {

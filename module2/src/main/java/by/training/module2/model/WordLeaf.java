@@ -4,6 +4,7 @@ public class WordLeaf implements TextLeaf {
     private String word;
     private String ending;
 
+
     public WordLeaf(String word, String ending) {
         this.word = word;
         this.ending = ending;
@@ -20,4 +21,6 @@ public class WordLeaf implements TextLeaf {
         }
         return sb.toString();
     }
+
+
 }
