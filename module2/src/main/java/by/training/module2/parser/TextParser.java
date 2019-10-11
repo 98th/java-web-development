@@ -2,8 +2,6 @@ package by.training.module2.parser;
 
 import by.training.module2.model.TextLeaf;
 
-import java.util.List;
-
 public abstract class TextParser implements ParserChain<TextLeaf> {
     private TextParser next;
 
@@ -13,20 +11,12 @@ public abstract class TextParser implements ParserChain<TextLeaf> {
         return next;
     }
 
-    protected List<TextLeaf> nextParse (String line) {
+    protected TextLeaf nextParse (String line, long ... id) {
         if (next != null) {
             return next.parse(line);
         } else {
             return null;
         }
     }
-/*
 
-    protected TextLeaf nextParse (String line) {
-        if (next != null) {
-            return next.parse(line);
-        } else {
-            return null;
-        }
-    }*/
 }

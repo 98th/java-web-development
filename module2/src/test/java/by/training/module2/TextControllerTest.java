@@ -2,13 +2,16 @@ package by.training.module2;
 
 import by.training.module2.controller.DataReader;
 import by.training.module2.controller.TextController;
+import by.training.module2.model.TextComposite;
 import by.training.module2.model.TextLeaf;
 import by.training.module2.parser.ParagraphParser;
 import by.training.module2.parser.ParserChain;
 import by.training.module2.parser.SentenceParser;
 import by.training.module2.parser.WordParser;
-import by.training.module2.repository.WordLeafRepository;
-import by.training.module2.service.WordLeafService;
+import by.training.module2.repository.ParagraphRepository;
+import by.training.module2.repository.WordRepository;
+import by.training.module2.service.TextService;
+import by.training.module2.service.WordService;
 import by.training.module2.validator.FileValidator;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,25 +25,29 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JUnit4.class)
 public class TextControllerTest {
     private TextController controller;
+    private String text;
+    private TextService<TextComposite> service;
+    private ParserChain<TextLeaf> parserChain;
     private ClassLoader classLoader = getClass().getClassLoader();
-    private String path = new File(classLoader.getResource("PerfectFile.txt").getFile()).getAbsolutePath();
-    private DataReader dataReader;
+    private FileValidator fileValidator;
+    private String path;
+
 
     @Before
     public void init () {
-        dataReader = new DataReader();
-        WordLeafRepository wordLeafRepository = new WordLeafRepository();
-        WordLeafService service = new WordLeafService(wordLeafRepository);
-        FileValidator fileValidator = new FileValidator();
-        ParserChain<TextLeaf> parserChain = new WordParser().linkWith(new SentenceParser()).linkWith(new ParagraphParser());
+        path = new File(classLoader.getResource("PerfectFile.txt").getFile()).getAbsolutePath();
+        DataReader dataReader = new DataReader();
+        ParagraphRepository repository = new ParagraphRepository();
+        service = new TextService<>(repository);
+        fileValidator = new FileValidator();
+        text = dataReader.read(path);
+        parserChain = new WordParser().linkWith(new SentenceParser()).linkWith(new ParagraphParser());
         controller = new TextController(dataReader, service, fileValidator, parserChain);
     }
 
     @Test
-    public void controllerTest () {
-        String beginning = "\tIt has survived not only five centuries,";
-        String ending = "\tBye. ";
-        assertEquals(true, controller.composeText(controller.parseText(path)).getText().startsWith(beginning));
-        assertEquals(true, controller.composeText(controller.parseText(path)).getText().endsWith(ending));
+    public void shouldSaveText() {
+        controller.save(path);
+        assertEquals(1, service.getAll().size());
     }
 }

@@ -1,26 +1,22 @@
 package by.training.module2.parser;
 
-import by.training.module2.model.TextLeaf;
-import by.training.module2.model.WordLeaf;
+import by.training.module2.model.*;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WordParser extends TextParser{
-    private final Pattern wordPattern = Pattern.compile("([\\'\\(]+)?(\\w+((-)*\\w)*)([\\.\\,\\'\\)\\:]+)?");
-
+    private final Pattern wordPattern = Pattern.compile("([\\'\\(]+)?(\\w+((-)*\\w)*)([\\!\\?\\.\\,\\'\\)\\:]+)?");
 
     @Override
-    public List<TextLeaf> parse(String line) {
-        List<TextLeaf> words = new LinkedList<>();
+    public TextLeaf parse(String line) {
+        boolean isNewLine = line.charAt(0) == '\n';
+        TextComposite sentenceComposite = new SentenceComposite(isNewLine);
         Matcher matcher = wordPattern.matcher(line);
-      //  long id = 1;
         while(matcher.find()) {
-            words.add(new WordLeaf(matcher.group(2), matcher.group(5)));
+            sentenceComposite.addText(new WordLeaf(matcher.group(1), matcher.group(2), matcher.group(5)));
         }
-        return words;
+        return sentenceComposite;
     }
 
 }
