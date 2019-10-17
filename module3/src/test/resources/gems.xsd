@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.example.com/gems"
+        xmlns:tns="http://www.example.com/gems"
+        elementFormDefault="qualified">
+
+    <complexType name="Gem" abstract="true">
+        <sequence>
+            <element name="name" type="string" />
+            <element name="preciousness" type="tns:preciousness" />
+            <element name="origin" type="string" />
+            <element name="visualParameters" type="tns:VisualParameters" />
+            <element name="value" type="double" />
+        </sequence>
+        <attribute name="id" type="int" use="required" />
+    </complexType>
+
+    <simpleType name="preciousness">
+        <restriction base="string">
+            <enumeration value="precious" />
+            <enumeration value="semiprecious" />
+        </restriction>
+    </simpleType>
+
+    <complexType name="VisualParameters">
+        <sequence>
+            <element name="color" type="string" />
+            <element name="transparency" type="tns:transparency" />
+            <element name="facetNum" type="tns:facets"  />
+        </sequence>
+    </complexType>
+
+
+    <simpleType name="transparency">
+        <restriction base="double">
+            <minExclusive value="0" />
+            <maxExclusive value="100"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="facets">
+        <restriction base="int">
+            <minExclusive value="3" />
+            <maxExclusive value="16"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="SemipreciousGem">
+        <complexContent>
+            <extension base="tns:Gem"/>
+        </complexContent>
+    </complexType>
+
+
+    <complexType name="PreciousGem">
+        <complexContent>
+            <extension base="tns:Gem"/>
+        </complexContent>
+    </complexType>
+
+
+    <element name="gems">
+        <complexType>
+            <sequence>
+                <choice minOccurs="1" maxOccurs="unbounded">
+                    <element name="PreciousGem" type="tns:PreciousGem"/>
+                    <element name="SemipreciousGem" type="tns:SemipreciousGem"/>
+                </choice>
+            </sequence>
+        </complexType>
+    </element>
+
+</schema>
