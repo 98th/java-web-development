@@ -38,7 +38,7 @@ public class GemDOMParser implements Parser<Gem> {
 
     @Override
     public List<Gem> parse (String path) throws ParserException {
-        Document doc = null;
+        Document doc;
         List<Gem> output = new ArrayList<>();
         try {
             doc = documentBuilder.parse(path);
@@ -66,12 +66,12 @@ public class GemDOMParser implements Parser<Gem> {
     }
 
     private Gem buildPreciousGem(Element gemElement) {
-        Gem gem = new PreciousGem(Long.valueOf(gemElement.getAttribute(GemEnum.ID.getValue())));
+        Gem gem = new PreciousGem(Long.parseLong(gemElement.getAttribute(GemEnum.ID.getValue())));
         isValid(ORIGIN.getValue());
         gem.setOrigin(getElementTextContent(gemElement, ORIGIN.getValue()));
         isValid(NAME.getValue());
         gem.setName(getElementTextContent(gemElement, NAME.getValue()));
-        Double value = Double.valueOf(getElementTextContent(
+        double value = Double.parseDouble(getElementTextContent(
                 gemElement,GemEnum.VALUE.getValue()));
         gem.setValue(value);
         Element visualParametersElement = (Element) gemElement.getElementsByTagName(VISUALPARAMETERS.getValue()).item(0);
@@ -82,9 +82,9 @@ public class GemDOMParser implements Parser<Gem> {
 
     private VisualParameters buildVisualParameters(Element visualParamElement) {
         VisualParameters visualParameters = new VisualParameters();
-        Double transparency = Double.valueOf(getElementTextContent(visualParamElement, TRANSPARENCY.getValue()));
+        double transparency = Double.parseDouble(getElementTextContent(visualParamElement, TRANSPARENCY.getValue()));
         visualParameters.setTransparency(transparency);
-        Integer facetNum = Integer.valueOf(getElementTextContent(visualParamElement, FACETNUM.getValue()));
+        int facetNum = Integer.parseInt(getElementTextContent(visualParamElement, FACETNUM.getValue()));
         visualParameters.setFacetNum(facetNum);
         visualParameters.setColor(getElementTextContent(visualParamElement, COLOR.getValue()));
         return visualParameters;
@@ -96,11 +96,13 @@ public class GemDOMParser implements Parser<Gem> {
         }
     }
     private Gem buildSemipreciousGem(Element gemElement) {
-        Gem gem = new SemipreciousGem(Long.valueOf(gemElement.getAttribute("id")));
-        gem.setOrigin(getElementTextContent(gemElement, "origin")); // проверка на null
-        gem.setName(getElementTextContent(gemElement, "name"));
-        Double value = Double.valueOf(getElementTextContent(
-                gemElement,"value"));
+        Gem gem = new SemipreciousGem(Long.parseLong(gemElement.getAttribute(GemEnum.ID.getValue())));
+        isValid(ORIGIN.getValue());
+        gem.setOrigin(getElementTextContent(gemElement, ORIGIN.getValue()));
+        isValid(NAME.getValue());
+        gem.setName(getElementTextContent(gemElement, NAME.getValue()));
+        double value = Double.parseDouble(getElementTextContent(
+                gemElement,GemEnum.VALUE.getValue()));
         gem.setValue(value);
         Element visualParametersElement = (Element) gemElement.getElementsByTagName(VISUALPARAMETERS.getValue()).item(0);
         VisualParameters visualParameters = buildVisualParameters(visualParametersElement);
