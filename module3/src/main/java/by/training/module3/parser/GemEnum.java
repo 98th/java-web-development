@@ -5,7 +5,7 @@ public enum  GemEnum {
     SEMIPRECIOUSGEM("SemipreciousGem"),
     PRECIOUSGEM("PreciousGem"),
     VISUALPARAMETERS("visualParameters"),
-
+    ID("id"),
     COLOR("color"),
     PRECIOUSNESS("preciousness"),
     TRANSPARENCY("transparency"),

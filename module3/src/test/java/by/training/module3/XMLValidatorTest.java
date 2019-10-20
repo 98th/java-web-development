@@ -13,7 +13,7 @@ import static org.junit.Assert.assertFalse;
 
 
 @RunWith(JUnit4.class)
-public class ValidatorTest {
+public class XMLValidatorTest {
     private XMLValidator validator;
     private ClassLoader classLoader = getClass().getClassLoader();
 
@@ -26,13 +26,13 @@ public class ValidatorTest {
     @Test
     public void shouldTestPerfectFile() {
         String XMLPath = new File(classLoader.getResource("gems_valid.xml").getFile()).getAbsolutePath();
-        assertTrue(validator.validateXML(XMLPath));
+        assertTrue(validator.validateXML(XMLPath).isValid());
     }
 
     @Test
     public void shouldTestInvalidFile() {
         String XMLPath = new File(classLoader.getResource("gems_invalid.xml").getFile()).getAbsolutePath();
-        assertFalse(validator.validateXML(XMLPath));
+        assertFalse(validator.validateXML(XMLPath).isValid());
     }
 
 }

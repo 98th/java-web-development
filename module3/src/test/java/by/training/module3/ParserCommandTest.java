@@ -1,9 +1,11 @@
 package by.training.module3;
 
+import by.training.module3.command.Command;
+import by.training.module3.command.CommandException;
 import by.training.module3.command.DOMParserCommand;
-import by.training.module3.command.ParserCommand;
 import by.training.module3.command.SAXParserCommand;
 import by.training.module3.entity.Gem;
+import by.training.module3.parser.GemDOMParser;
 import by.training.module3.validator.XMLValidator;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,14 +16,13 @@ import java.io.File;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
 
 @RunWith(JUnit4.class)
 public class ParserCommandTest {
     private XMLValidator validator;
     private ClassLoader classLoader = getClass().getClassLoader();
-    private ParserCommand<Gem> command;
+    private Command<Gem> command;
 
     @Before
     public void init () {
@@ -30,32 +31,19 @@ public class ParserCommandTest {
     }
 
     @Test
-    public void shouldParseValidFileSAX() {
+    public void shouldParseValidFileSAX() throws CommandException  {
         String XMLPath = new File(classLoader.getResource("gems_valid.xml").getFile()).getAbsolutePath();
-        command = new SAXParserCommand(validator);
-        List<Gem> result = command.build(XMLPath);
+        command = new SAXParserCommand();
+        List<Gem> result = command.parse(XMLPath);
         assertEquals(16, result.size());
     }
 
     @Test
-    public void shouldParseInvalidFileSAX() {
-        String XMLPath = new File(classLoader.getResource("gems_invalid.xml").getFile()).getAbsolutePath();
-        command = new SAXParserCommand(validator);
-        assertThrows(Exception.class, () -> command.build(XMLPath));
-    }
-
-    @Test
-    public void shouldParseValidFileDOM() {
+    public void shouldParseValidFileDOM() throws CommandException  {
         String XMLPath = new File(classLoader.getResource("gems_valid.xml").getFile()).getAbsolutePath();
-        command = new DOMParserCommand(validator);
-        List<Gem> result = command.build(XMLPath);
+        command = new DOMParserCommand();
+        List<Gem> result = command.parse(XMLPath);
         assertEquals(16, result.size());
     }
 
-    @Test
-    public void shouldParseInvalidFileDOM() {
-        String XMLPath = new File(classLoader.getResource("gems_invalid.xml").getFile()).getAbsolutePath();
-        command = new DOMParserCommand(validator);
-        assertThrows(Exception.class, () -> command.build(XMLPath));
-    }
 }

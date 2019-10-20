@@ -33,13 +33,13 @@ public class GemControllerTest {
         Repository<Gem> repository = new GemRepository();
         service = new GemService(repository);
         CommandProvider<Gem> commands = new ParserCommandProvider();
-        String XSDPath = new File(classLoader.getResource("gems.xsd").getFile()).getAbsolutePath();
-        XMLValidator xmlValidator = new XMLValidator(XSDPath);
-        Command SAXCommand = new SAXParserCommand(xmlValidator);
-        Command DOMCommand = new DOMParserCommand(xmlValidator);
+        Command SAXCommand = new SAXParserCommand();
+        Command DOMCommand = new DOMParserCommand();
         commands.addCommand(CommandType.DOM, DOMCommand);
         commands.addCommand(CommandType.SAX, SAXCommand);
-        controller = new GemController(service, fileValidator, commands);
+        String XSDPath = new File(classLoader.getResource("gems.xsd").getFile()).getAbsolutePath();
+        XMLValidator xmlValidator = new XMLValidator(XSDPath);
+        controller = new GemController(service, xmlValidator, fileValidator, commands);
     }
 
     @Test

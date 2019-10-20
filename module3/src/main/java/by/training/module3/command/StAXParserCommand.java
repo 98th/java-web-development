@@ -1,12 +1,13 @@
 package by.training.module3.command;
 
 import by.training.module3.entity.Gem;
-import by.training.module3.parser.Parser;
-import by.training.module3.validator.XMLValidator;
+
+import java.util.List;
 
 
-public class StAXParserCommand extends ParserCommand<Gem>{
-    public StAXParserCommand(XMLValidator validator, Parser parser) {
-        super(validator, parser);
+public class StAXParserCommand implements Command<Gem>{
+    @Override
+    public List<Gem> parse(String path) throws CommandException {
+        return null;
     }
 }

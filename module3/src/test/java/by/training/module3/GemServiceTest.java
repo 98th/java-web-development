@@ -10,8 +10,6 @@ import by.training.module3.repository.GemRepository;
 import by.training.module3.repository.Repository;
 import by.training.module3.service.GemService;
 import by.training.module3.service.Service;
-import by.training.module3.validator.FileValidator;
-import by.training.module3.validator.XMLValidator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,9 +26,6 @@ public class GemServiceTest {
 
     @Before
     public void init() {
-        String XSDPath = new File(classLoader.getResource("gems.xsd").getFile()).getAbsolutePath();
-        XMLValidator xmlValidator = new XMLValidator(XSDPath);
-        FileValidator fileValidator = new FileValidator();
         Repository<Gem> repository = new GemRepository();
         service = new GemService(repository);
     }
