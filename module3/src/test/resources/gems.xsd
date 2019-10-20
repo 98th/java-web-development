@@ -7,7 +7,6 @@
     <complexType name="Gem" abstract="true">
         <sequence>
             <element name="name" type="string" />
-            <element name="preciousness" type="tns:preciousness" />
             <element name="origin" type="string" />
             <element name="visualParameters" type="tns:VisualParameters" />
             <element name="value" type="double" />

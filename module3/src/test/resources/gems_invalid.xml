@@ -4,7 +4,6 @@
       xsi:schemaLocation="http://www.example.com/gems gems.xsd">
     <SemipreciousGem id ="1">
         <name>Beryl</name>
-        <preciousness>precious</preciousness>
         <origin>Bolivia</origin>
         <visualParameters>
             <color>yellow</color>
@@ -13,5 +12,4 @@
         </visualParameters>
         <value>0.8</value>
     </SemipreciousGem>
-
 </gems>

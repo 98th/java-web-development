@@ -4,7 +4,6 @@
       xsi:schemaLocation="http://www.example.com/gems gems.xsd">
     <SemipreciousGem id ="1">
         <name>Beryl</name>
-        <preciousness>semiprecious</preciousness>
         <origin>Bolivia</origin>
         <visualParameters>
             <color>yellow</color>
@@ -15,7 +14,6 @@
     </SemipreciousGem>
     <SemipreciousGem id ="2">
         <name>Ametrine</name>
-        <preciousness>semiprecious</preciousness>
         <origin>Colombia</origin>
         <visualParameters>
             <color>blue</color>
@@ -26,7 +24,6 @@
     </SemipreciousGem>
     <PreciousGem id ="3">
         <name>Emerald</name>
-        <preciousness>precious</preciousness>
         <origin>Colombia</origin>
         <visualParameters>
             <color>green</color>
@@ -37,7 +34,6 @@
     </PreciousGem>
     <SemipreciousGem id ="4">
         <name>Sapphire</name>
-        <preciousness>semiprecious</preciousness>
         <origin>India</origin>
         <visualParameters>
             <color>blue</color>
@@ -48,7 +44,6 @@
     </SemipreciousGem>
     <SemipreciousGem id ="5">
         <name>Andalusite</name>
-        <preciousness>semiprecious</preciousness>
         <origin>South Africa</origin>
         <visualParameters>
             <color>yellow</color>
@@ -59,7 +54,6 @@
     </SemipreciousGem>
     <PreciousGem id ="6">
         <name>Diaspore</name>
-        <preciousness>precious</preciousness>
         <origin>Turkey</origin>
         <visualParameters>
             <color>yellow</color>
@@ -70,7 +64,6 @@
     </PreciousGem>
     <SemipreciousGem id ="7">
         <name>Benitoite</name>
-        <preciousness>semiprecious</preciousness>
         <origin>USA</origin>
         <visualParameters>
             <color>blue</color>
@@ -81,7 +74,6 @@
     </SemipreciousGem>
     <SemipreciousGem id ="8">
         <name>Chrysoberyl</name>
-        <preciousness>semiprecious</preciousness>
         <origin>Russia</origin>
         <visualParameters>
             <color>blue</color>
@@ -92,7 +84,6 @@
     </SemipreciousGem>
     <PreciousGem id ="9">
         <name>Apatite</name>
-        <preciousness>precious</preciousness>
         <origin>Russia</origin>
         <visualParameters>
             <color>green</color>
@@ -103,7 +94,6 @@
     </PreciousGem>
     <SemipreciousGem id ="10">
         <name>Beryl</name>
-        <preciousness>semiprecious</preciousness>
         <origin>Colombia</origin>
         <visualParameters>
             <color>blue</color>
@@ -114,7 +104,6 @@
     </SemipreciousGem>
     <SemipreciousGem id ="11">
         <name>Rhinestone</name>
-        <preciousness>semiprecious</preciousness>
         <origin>Colombia</origin>
         <visualParameters>
             <color>white</color>
@@ -125,7 +114,6 @@
     </SemipreciousGem>
     <SemipreciousGem id ="12">
         <name>Jeremejevite</name>
-        <preciousness>semiprecious</preciousness>
         <origin>Russia</origin>
         <visualParameters>
             <color>blue</color>
@@ -136,7 +124,6 @@
     </SemipreciousGem>
     <SemipreciousGem id ="13">
         <name>Garnet</name>
-        <preciousness>semiprecious</preciousness>
         <origin>Russia</origin>
         <visualParameters>
             <color>red</color>
@@ -147,7 +134,6 @@
     </SemipreciousGem>
     <PreciousGem id ="14">
         <name>Chrysoberyl</name>
-        <preciousness>precious</preciousness>
         <origin>Sri Lanka</origin>
         <visualParameters>
             <color>green</color>
@@ -158,7 +144,6 @@
     </PreciousGem>
     <PreciousGem id ="15">
         <name>Diamond</name>
-        <preciousness>precious</preciousness>
         <origin>Brazil</origin>
         <visualParameters>
             <color>blue</color>
@@ -169,7 +154,6 @@
     </PreciousGem>
     <SemipreciousGem id ="16">
         <name>Amethyst</name>
-        <preciousness>semiprecious</preciousness>
         <origin>Germany</origin>
         <visualParameters>
             <color>purple</color>

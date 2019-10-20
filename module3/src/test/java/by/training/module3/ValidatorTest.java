@@ -25,7 +25,7 @@ public class ValidatorTest {
 
     @Test
     public void shouldTestPerfectFile() {
-        String XMLPath = new File(classLoader.getResource("gems.xml").getFile()).getAbsolutePath();
+        String XMLPath = new File(classLoader.getResource("gems_valid.xml").getFile()).getAbsolutePath();
         assertTrue(validator.validateXML(XMLPath));
     }
 
