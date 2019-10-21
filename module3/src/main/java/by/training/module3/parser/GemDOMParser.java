@@ -67,9 +67,7 @@ public class GemDOMParser implements Parser<Gem> {
 
     private Gem buildPreciousGem(Element gemElement) {
         Gem gem = new PreciousGem(Long.parseLong(gemElement.getAttribute(GemEnum.ID.getValue())));
-        isValid(ORIGIN.getValue());
         gem.setOrigin(getElementTextContent(gemElement, ORIGIN.getValue()));
-        isValid(NAME.getValue());
         gem.setName(getElementTextContent(gemElement, NAME.getValue()));
         double value = Double.parseDouble(getElementTextContent(
                 gemElement,GemEnum.VALUE.getValue()));
@@ -97,9 +95,9 @@ public class GemDOMParser implements Parser<Gem> {
     }
     private Gem buildSemipreciousGem(Element gemElement) {
         Gem gem = new SemipreciousGem(Long.parseLong(gemElement.getAttribute(GemEnum.ID.getValue())));
-        isValid(ORIGIN.getValue());
+        isValid(getElementTextContent(gemElement, ORIGIN.getValue()));
         gem.setOrigin(getElementTextContent(gemElement, ORIGIN.getValue()));
-        isValid(NAME.getValue());
+        isValid(getElementTextContent(gemElement, NAME.getValue()));
         gem.setName(getElementTextContent(gemElement, NAME.getValue()));
         double value = Double.parseDouble(getElementTextContent(
                 gemElement,GemEnum.VALUE.getValue()));

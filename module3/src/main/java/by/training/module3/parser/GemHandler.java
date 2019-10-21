@@ -31,6 +31,8 @@ public class GemHandler extends DefaultHandler {
                 currVisualParameters = new VisualParameters();
                 currentGem.setVisualParameters(currVisualParameters);
                 break;
+            default:
+                break;
         }
     }
 
