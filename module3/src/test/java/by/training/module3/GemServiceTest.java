@@ -1,7 +1,6 @@
 package by.training.module3;
 
-import by.training.module3.command.*;
-import by.training.module3.controller.GemController;
+
 import by.training.module3.entity.Gem;
 import by.training.module3.entity.PreciousGem;
 import by.training.module3.entity.SemipreciousGem;
@@ -48,8 +47,8 @@ public class GemServiceTest {
         Gem gem2 = new SemipreciousGem(2,"Ametrine", "Colombia", visualParameters2, 2.0);
         service.add(gem1);
         service.add(gem2);
-        assertEquals("Ametrine", service.get(2).get().getName());
-        assertEquals("Emerald", service.get(1).get().getName());
+        assertEquals("Ametrine", service.get(2).orElse(null).getName());
+        assertEquals("Emerald", service.get(1).orElse(null).getName());
     }
 
 }

@@ -1,11 +1,7 @@
 package by.training.module3;
 
-import by.training.module3.command.Command;
-import by.training.module3.command.CommandException;
-import by.training.module3.command.DOMParserCommand;
-import by.training.module3.command.SAXParserCommand;
+import by.training.module3.command.*;
 import by.training.module3.entity.Gem;
-import by.training.module3.parser.GemDOMParser;
 import by.training.module3.validator.XMLValidator;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +33,15 @@ public class ParserCommandTest {
         List<Gem> result = command.parse(XMLPath);
         assertEquals(16, result.size());
     }
+
+    @Test
+    public void shouldParseValidFileStAX() throws CommandException  {
+        String XMLPath = new File(classLoader.getResource("gems_valid.xml").getFile()).getAbsolutePath();
+        command = new StAXParserCommand();
+        List<Gem> result = command.parse(XMLPath);
+        assertEquals(16, result.size());
+    }
+
 
     @Test
     public void shouldParseValidFileDOM() throws CommandException  {
