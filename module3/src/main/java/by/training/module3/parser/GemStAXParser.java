@@ -73,6 +73,8 @@ public class GemStAXParser implements Parser<Gem> {
                         case VISUALPARAMETERS:
                             gem.setVisualParameters(getXMLVisualParameters(reader));
                             break;
+                        default:
+                            break;
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:
@@ -106,6 +108,8 @@ public class GemStAXParser implements Parser<Gem> {
                         case FACETNUM:
                             name = getXMLText(reader);
                             visualParameters.setFacetNum(Integer.parseInt(name));
+                            break;
+                        default:
                             break;
                     }
                     break;
@@ -154,6 +158,8 @@ public class GemStAXParser implements Parser<Gem> {
                             break;
                         case VISUALPARAMETERS:
                             gem.setVisualParameters(getXMLVisualParameters(reader));
+                            break;
+                        default:
                             break;
                     }
                     break;

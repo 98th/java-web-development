@@ -19,7 +19,6 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JUnit4.class)
 public class GemServiceTest {
     private Service<Gem> service;
-    private ClassLoader classLoader = getClass().getClassLoader();
 
     @Before
     public void init() {

@@ -49,6 +49,8 @@ public class GemHandler extends DefaultHandler {
                 gems.add(currentGem);
                 currentGem = null;
                 break;
+            default:
+                break;
         }
         currentEnum = null;
     }
@@ -78,6 +80,8 @@ public class GemHandler extends DefaultHandler {
                     break;
                 case PRECIOUSNESS:
                     currentGem.setPreciousness(Preciousness.valueOf(str));
+                    break;
+                default:
                     break;
             }
             //currentGem = null;

@@ -16,15 +16,9 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
 public class ParserCommandTest {
-    private XMLValidator validator;
     private ClassLoader classLoader = getClass().getClassLoader();
     private Command<Gem> command;
 
-    @Before
-    public void init () {
-        String XSDPath = new File(classLoader.getResource("gems.xsd").getFile()).getAbsolutePath();
-        validator = new XMLValidator(XSDPath);
-    }
 
     @Test
     public void shouldParseValidFileSAX() throws CommandException  {
