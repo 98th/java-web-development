@@ -2,7 +2,7 @@
 <gems xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns="http://www.example.com/gems"
       xsi:schemaLocation="http://www.example.com/gems gems.xsd">
-    <SemipreciousGem id ="1">
+    <SemipreciousGem id ="1" isUsedInOrnamentalWorks = "true">
         <name>Beryl</name>
         <origin>Bolivia</origin>
         <visualParameters>
@@ -12,7 +12,7 @@
         </visualParameters>
         <value>0.8</value>
     </SemipreciousGem>
-    <SemipreciousGem id ="2">
+    <SemipreciousGem id ="2" isUsedInOrnamentalWorks = "true">
         <name>Ametrine</name>
         <origin>Colombia</origin>
         <visualParameters>
@@ -22,7 +22,7 @@
         </visualParameters>
         <value>2.0</value>
     </SemipreciousGem>
-    <PreciousGem id ="3">
+    <PreciousGem id ="3" hardness = "8.3">
         <name>Emerald</name>
         <origin>Colombia</origin>
         <visualParameters>
@@ -32,7 +32,7 @@
         </visualParameters>
         <value>2.5</value>
     </PreciousGem>
-    <SemipreciousGem id ="4">
+    <SemipreciousGem id ="4" isUsedInOrnamentalWorks = "true">
         <name>Sapphire</name>
         <origin>India</origin>
         <visualParameters>
@@ -42,7 +42,7 @@
         </visualParameters>
         <value>3.0</value>
     </SemipreciousGem>
-    <SemipreciousGem id ="5">
+    <SemipreciousGem id ="5" isUsedInOrnamentalWorks = "true">
         <name>Andalusite</name>
         <origin>South Africa</origin>
         <visualParameters>
@@ -52,7 +52,7 @@
         </visualParameters>
         <value>3.8</value>
     </SemipreciousGem>
-    <PreciousGem id ="6">
+    <PreciousGem id ="6" hardness = "7.5">
         <name>Diaspore</name>
         <origin>Turkey</origin>
         <visualParameters>
@@ -62,7 +62,7 @@
         </visualParameters>
         <value>1.6</value>
     </PreciousGem>
-    <SemipreciousGem id ="7">
+    <SemipreciousGem id ="7" isUsedInOrnamentalWorks = "true">
         <name>Benitoite</name>
         <origin>USA</origin>
         <visualParameters>
@@ -72,7 +72,7 @@
         </visualParameters>
         <value>0.8</value>
     </SemipreciousGem>
-    <SemipreciousGem id ="8">
+    <SemipreciousGem id ="8" isUsedInOrnamentalWorks = "false">
         <name>Chrysoberyl</name>
         <origin>Russia</origin>
         <visualParameters>
@@ -82,7 +82,7 @@
         </visualParameters>
         <value>2.3</value>
     </SemipreciousGem>
-    <PreciousGem id ="9">
+    <PreciousGem id ="9" hardness = "6.5">
         <name>Apatite</name>
         <origin>Russia</origin>
         <visualParameters>
@@ -92,7 +92,7 @@
         </visualParameters>
         <value>3.6</value>
     </PreciousGem>
-    <SemipreciousGem id ="10">
+    <SemipreciousGem id ="10" isUsedInOrnamentalWorks = "true">
         <name>Beryl</name>
         <origin>Colombia</origin>
         <visualParameters>
@@ -102,7 +102,7 @@
         </visualParameters>
         <value>1.6</value>
     </SemipreciousGem>
-    <SemipreciousGem id ="11">
+    <SemipreciousGem id ="11" isUsedInOrnamentalWorks = "true">
         <name>Rhinestone</name>
         <origin>Colombia</origin>
         <visualParameters>
@@ -112,7 +112,7 @@
         </visualParameters>
         <value>2.4</value>
     </SemipreciousGem>
-    <SemipreciousGem id ="12">
+    <SemipreciousGem id ="12" isUsedInOrnamentalWorks = "false">
         <name>Jeremejevite</name>
         <origin>Russia</origin>
         <visualParameters>
@@ -122,7 +122,7 @@
         </visualParameters>
         <value>1.8</value>
     </SemipreciousGem>
-    <SemipreciousGem id ="13">
+    <SemipreciousGem id ="13" isUsedInOrnamentalWorks = "true">
         <name>Garnet</name>
         <origin>Russia</origin>
         <visualParameters>
@@ -132,7 +132,7 @@
         </visualParameters>
         <value>1.4</value>
     </SemipreciousGem>
-    <PreciousGem id ="14">
+    <PreciousGem id ="14" hardness = "8.6">
         <name>Chrysoberyl</name>
         <origin>Sri Lanka</origin>
         <visualParameters>
@@ -142,7 +142,7 @@
         </visualParameters>
         <value>2.3</value>
     </PreciousGem>
-    <PreciousGem id ="15">
+    <PreciousGem id ="15" hardness = "6.4">
         <name>Diamond</name>
         <origin>Brazil</origin>
         <visualParameters>
@@ -152,7 +152,7 @@
         </visualParameters>
         <value>3.8</value>
     </PreciousGem>
-    <SemipreciousGem id ="16">
+    <SemipreciousGem id ="16" isUsedInOrnamentalWorks = "true">
         <name>Amethyst</name>
         <origin>Germany</origin>
         <visualParameters>
@@ -162,5 +162,4 @@
         </visualParameters>
         <value>1.5</value>
     </SemipreciousGem>
-
 </gems>

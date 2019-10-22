@@ -31,9 +31,10 @@ public class GemServiceTest {
     @Test
     public void shouldAddSomeGems () {
         VisualParameters visualParameters1 = new VisualParameters("green", 25.5, 8);
-        Gem gem1 = new PreciousGem(1, "Emerald", "columbia", visualParameters1, 2.5 );
+        Gem gem1 = new PreciousGem(5.9, 1, "Emerald", "columbia", visualParameters1, 2.5 );
         VisualParameters visualParameters2 = new VisualParameters("blue", 2.67, 6);
-        Gem gem2 = new SemipreciousGem(2,"Ametrine", "Colombia", visualParameters2, 2.0);
+        Gem gem2 = new SemipreciousGem(true,2,"Ametrine", "Colombia",
+                visualParameters2, 2.0);
         service.add(gem1);
         service.add(gem2);
         assertEquals(2, service.getAll().size());
@@ -42,13 +43,14 @@ public class GemServiceTest {
     @Test
     public void shouldReturnById () {
         VisualParameters visualParameters1 = new VisualParameters("green", 25.5, 8);
-        Gem gem1 = new PreciousGem(1, "Emerald", "columbia", visualParameters1, 2.5 );
+        Gem gem1 = new PreciousGem(5.9, 1, "Emerald", "columbia", visualParameters1, 2.5 );
         VisualParameters visualParameters2 = new VisualParameters("blue", 2.67, 6);
-        Gem gem2 = new SemipreciousGem(2,"Ametrine", "Colombia", visualParameters2, 2.0);
+        Gem gem2 = new SemipreciousGem(false, 2, "Ametrine", "Colombia",
+                visualParameters2, 2.0);
         service.add(gem1);
         service.add(gem2);
-        assertEquals("Ametrine", service.get(2).orElse(null).getName());
-        assertEquals("Emerald", service.get(1).orElse(null).getName());
+        assertEquals("Ametrine", service.get(2).get().getName());
+        assertEquals("Emerald", service.get(1).get().getName());
     }
 
 }

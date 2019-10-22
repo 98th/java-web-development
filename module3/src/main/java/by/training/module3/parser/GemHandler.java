@@ -20,12 +20,17 @@ public class GemHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)  {
         currentEnum = GemEnum.valueOf(qName.toUpperCase());
+        long id;
         switch (currentEnum) {
             case SEMIPRECIOUSGEM:
-                currentGem = new SemipreciousGem(Long.valueOf(attributes.getValue(0)));
+                id = Long.parseLong(attributes.getValue("id"));
+                boolean isOrnamental = Boolean.parseBoolean(attributes.getValue("isUsedInOrnamentalWorks"));
+                currentGem = new SemipreciousGem(id, isOrnamental);
                 break;
             case PRECIOUSGEM:
-                currentGem = new PreciousGem(Long.valueOf(attributes.getValue(0)));
+                id = Long.parseLong(attributes.getValue("id"));
+                double hardness = Double.parseDouble(attributes.getValue("id"));
+                currentGem = new PreciousGem(id, hardness);
                 break;
             case VISUALPARAMETERS:
                 currVisualParameters = new VisualParameters();

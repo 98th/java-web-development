@@ -46,14 +46,18 @@
 
     <complexType name="SemipreciousGem">
         <complexContent>
-            <extension base="tns:Gem"/>
+            <extension base="tns:Gem">
+                 <attribute name="isUsedInOrnamentalWorks" type="boolean"/>
+            </extension>
         </complexContent>
     </complexType>
 
 
     <complexType name="PreciousGem">
         <complexContent>
-            <extension base="tns:Gem"/>
+            <extension base="tns:Gem">
+                <attribute name="hardness" type="double"/>
+            </extension>
         </complexContent>
     </complexType>
 

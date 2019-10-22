@@ -13,7 +13,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +25,10 @@ public class GemStAXParser implements Parser<Gem> {
     @Override
     public List<Gem> parse (String path) throws ParserException {
         XMLInputFactory  inputFactory = XMLInputFactory.newInstance();
-        FileInputStream inputStream = null;
         XMLStreamReader reader;
         List<Gem> output = new ArrayList<>();
         String name;
-        try {
-            inputStream = new FileInputStream(new File(path));
+        try (FileInputStream inputStream = new FileInputStream(new File(path))) {
             reader = inputFactory.createXMLStreamReader(inputStream);
             while (reader.hasNext()) {
                 int type = reader.next();
@@ -46,23 +43,16 @@ public class GemStAXParser implements Parser<Gem> {
                     }
                 }
             }
-        } catch (XMLStreamException  | FileNotFoundException e) {
+        } catch (XMLStreamException | IOException e) {
             throw new ParserException(e);
-        }finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                throw new ParserException(e);
-            }
         }
         return output;
     }
 
     private Gem buildSemipreciousGem (XMLStreamReader reader) throws XMLStreamException{
-        long id = Long.parseLong(reader.getAttributeValue(0));
-        Gem gem = new SemipreciousGem(id);
+        long id = Long.parseLong(reader.getAttributeValue(null, "id"));
+        boolean isOrnamental = Boolean.parseBoolean(reader.getAttributeValue(null, "isUsedInOrnamentalWorks"));
+        Gem gem = new SemipreciousGem(id, isOrnamental);
         String name;
         while (reader.hasNext()) {
             int type = reader.next();
@@ -87,7 +77,7 @@ public class GemStAXParser implements Parser<Gem> {
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     name = reader.getLocalName();
-                    if (GemEnum.valueOf(name.toUpperCase()) == SEMIPRECIOUSGEM) {
+                    if (SEMIPRECIOUSGEM.getValue().equalsIgnoreCase(name)) {
                         return gem;
                     }
                     break;
@@ -142,8 +132,9 @@ public class GemStAXParser implements Parser<Gem> {
     }
 
     private Gem buildPreciousGem (XMLStreamReader reader) throws XMLStreamException{
-        long id = Long.parseLong(reader.getAttributeValue(0));
-        Gem gem = new PreciousGem(id);
+        long id = Long.parseLong(reader.getAttributeValue(null, "id"));
+        double hardness = Double.parseDouble(reader.getAttributeValue(null, "hardness"));
+        Gem gem = new PreciousGem(id, hardness);
         String name;
         while (reader.hasNext()) {
             int type = reader.next();

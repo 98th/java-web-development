@@ -55,20 +55,19 @@ public class GemDOMParser implements Parser<Gem> {
                 Gem gem = buildSemipreciousGem(element);
                 output.add(gem);
             }
-        } catch (IOException e) {
-            log.error("IOException" + e);
-            throw new ParserException(e);
-        } catch (SAXException e) {
-            log.error("SAXException" + e);
+        } catch (IOException | SAXException e) {
+            log.error("exception while dom parsing" + e);
             throw new ParserException(e);
         }
         return output;
     }
 
     private Gem buildPreciousGem(Element gemElement) {
-        Gem gem = new PreciousGem(Long.parseLong(gemElement.getAttribute(GemEnum.ID.getValue())));
-        gem.setOrigin(getElementTextContent(gemElement, ORIGIN.getValue()));
-        gem.setName(getElementTextContent(gemElement, NAME.getValue()));
+        long id = Long.parseLong(gemElement.getAttribute("id"));
+        double hardness = Double.parseDouble(gemElement.getAttribute("hardness"));
+        Gem gem = new PreciousGem(id, hardness);
+        gem.setOrigin(getElementTextContent(gemElement, "origin"));
+        gem.setName(getElementTextContent(gemElement,"name"));
         double value = Double.parseDouble(getElementTextContent(
                 gemElement,GemEnum.VALUE.getValue()));
         gem.setValue(value);
@@ -94,7 +93,9 @@ public class GemDOMParser implements Parser<Gem> {
         }
     }
     private Gem buildSemipreciousGem(Element gemElement) {
-        Gem gem = new SemipreciousGem(Long.parseLong(gemElement.getAttribute(GemEnum.ID.getValue())));
+        long id = Long.parseLong(gemElement.getAttribute("id"));
+        boolean isOrnamental = Boolean.parseBoolean(gemElement.getAttribute("IsUsedInOrnamentalWorks"));
+        Gem gem = new SemipreciousGem(id, isOrnamental);
         isValid(getElementTextContent(gemElement, ORIGIN.getValue()));
         gem.setOrigin(getElementTextContent(gemElement, ORIGIN.getValue()));
         isValid(getElementTextContent(gemElement, NAME.getValue()));
