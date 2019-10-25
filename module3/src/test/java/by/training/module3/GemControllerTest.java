@@ -35,7 +35,9 @@ public class GemControllerTest {
         CommandProvider<Gem> commands = new ParserCommandProvider();
         Command SAXCommand = new SAXParserCommand();
         Command DOMCommand = new DOMParserCommand();
+        Command StAXCommand = new SAXParserCommand();
         commands.addCommand(CommandType.DOM, DOMCommand);
+        commands.addCommand(CommandType.StAX, StAXCommand);
         commands.addCommand(CommandType.SAX, SAXCommand);
         String XSDPath = new File(classLoader.getResource("gems.xsd").getFile()).getAbsolutePath();
         XMLValidator xmlValidator = new XMLValidator(XSDPath);
@@ -50,6 +52,14 @@ public class GemControllerTest {
     }
 
     @Test
+    public void shouldExecuteValidFileStAX(){
+        String XMLPath = new File(classLoader.getResource("gems_valid.xml").getFile()).getAbsolutePath();
+        controller.execute(XMLPath, CommandType.StAX);
+        assertEquals(16, service.getAll().size());
+    }
+
+
+    @Test
     public void shouldExecuteValidFileDOM(){
         String XMLPath = new File(classLoader.getResource("gems_valid.xml").getFile()).getAbsolutePath();
         controller.execute(XMLPath, CommandType.DOM);
@@ -59,8 +69,13 @@ public class GemControllerTest {
     @Test
     public void shouldExecuteInvalidFileDOM(){
         String XMLPath = new File(classLoader.getResource("gems_invalid.xml").getFile()).getAbsolutePath();
-
         assertThrows(Exception.class, () ->  controller.execute(XMLPath, CommandType.DOM));
+    }
+
+    @Test
+    public void shouldExecuteInvalidFileStAX(){
+        String XMLPath = new File(classLoader.getResource("gems_invalid.xml").getFile()).getAbsolutePath();
+        assertThrows(Exception.class, () ->  controller.execute(XMLPath, CommandType.StAX));
     }
 
     @Test

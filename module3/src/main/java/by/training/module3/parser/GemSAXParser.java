@@ -7,6 +7,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class GemSAXParser implements Parser<Gem>  {

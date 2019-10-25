@@ -10,6 +10,7 @@
             <element name="origin" type="string" />
             <element name="visualParameters" type="tns:VisualParameters" />
             <element name="value" type="double" />
+            <element name="date" type="dateTime"/>
         </sequence>
         <attribute name="id" type="int" use="required" />
     </complexType>
@@ -47,7 +48,7 @@
     <complexType name="SemipreciousGem">
         <complexContent>
             <extension base="tns:Gem">
-                 <attribute name="isUsedInOrnamentalWorks" type="boolean"/>
+                 <attribute name="isUsedInOrnamentalWorks" type="boolean" default="false"/>
             </extension>
         </complexContent>
     </complexType>
@@ -56,7 +57,7 @@
     <complexType name="PreciousGem">
         <complexContent>
             <extension base="tns:Gem">
-                <attribute name="hardness" type="double"/>
+                <attribute name="hardness" type="double" use="required"/>
             </extension>
         </complexContent>
     </complexType>

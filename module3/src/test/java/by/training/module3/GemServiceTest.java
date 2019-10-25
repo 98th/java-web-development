@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Date;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
@@ -30,10 +32,10 @@ public class GemServiceTest {
     @Test
     public void shouldAddSomeGems () {
         VisualParameters visualParameters1 = new VisualParameters("green", 25.5, 8);
-        Gem gem1 = new PreciousGem(5.9, 1, "Emerald", "columbia", visualParameters1, 2.5 );
+        Gem gem1 = new PreciousGem(5.9, 1, "Emerald", "columbia", visualParameters1, 2.5, new Date() );
         VisualParameters visualParameters2 = new VisualParameters("blue", 2.67, 6);
         Gem gem2 = new SemipreciousGem(true,2,"Ametrine", "Colombia",
-                visualParameters2, 2.0);
+                visualParameters2, 2.0, new Date());
         service.add(gem1);
         service.add(gem2);
         assertEquals(2, service.getAll().size());
@@ -42,10 +44,10 @@ public class GemServiceTest {
     @Test
     public void shouldReturnById () {
         VisualParameters visualParameters1 = new VisualParameters("green", 25.5, 8);
-        Gem gem1 = new PreciousGem(5.9, 1, "Emerald", "columbia", visualParameters1, 2.5 );
+        Gem gem1 = new PreciousGem(5.9, 1, "Emerald", "columbia", visualParameters1, 2.5, new Date() );
         VisualParameters visualParameters2 = new VisualParameters("blue", 2.67, 6);
         Gem gem2 = new SemipreciousGem(false, 2, "Ametrine", "Colombia",
-                visualParameters2, 2.0);
+                visualParameters2, 2.0, new Date());
         service.add(gem1);
         service.add(gem2);
         assertEquals("Ametrine", service.get(2).get().getName());

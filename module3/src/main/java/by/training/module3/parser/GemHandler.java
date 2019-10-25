@@ -1,9 +1,13 @@
 package by.training.module3.parser;
 
 import by.training.module3.entity.*;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +16,10 @@ public class GemHandler extends DefaultHandler {
     private VisualParameters currVisualParameters;
     private Gem currentGem = null;
     private GemEnum currentEnum = null;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static final Logger log = LogManager.getLogger(GemStAXParser.class);
+
+
 
     GemHandler(){
         gems = new ArrayList<>();
@@ -56,7 +64,7 @@ public class GemHandler extends DefaultHandler {
     }
 
     @Override
-    public void characters(char[] ch, int start, int length)  {
+    public void characters(char[] ch, int start, int length) {
         String str = new String(ch, start, length).trim();
         if (currentEnum != null) {
             switch (currentEnum) {
@@ -69,6 +77,12 @@ public class GemHandler extends DefaultHandler {
                 case VALUE:
                     currentGem.setValue(Double.parseDouble(str));
                     break;
+                case DATE:
+                    try {
+                        currentGem.setMiningDate(dateFormat.parse(str));
+                    } catch (ParseException e) {
+                        log.error("wrong date format" + e);
+                    }
                 case ORIGIN:
                     currentGem.setOrigin(str);
                     break;

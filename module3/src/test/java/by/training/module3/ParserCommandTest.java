@@ -2,8 +2,6 @@ package by.training.module3;
 
 import by.training.module3.command.*;
 import by.training.module3.entity.Gem;
-import by.training.module3.validator.XMLValidator;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

@@ -1,5 +1,7 @@
 package by.training.module3.entity;
 
+import java.util.Date;
+
 public class Gem {
     private long id;
     private String name;
@@ -7,19 +9,22 @@ public class Gem {
     private String origin;
     private VisualParameters visualParameters;
     private double value;
+    private Date miningDate;
 
     public Gem(long id, Preciousness preciousness) {
         this.id = id;
         this.preciousness = preciousness;
     }
 
-    public Gem(long id, String name, Preciousness preciousness, String origin, VisualParameters visualParameters, double value) {
+    public Gem(long id, String name, Preciousness preciousness, String origin, VisualParameters visualParameters,
+               double value, Date miningDate) {
         this.id = id;
         this.name = name;
         this.preciousness = preciousness;
         this.origin = origin;
         this.visualParameters = visualParameters;
         this.value = value;
+        this.miningDate = miningDate;
     }
 
     public long getId() {
@@ -40,6 +45,14 @@ public class Gem {
 
     public Preciousness getPreciousness() {
         return preciousness;
+    }
+
+    public Date getMiningDate() {
+        return miningDate;
+    }
+
+    public void setMiningDate(Date miningDate) {
+        this.miningDate = miningDate;
     }
 
     public void setPreciousness(Preciousness preciousness) {

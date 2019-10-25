@@ -14,13 +14,17 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static by.training.module3.parser.GemEnum.*;
 
 public class GemStAXParser implements Parser<Gem> {
     private static final Logger log = LogManager.getLogger(GemStAXParser.class);
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     @Override
     public List<Gem> parse (String path) throws ParserException {
@@ -43,13 +47,13 @@ public class GemStAXParser implements Parser<Gem> {
                     }
                 }
             }
-        } catch (XMLStreamException | IOException e) {
+        } catch (XMLStreamException | ParseException | IOException e) {
             throw new ParserException(e);
         }
         return output;
     }
 
-    private Gem buildSemipreciousGem (XMLStreamReader reader) throws XMLStreamException{
+    private Gem buildSemipreciousGem (XMLStreamReader reader) throws XMLStreamException, ParseException {
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
         boolean isOrnamental = Boolean.parseBoolean(reader.getAttributeValue(null, "isUsedInOrnamentalWorks"));
         Gem gem = new SemipreciousGem(id, isOrnamental);
@@ -69,6 +73,10 @@ public class GemStAXParser implements Parser<Gem> {
                         case VALUE:
                             name = getXMLText(reader);
                             gem.setValue(Double.parseDouble(name));
+                            break;
+                        case DATE:
+                            Date date = dateFormat.parse(getXMLText(reader));
+                            gem.setMiningDate(date);
                             break;
                         case VISUALPARAMETERS:
                             gem.setVisualParameters(getXMLVisualParameters(reader));
@@ -135,7 +143,7 @@ public class GemStAXParser implements Parser<Gem> {
         return text;
     }
 
-    private Gem buildPreciousGem (XMLStreamReader reader) throws XMLStreamException{
+    private Gem buildPreciousGem (XMLStreamReader reader) throws XMLStreamException, ParseException {
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
         double hardness = Double.parseDouble(reader.getAttributeValue(null, "hardness"));
         Gem gem = new PreciousGem(id, hardness);
@@ -155,6 +163,10 @@ public class GemStAXParser implements Parser<Gem> {
                         case VALUE:
                             name = getXMLText(reader);
                             gem.setValue(Double.parseDouble(name));
+                            break;
+                        case DATE:
+                            Date date = dateFormat.parse(getXMLText(reader));
+                            gem.setMiningDate(date);
                             break;
                         case VISUALPARAMETERS:
                             gem.setVisualParameters(getXMLVisualParameters(reader));

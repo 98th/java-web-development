@@ -7,6 +7,7 @@ public enum  GemEnum {
     VISUALPARAMETERS("visualParameters"),
     ID("id"),
     COLOR("color"),
+    DATE("date"),
     PRECIOUSNESS("preciousness"),
     TRANSPARENCY("transparency"),
     FACETNUM("facetNum"),

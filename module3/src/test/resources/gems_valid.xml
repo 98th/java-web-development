@@ -11,6 +11,7 @@
             <facetNum>4</facetNum>
         </visualParameters>
         <value>0.8</value>
+        <date>2002-05-30T09:00:00</date>
     </SemipreciousGem>
     <SemipreciousGem id ="2" isUsedInOrnamentalWorks = "true">
         <name>Ametrine</name>
@@ -21,6 +22,7 @@
             <facetNum>6</facetNum>
         </visualParameters>
         <value>2.0</value>
+        <date>2004-05-30T09:00:00</date>
     </SemipreciousGem>
     <PreciousGem id ="3" hardness = "8.3">
         <name>Emerald</name>
@@ -31,6 +33,7 @@
             <facetNum>8</facetNum>
         </visualParameters>
         <value>2.5</value>
+        <date>1999-05-30T09:00:00</date>
     </PreciousGem>
     <SemipreciousGem id ="4" isUsedInOrnamentalWorks = "true">
         <name>Sapphire</name>
@@ -41,6 +44,7 @@
             <facetNum>11</facetNum>
         </visualParameters>
         <value>3.0</value>
+        <date>2002-06-25T09:00:00</date>
     </SemipreciousGem>
     <SemipreciousGem id ="5" isUsedInOrnamentalWorks = "true">
         <name>Andalusite</name>
@@ -51,6 +55,7 @@
             <facetNum>14</facetNum>
         </visualParameters>
         <value>3.8</value>
+        <date>2000-11-05T09:00:00</date>
     </SemipreciousGem>
     <PreciousGem id ="6" hardness = "7.5">
         <name>Diaspore</name>
@@ -61,6 +66,7 @@
             <facetNum>15</facetNum>
         </visualParameters>
         <value>1.6</value>
+        <date>2012-05-30T09:00:00</date>
     </PreciousGem>
     <SemipreciousGem id ="7" isUsedInOrnamentalWorks = "true">
         <name>Benitoite</name>
@@ -71,8 +77,9 @@
             <facetNum>4</facetNum>
         </visualParameters>
         <value>0.8</value>
+        <date>1998-05-30T09:00:00</date>
     </SemipreciousGem>
-    <SemipreciousGem id ="8" isUsedInOrnamentalWorks = "false">
+    <SemipreciousGem id ="8" >
         <name>Chrysoberyl</name>
         <origin>Russia</origin>
         <visualParameters>
@@ -81,6 +88,7 @@
             <facetNum>6</facetNum>
         </visualParameters>
         <value>2.3</value>
+        <date>2002-05-30T09:00:00</date>
     </SemipreciousGem>
     <PreciousGem id ="9" hardness = "6.5">
         <name>Apatite</name>
@@ -91,6 +99,7 @@
             <facetNum>9</facetNum>
         </visualParameters>
         <value>3.6</value>
+        <date>2002-05-30T09:00:00</date>
     </PreciousGem>
     <SemipreciousGem id ="10" isUsedInOrnamentalWorks = "true">
         <name>Beryl</name>
@@ -101,6 +110,7 @@
             <facetNum>10</facetNum>
         </visualParameters>
         <value>1.6</value>
+        <date>2002-05-30T09:00:00</date>
     </SemipreciousGem>
     <SemipreciousGem id ="11" isUsedInOrnamentalWorks = "true">
         <name>Rhinestone</name>
@@ -111,8 +121,9 @@
             <facetNum>11</facetNum>
         </visualParameters>
         <value>2.4</value>
+        <date>2002-05-30T09:00:00</date>
     </SemipreciousGem>
-    <SemipreciousGem id ="12" isUsedInOrnamentalWorks = "false">
+    <SemipreciousGem id ="12" >
         <name>Jeremejevite</name>
         <origin>Russia</origin>
         <visualParameters>
@@ -121,6 +132,7 @@
             <facetNum>13</facetNum>
         </visualParameters>
         <value>1.8</value>
+        <date>2002-05-30T09:00:00</date>
     </SemipreciousGem>
     <SemipreciousGem id ="13" isUsedInOrnamentalWorks = "true">
         <name>Garnet</name>
@@ -131,6 +143,7 @@
             <facetNum>8</facetNum>
         </visualParameters>
         <value>1.4</value>
+        <date>2002-05-30T09:00:00</date>
     </SemipreciousGem>
     <PreciousGem id ="14" hardness = "8.6">
         <name>Chrysoberyl</name>
@@ -141,6 +154,7 @@
             <facetNum>11</facetNum>
         </visualParameters>
         <value>2.3</value>
+        <date>1979-03-07T09:00:00</date>
     </PreciousGem>
     <PreciousGem id ="15" hardness = "6.4">
         <name>Diamond</name>
@@ -151,8 +165,9 @@
             <facetNum>14</facetNum>
         </visualParameters>
         <value>3.8</value>
+        <date>1986-12-14T09:00:00</date>
     </PreciousGem>
-    <SemipreciousGem id ="16" isUsedInOrnamentalWorks = "true">
+    <SemipreciousGem id ="16">
         <name>Amethyst</name>
         <origin>Germany</origin>
         <visualParameters>
@@ -161,5 +176,6 @@
             <facetNum>13</facetNum>
         </visualParameters>
         <value>1.5</value>
+        <date>2008-07-30T09:00:00</date>
     </SemipreciousGem>
 </gems>

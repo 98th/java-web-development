@@ -16,7 +16,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static by.training.module3.parser.GemEnum.*;
@@ -24,6 +27,8 @@ import static by.training.module3.parser.GemEnum.*;
 
 public class GemDOMParser implements Parser<Gem> {
     private static final Logger log = LogManager.getLogger(GemDOMParser.class);
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
 
     private DocumentBuilder documentBuilder;
 
@@ -62,7 +67,7 @@ public class GemDOMParser implements Parser<Gem> {
         return output;
     }
 
-    private Gem buildPreciousGem(Element gemElement) {
+    private Gem buildPreciousGem(Element gemElement) throws ParserException {
         long id = Long.parseLong(gemElement.getAttribute("id"));
         double hardness = Double.parseDouble(gemElement.getAttribute("hardness"));
         Gem gem = new PreciousGem(id, hardness);
@@ -71,6 +76,14 @@ public class GemDOMParser implements Parser<Gem> {
         double value = Double.parseDouble(getElementTextContent(
                 gemElement,GemEnum.VALUE.getValue()));
         gem.setValue(value);
+        Date date;
+        try {
+            date = dateFormat.parse(getElementTextContent(gemElement, DATE.getValue()));
+        } catch (ParseException e ) {
+            log.error(e);
+            throw new ParserException( e);
+        }
+        gem.setMiningDate(date);
         Element visualParametersElement = (Element) gemElement.getElementsByTagName(VISUALPARAMETERS.getValue()).item(0);
         VisualParameters visualParameters = buildVisualParameters(visualParametersElement);
         gem.setVisualParameters(visualParameters);
@@ -92,7 +105,7 @@ public class GemDOMParser implements Parser<Gem> {
             throw  new IllegalArgumentException();
         }
     }
-    private Gem buildSemipreciousGem(Element gemElement) {
+    private Gem buildSemipreciousGem(Element gemElement) throws  ParserException {
         long id = Long.parseLong(gemElement.getAttribute("id"));
         boolean isOrnamental = Boolean.parseBoolean(gemElement.getAttribute("IsUsedInOrnamentalWorks"));
         Gem gem = new SemipreciousGem(id, isOrnamental);
@@ -103,6 +116,14 @@ public class GemDOMParser implements Parser<Gem> {
         double value = Double.parseDouble(getElementTextContent(
                 gemElement,GemEnum.VALUE.getValue()));
         gem.setValue(value);
+        Date date;
+        try {
+            date = dateFormat.parse(getElementTextContent(gemElement, DATE.getValue()));
+        } catch (ParseException e ) {
+            log.error(e);
+            throw new ParserException( e);
+        }
+        gem.setMiningDate(date);
         Element visualParametersElement = (Element) gemElement.getElementsByTagName(VISUALPARAMETERS.getValue()).item(0);
         VisualParameters visualParameters = buildVisualParameters(visualParametersElement);
         gem.setVisualParameters(visualParameters);
