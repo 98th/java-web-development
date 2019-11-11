@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.example.com/trucks"
+        xmlns:tns="http://www.example.com/trucks"
+        elementFormDefault="qualified">
+    <element name="trucks">
+        <complexType>
+            <sequence>
+                <element name="truck"
+                         type="tns:truck"
+                         minOccurs="2"
+                         maxOccurs="unbounded" />
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="truck">
+        <sequence>
+            <element name="itemList" type="tns:itemList"/>
+        </sequence>
+        <attribute name="id" type="long" use="required"></attribute>
+        <attribute name="capacity" type="int" use="required"></attribute>
+        <attribute name="isCargoPerishable" type="boolean" use="required"></attribute>
+        <attribute name="operationType" type="tns:operationType" use="required"></attribute>
+    </complexType>
+
+    <simpleType name="operationType">
+        <restriction base="string">
+            <enumeration value="loading" />
+            <enumeration value="unloading" />
+        </restriction>
+    </simpleType>
+
+    <complexType name="itemList">
+        <sequence>
+            <element name="item" type="tns:item" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="item">
+        <attribute name="id" type="long" use="required"></attribute>
+    </complexType>
+
+</schema>

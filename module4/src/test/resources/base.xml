@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<logisticBase id="1" capacity="50">
+        <terminals>
+                <terminal id="1"/>
+                <terminal id="2"/>
+        </terminals>
+        <items>
+                <item id="521"/>
+                <item id="992"/>
+                <item id="545"/>
+                <item id="547"/>
+                <item id="878"/>
+                <item id="587"/>
+                <item id="477"/>
+                <item id="787"/>
+                <item id="650"/>
+                <item id="985"/>
+                <item id="100"/>
+                <item id="578"/>
+                <item id="120"/>
+                <item id="124"/>
+                <item id="123"/>
+        </items>
+</logisticBase>

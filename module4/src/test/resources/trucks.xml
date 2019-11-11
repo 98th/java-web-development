@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<trucks xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.example.com/trucks"
+      xsi:schemaLocation="http://www.example.com/trucks  trucks.xsd">
+    <truck id="1" capacity="5" isCargoPerishable="true" operationType="loading">
+        <itemList></itemList>
+    </truck>
+    <truck id="2" capacity="6" isCargoPerishable="false" operationType="unloading">
+        <itemList>
+            <item id="521"/>
+            <item id="647"/>
+            <item id="587"/>
+            <item id="468"/>
+            <item id="547"/>
+        </itemList>
+    </truck>
+    <truck id="3" capacity="20" isCargoPerishable="true" operationType="unloading">
+        <itemList>
+            <item id="899"/>
+            <item id="254"/>
+            <item id="467"/>
+            <item id="979"/>
+            <item id="788"/>
+            <item id="878"/>
+        </itemList>
+    </truck>
+    <truck id="4" capacity="8" isCargoPerishable="false" operationType="loading">
+        <itemList>
+            <item id="788"/>
+            <item id="878"/>
+        </itemList>
+    </truck>
+    <truck id="5" capacity="6" isCargoPerishable="false" operationType="loading">
+        <itemList></itemList>
+    </truck>
+
+</trucks>
