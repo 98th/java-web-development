@@ -1,4 +1,0 @@
-type:ertyui|model:TTTTTTTTT|passengers:yio0|fuelConsumption:-1856254|loadCapacity:52g8.84|speed:12g5|missileNumber:5
-type:sfsf|model:TTTTTTTTT|passengers:yio0|fuelConsumption:-1857845216254|loadCapacity:52g8.84|speed:12g5|missileNumber:5
-type:ertsggggggggggyui|model:d5215|passengers:yio0|fuelConsumption:-1856254|loadCapacity:52g8.84|speed:12g5|missileNumber:5
-type:milyw|model:TTTTTTTTT|passengers:yio0|fuelConsumption:-1856ss254|loadCapacity:52g8.84|speed:12g5|missileNumber:5
