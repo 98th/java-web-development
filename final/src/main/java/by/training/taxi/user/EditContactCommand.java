@@ -56,10 +56,6 @@ public class EditContactCommand implements Command {
                     .model(carModel)
                     .licencePlateNum(licencePlateNumber)
                     .build();
-            driver.builder()
-                    .drivingLicenceNum(drivingLicence)
-                    .carDto(car)
-                    .build();
         }
     }
 }
