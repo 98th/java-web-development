@@ -60,10 +60,6 @@ public class EditContactCommand implements Command {
                     .drivingLicenceNum(drivingLicence)
                     .carDto(car)
                     .build();
-            //contactService.update(ContactDto);
-            //driverService.update(driver);
         }
-        //userAccountService.update(userAccountDto);
-       //resp.sendRedirect
     }
 }
