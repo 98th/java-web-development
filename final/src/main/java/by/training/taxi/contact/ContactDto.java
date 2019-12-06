@@ -1,0 +1,18 @@
+package by.training.taxi.contact;
+
+import lombok.*;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class ContactDto {
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private String email;
+    private Long userId;
+}
