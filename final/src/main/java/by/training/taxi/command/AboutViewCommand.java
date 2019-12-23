@@ -15,10 +15,12 @@ import static by.training.taxi.ApplicationConstants.VIEWNAME_REQ_PARAMETER;
 @Bean(name=ABOUT_VIEW)
 public class AboutViewCommand implements Command {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException, ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             request.setAttribute(VIEWNAME_REQ_PARAMETER, ABOUT_VIEW);
             request.getRequestDispatcher("/jsp/layout.jsp").forward(request, response);
-        } catch (IOException e) {}
+        } catch (ServletException | IOException e) {
+            throw  new CommandException();
+        }
     }
 }

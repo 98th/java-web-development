@@ -1,8 +1,7 @@
 package by.training.taxi.car;
 
-import by.training.taxi.user.ServiceException;
 
-public class CarServiceException extends ServiceException {
+public class CarServiceException extends Exception {
     public CarServiceException() {
         super();
     }

@@ -14,5 +14,4 @@ import java.math.BigDecimal;
 public class WalletEntity {
     private long id;
     private BigDecimal amount;
-    private long userId;
 }

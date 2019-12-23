@@ -6,7 +6,7 @@ import java.sql.Connection;
 
 @Bean
 public class DataSourceImpl implements DataSource {
-    private ConnectionPool connectionPool;
+    private final ConnectionPool connectionPool;
 
     public DataSourceImpl() {
         connectionPool = ConnectionPoolImpl.getInstance();

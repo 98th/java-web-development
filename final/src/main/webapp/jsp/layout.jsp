@@ -4,44 +4,37 @@
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags/nav" %>
 
 <!DOCTYPE html>
-<fmt:setLocale value="${cookie['lang'].value}"/>
-<fmt:setBundle   basename="taxi" scope="application"/>
 
-<html lang="${cookie['lang'].value}">
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle basename="taxi" scope="application"/>
+
+<html>
 <head>
     <title>Taxi service</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
-    <link rel="stylesheet" href="static/style/css/linearicons.css">
     <link rel="stylesheet" href="static/style/css/font-awesome.min.css">
     <link rel="stylesheet" href="static/style/css/bootstrap.css">
-    <link rel="stylesheet" href="static/style/css/magnific-popup.css">
-    <link rel="stylesheet" href="static/style/css/nice-select.css">
-    <link rel="stylesheet" href="static/style/css/animate.min.css">
     <link rel="stylesheet" href="static/style/css/main.css">
+    <link rel="stylesheet" href="static/style/css/material.min.css">
+    <script src="js/material.min.js"></script>
+    <script src="js/main.js"></script>
+    <script type="module" src ="js/dialog-polyfill-master/index.js"></script>
+    <script src ="js/dialog-polyfill-master/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/dialog-polyfill-master/dist/dialog-polyfill.css" />
+
 </head>
 <body>
 <jsp:include page="/jsp/views/header.jsp"/>
 
-<!-- start banner Area -->
-<div class="banner-area" id="parent" >
-
-    <div class="banner-content"  id="child">
-        <c:choose>
-            <c:when test="${not empty viewName}">
-                <jsp:include page="views/${viewName}.jsp" />
-            </c:when>
-            <c:otherwise>>
-                <h4 class="text-white "> <fmt:message key="title.layout"/></h4>
-                <h1 class="text-uppercase">
-                    911 999 911
-                </h1>
-                <p class="text-white">
-                    <fmt:message key="title.layout.sub"/>
-                </p>
-                <a href="#" class="primary-btn text-uppercase"> <fmt:message key="book"/></a
-            </c:otherwise>
-            </c:choose>
-    </div>
+<div class="banner-area" id="parent">
+    <c:choose>
+        <c:when test="${not empty viewName}">
+            <jsp:include page="views/${viewName}.jsp" />
+        </c:when>
+        <c:otherwise>
+            <jsp:include page="views/homeView.jsp" />
+        </c:otherwise>
+    </c:choose>
 </div>
 </body>
 </html>

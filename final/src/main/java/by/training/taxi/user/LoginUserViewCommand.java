@@ -2,6 +2,7 @@ package by.training.taxi.user;
 
 import by.training.taxi.bean.Bean;
 import by.training.taxi.command.Command;
+import by.training.taxi.command.CommandException;
 
 
 import javax.servlet.ServletException;
@@ -16,10 +17,12 @@ import static by.training.taxi.ApplicationConstants.VIEWNAME_REQ_PARAMETER;
 @Bean(name=GET_LOGIN_VIEW)
 public class LoginUserViewCommand implements Command {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response)  {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try{
             request.setAttribute(VIEWNAME_REQ_PARAMETER, GET_LOGIN_VIEW);
             request.getRequestDispatcher("/jsp/layout.jsp").forward(request, response);
-        } catch (ServletException | IOException e) {}
+        } catch (ServletException | IOException e) {
+            throw new CommandException(e.getMessage());
+        }
     }
 }

@@ -13,5 +13,4 @@ import java.math.BigDecimal;
 public class WalletDto {
     private BigDecimal amount;
     private long id;
-    private long userId;
 }

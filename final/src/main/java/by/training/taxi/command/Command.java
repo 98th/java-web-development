@@ -7,5 +7,5 @@ import java.io.IOException;
 
 @FunctionalInterface
 public interface Command {
-    void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException, ServletException, IOException;
+    void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException;
 }

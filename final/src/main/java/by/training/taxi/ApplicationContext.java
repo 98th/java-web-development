@@ -8,15 +8,25 @@ import by.training.taxi.car.CarServiceImpl;
 import by.training.taxi.command.AboutViewCommand;
 import by.training.taxi.contact.ContactDaoImpl;
 import by.training.taxi.contact.ContactServiceImpl;
-import by.training.taxi.user.EditContactCommand;
+import by.training.taxi.contact.EditContactViewCommand;
+import by.training.taxi.discount.AssignDiscountCommand;
+import by.training.taxi.discount.DiscountDaoImpl;
+import by.training.taxi.discount.DiscountServiceImpl;
+import by.training.taxi.driver.DriverListViewCommand;
+import by.training.taxi.request.*;
+import by.training.taxi.location.LocationDaoImpl;
+import by.training.taxi.location.LocationServiceImpl;
+import by.training.taxi.contact.EditContactCommand;
 import by.training.taxi.driver.DriverDaoImpl;
 import by.training.taxi.driver.DriverServiceImpl;
 import by.training.taxi.user.*;
 import by.training.taxi.dao.*;
 import by.training.taxi.role.RoleDaoImpl;
 import by.training.taxi.role.RoleServiceImpl;
+import by.training.taxi.wallet.FillWalletCommand;
 import by.training.taxi.wallet.WalletDaoImpl;
 import by.training.taxi.wallet.WalletServiceImpl;
+import by.training.taxi.wallet.WalletViewCommand;
 
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -85,26 +95,46 @@ public class ApplicationContext implements BeanRegistry {
     }
 
     private void registerClasses() {
-        registerBean(WalletDaoImpl.class);
-        registerBean(DriverDaoImpl.class);
-        registerBean(DriverServiceImpl.class);
-        registerBean(RoleDaoImpl.class);
-        registerBean(RoleServiceImpl.class);
-        registerBean(UserAccountDaoImpl.class);
-        registerBean(UserAccountServiceImpl.class);
-        registerBean(ViewUserListCommand.class);
+        registerBean(DriverListViewCommand.class);
         registerBean(AboutViewCommand.class);
-        registerBean(LoginUserCommand.class);
-        registerBean(LoginUserViewCommand.class);
-        registerBean(EditContactCommand.class);
-        registerBean(UserPageViewCommand.class);
-        registerBean(WalletServiceImpl.class);
-        registerBean(ContactDaoImpl.class);
-        registerBean(ContactServiceImpl.class);
-        registerBean(RegistrationUserViewCommand.class);
-        registerBean(RegistrationUserCommand.class);
+        registerBean(AssignDiscountCommand.class);
         registerBean(CarDaoImpl.class);
         registerBean(CarServiceImpl.class);
+        registerBean(CancelRideViewCommand.class);
+        registerBean(ContactDaoImpl.class);
+        registerBean(ContactServiceImpl.class);
+        registerBean(ConfirmRequestCommand.class);
+        registerBean(DiscountServiceImpl.class);
+        registerBean(DiscountDaoImpl.class);
+        registerBean(DriverDaoImpl.class);
+        registerBean(DriverServiceImpl.class);
+        registerBean(EditContactCommand.class);
+        registerBean(EditContactViewCommand.class);
+        registerBean(FindCarCommand.class);
+        registerBean(FillWalletCommand.class);
+        registerBean(LockUserCommand.class);
+        registerBean(LoginUserViewCommand.class);
+        registerBean(UserPageViewCommand.class);
+        registerBean(RequirementViewCommand.class);
+        registerBean(RegistrationUserViewCommand.class);
+        registerBean(RegistrationUserCommand.class);
+        registerBean(RequestDaoImpl.class);
+        registerBean(RequestServiceImpl.class);
+        registerBean(RequestListViewCommand.class);
+        registerBean(RoleDaoImpl.class);
+        registerBean(RoleServiceImpl.class);
+        registerBean(SuitableDriverViewCommand.class);
+        registerBean(UserAccountDaoImpl.class);
+        registerBean(UserAccountServiceImpl.class);
+        registerBean(UserListViewCommand.class);
+        registerBean(LoginUserCommand.class);
+        registerBean(LocationDaoImpl.class);
+        registerBean(LocationServiceImpl.class);
+        registerBean(WalletServiceImpl.class);
+        registerBean(WalletDaoImpl.class);
+        registerBean(WalletViewCommand.class);
+
+
     }
 
     @Override

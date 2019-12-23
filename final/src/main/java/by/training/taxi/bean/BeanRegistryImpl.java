@@ -23,7 +23,6 @@ public class BeanRegistryImpl implements BeanRegistry {
 
     @Override
     public <T> void registerBean(T bean) {
-
         RegistryInfo info = calculateRegistryInfo(bean.getClass());
         info.setConcreteBean(bean);
         addRegistryInfo(info);

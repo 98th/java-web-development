@@ -10,5 +10,6 @@ public interface CarDao extends CRUDDao<Long, CarDto> {
     CarDto getByDriverId(long driverId) throws DAOException;
     CarDto getByUserId(long userId) throws DAOException;
    // List<CarDto> getCarsByRequirement();
+   List<CarDto> getCarsWithRequirement(String requirement) throws DAOException;
     boolean addRequirementForCar(long id, Set<RequirementType> requirementTypes);
 }

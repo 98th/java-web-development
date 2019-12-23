@@ -2,20 +2,31 @@ package by.training.taxi.car;
 
 import by.training.taxi.bean.Bean;
 import by.training.taxi.dao.DAOException;
-import by.training.taxi.user.ServiceException;
+import by.training.taxi.driver.DriverServiceException;
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 @Bean
 @AllArgsConstructor
 public class CarServiceImpl implements CarService {
     private CarDao carDao;
 
+
     @Override
-    public long create(CarDto carDto) throws  CarServiceException{
+    public List<CarDto> getCarsWithRequirement(String requirementId) throws CarServiceException {
         try {
-            return carDao.save(carDto);
+            return carDao.getCarsWithRequirement(requirementId);
+        } catch (DAOException e) {throw  new CarServiceException(e.getMessage());}
+    }
+
+    @Override
+    public boolean save(CarDto carDto) {
+        try {
+            Long id = carDao.save(carDto);
+            return true;
         } catch (DAOException e) {
-            throw new CarServiceException("Exception while creating a car");
+            return false;
         }
     }
 

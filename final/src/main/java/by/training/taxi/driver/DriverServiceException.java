@@ -1,8 +1,6 @@
 package by.training.taxi.driver;
 
-import by.training.taxi.user.ServiceException;
-
-public class DriverServiceException extends ServiceException {
+public class DriverServiceException extends Exception {
     public DriverServiceException() {
     }
 

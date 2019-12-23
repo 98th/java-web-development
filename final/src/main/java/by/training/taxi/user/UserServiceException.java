@@ -1,6 +1,6 @@
 package by.training.taxi.user;
 
-public class UserServiceException extends RuntimeException {
+public class UserServiceException extends Exception {
     public UserServiceException() {
     }
 

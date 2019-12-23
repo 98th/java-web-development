@@ -16,10 +16,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/", loadOnStartup = 1, name = "app")
 public class ApplicationServlet extends HttpServlet {
 
-    /**
-     **/
     private static final long serialVersionUID = -898419077104540041L;
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

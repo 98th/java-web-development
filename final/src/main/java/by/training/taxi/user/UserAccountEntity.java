@@ -14,4 +14,6 @@ public class UserAccountEntity {
     private String login;
     private String password;
     private Role role;
+    private boolean isLocked;
+
 }

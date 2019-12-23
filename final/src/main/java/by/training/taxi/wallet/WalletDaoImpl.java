@@ -3,6 +3,8 @@ package by.training.taxi.wallet;
 import by.training.taxi.bean.Bean;
 import by.training.taxi.dao.ConnectionManager;
 import by.training.taxi.dao.DAOException;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -12,14 +14,15 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Bean
+@Log4j
+@AllArgsConstructor
 public class WalletDaoImpl implements WalletDao {
     private final static AtomicLong COUNTER = new AtomicLong(1);
 
-    private static final String SELECT_ALL_QUERY = "select wallet_id, amount, user_id from user_wallet";
-    private static final String SELECT_BY_ID_QUERY = "select wallet_id, amount, user_id from user_wallet where wallet_id = ?";
-    private static final String SELECT_BY_USER_ID = "select wallet_id, amount, user_id from user_wallet where user_id = ?";
-    private static final String INSERT_QUERY = "insert into user_wallet (wallet_id, amount, user_id) values (?,?,?)";
-    private static final String UPDATE_QUERY = "update user_wallet set amount=?, user_id where wallet_id = ?";
+    private static final String SELECT_ALL_QUERY = "select wallet_id, amount from user_wallet";
+    private static final String SELECT_BY_ID_QUERY = "select wallet_id, amount from user_wallet where wallet_id = ?";
+    private static final String INSERT_QUERY = "insert into user_wallet (wallet_id, amount) values (?,?)";
+    private static final String UPDATE_QUERY = "update user_wallet set amount=? where wallet_id = ?";
     private static final String DELETE_QUERY = "delete from user_wallet where wallet_id = ?";
 
     private ConnectionManager connectionManager;
@@ -31,14 +34,16 @@ public class WalletDaoImpl implements WalletDao {
              PreparedStatement insertStmt = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             int i = 0;
             insertStmt.setBigDecimal(++i, entity.getAmount());
-            insertStmt.setLong(++i, entity.getUserId());
             insertStmt.executeUpdate();
             ResultSet generatedKeys = insertStmt.getGeneratedKeys();
             while (generatedKeys.next()) {
                 entity.setId(generatedKeys.getLong(1));
             }
 
-        } catch (SQLException e) { }
+        } catch (SQLException e) {
+            log.error("Failed to save wallet");
+            throw new DAOException(e.getMessage());
+        }
         return entity.getId();
     }
 
@@ -48,11 +53,11 @@ public class WalletDaoImpl implements WalletDao {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(UPDATE_QUERY)){
             int i = 0;
-            updateStmt.setLong(++i, entity.getId());
             updateStmt.setBigDecimal(++i, entity.getAmount());
-            updateStmt.setLong(++i, entity.getUserId());
+            updateStmt.setLong(++i, entity.getId());
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Failed to update wallet");
             throw new DAOException();
         }
     }
@@ -65,6 +70,7 @@ public class WalletDaoImpl implements WalletDao {
             updateStmt.setLong(1, entity.getId());
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Failed to delete wallet");
             throw new DAOException();
         }
     }
@@ -79,11 +85,11 @@ public class WalletDaoImpl implements WalletDao {
                 WalletEntity entity = parseResultSet(resultSet);
                 result.add(entity);
             }
-
         } catch (SQLException e) {
+            log.error("Failed to get wallet by id");
             throw new DAOException();
         }
-        return result.stream().map(this::fromEntity).findFirst().orElseThrow(() -> new IllegalArgumentException("Entity not found with given id: " + id));
+        return result.stream().map(this::fromEntity).findFirst().orElseThrow(() -> new DAOException("Entity not found with given id: " + id));
     }
 
     @Override
@@ -97,6 +103,7 @@ public class WalletDaoImpl implements WalletDao {
                 result.add(entity);
             }
         }catch (SQLException e) {
+            log.error("Failed to get all wallets");
             throw new DAOException();
         }
         return result.stream().map(this::fromEntity).collect(Collectors.toList());
@@ -105,25 +112,24 @@ public class WalletDaoImpl implements WalletDao {
 
     private WalletEntity fromDto(WalletDto dto) {
         WalletEntity entity = new WalletEntity();
+        entity.setId(dto.getId());
         entity.setAmount(dto.getAmount());
-        entity.setUserId(dto.getUserId());
         return entity;
     }
 
     private WalletDto fromEntity(WalletEntity entity) {
         WalletDto dto = new WalletDto();
+        dto.setId(entity.getId());
         dto.setAmount(entity.getAmount());
-        dto.setUserId(entity.getUserId());
         return dto;
     }
 
     private WalletEntity parseResultSet(ResultSet resultSet) throws SQLException {
-        long entityId = resultSet.getLong("id");
+        long entityId = resultSet.getLong("wallet_id");
         BigDecimal amount = resultSet.getBigDecimal("amount");
-        long userId = resultSet.getLong("userId");
         return WalletEntity.builder()
                 .id(entityId)
                 .amount(amount)
-                .userId(userId).build();
+                .build();
     }
 }

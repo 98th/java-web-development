@@ -2,16 +2,19 @@ package by.training.taxi.user;
 
 import by.training.taxi.bean.Bean;
 import by.training.taxi.car.CarDto;
-import by.training.taxi.car.CarService;
 import by.training.taxi.command.Command;
 import by.training.taxi.command.CommandException;
 import by.training.taxi.contact.ContactDto;
-import by.training.taxi.contact.ContactService;
+import by.training.taxi.discount.DiscountDto;
 import by.training.taxi.driver.DriverDto;
 import by.training.taxi.driver.DriverService;
+import by.training.taxi.driver.DriverServiceException;
 import by.training.taxi.role.Role;
 import by.training.taxi.util.Md5Util;
-import by.training.taxi.wallet.WalletService;
+import by.training.taxi.util.RequestUtil;
+import by.training.taxi.validator.DriverDataValidator;
+import by.training.taxi.validator.UserDataValidator;
+import by.training.taxi.validator.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -29,24 +32,25 @@ import static by.training.taxi.role.Role.DRIVER;
 @Log4j
 public class RegistrationUserCommand implements Command {
     private UserAccountService userAccountService;
-    private ContactService contactService;
     private DriverService driverService;
-    private CarService carService;
+
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException, ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
+            Validator userInfoValidator = new UserDataValidator();
+            Validator driverInfoValidator = new DriverDataValidator();
             String login = request.getParameter(PARAM_USER_LOGIN);
-            String email = request.getParameter("email");
+            String email = request.getParameter(PARAM_USER_EMAIL);
             String password = Md5Util.md5Apache(request.getParameter(PARAM_USER_PASSWORD));
             String passwordRepeated = Md5Util.md5Apache(request.getParameter(PARAM_USER_PASSWORD_REPEATED));
             if (!passwordRepeated.equals(password)) {
                 throw new CommandException();
             }
-            String firstName = request.getParameter("firstName");
-            String lastName = request.getParameter("lastName");
-            String phone = request.getParameter("phone");
-            Role role = Role.valueOf(request.getParameter("role").toUpperCase());
+            String firstName = request.getParameter(PARAM_USER_F_NAME);
+            String lastName = request.getParameter(PARAM_USER_L_NAME);
+            String phone = request.getParameter(PARAM_USER_PHONE);
+            Role role = Role.valueOf(request.getParameter(PARAM_USER_PHONE).toUpperCase());
             UserAccountDto userAccountDto = UserAccountDto.builder()
                     .login(login)
                     .password(password)
@@ -58,13 +62,17 @@ public class RegistrationUserCommand implements Command {
                     .email(email)
                     .phone(phone)
                     .build();
-            userAccountService.registerUser(userAccountDto);
+            DiscountDto discount = DiscountDto.builder()
+                    .amount(0)
+                    .build();
+            userAccountDto.setDiscount(discount);
             userAccountDto.setContact(contactDto);
+            userAccountService.registerUser(userAccountDto);
             if (role == DRIVER) {
-                String drivingLicence = request.getParameter("drivingLicence");
+                String drivingLicence = request.getParameter(PARAM_DRIVER_LICENCE_NUM);
                 String carColor = request.getParameter("carColor");
                 String carModel = request.getParameter("carModel");
-                String licencePlateNumber = request.getParameter("licencePlateNumber");
+                String licencePlateNumber = request.getParameter(PARAM_CAR_LICENCE_PLATE_NUM);
                 DriverDto driverDto = DriverDto.builder()
                         .drivingLicenceNum(drivingLicence)
                         .build();
@@ -76,17 +84,15 @@ public class RegistrationUserCommand implements Command {
                         .licencePlateNum(licencePlateNumber)
                         .driverId(driverDto.getId())
                         .build();
-                driverDto.setCarDto(carDto);
+                driverDto.setCar(carDto);
             }
             request.getSession().setAttribute(PARAM_USER, userAccountDto);
             request.setAttribute(VIEWNAME_REQ_PARAMETER, GET_USER_PAGE_VIEW);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/layout.jsp");
             requestDispatcher.forward(request, response);
-        }catch (ServiceException e) {
-            request.setAttribute("error", "saving_error");
-            request.setAttribute(VIEWNAME_REQ_PARAMETER, "error");
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/layout.jsp");
-            requestDispatcher.forward(request, response);
+        } catch (ServletException | IOException | UserServiceException | DriverServiceException e) {
+            request.setAttribute("error", "error.saving_error");
+            RequestUtil.forward(request, response, ERROR_VIEW);
         }
     }
 

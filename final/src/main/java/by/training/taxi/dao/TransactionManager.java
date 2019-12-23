@@ -5,11 +5,11 @@ import java.sql.SQLException;
 
 public interface TransactionManager {
 
-    void beginTransaction() throws SQLException;
+    void beginTransaction()  throws SQLException ;
 
-    void commitTransaction() throws SQLException;
+    void commitTransaction()  throws SQLException ;
 
-    void rollbackTransaction() throws SQLException;
+    void rollbackTransaction()  throws SQLException ;
 
-    Connection getConnection() throws SQLException;
+    Connection getConnection()  throws SQLException ;
 }

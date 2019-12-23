@@ -14,5 +14,4 @@ public class DriverEntity {
     private long id;
     private long userId;
     private String drivingLicenceNum;
-    private Date expiryDate;
 }

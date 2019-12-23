@@ -1,8 +1,7 @@
 package by.training.taxi.contact;
 
-import by.training.taxi.user.ServiceException;
 
-public class ContactServiceException extends ServiceException {
+public class ContactServiceException extends Exception {
     public ContactServiceException() {
         super();
     }

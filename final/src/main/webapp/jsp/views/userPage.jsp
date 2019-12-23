@@ -4,82 +4,44 @@
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags/nav" %>
 
 
-<%@ page import="by.training.taxi.ApplicationConstants" %>
 <%@ page import="by.training.taxi.role.Role" %>
 
 <!DOCTYPE html>
-<!-- user info -->
 <body>
-<div>
-    <c:if test="${requestScope.user.contact.firstName != null}">
-        ${requestScope.user.contact.firstName }
-    </c:if>
-    <c:if test="${requestScope.user.contact.lastName != null}">
-        ${requestScope.user.contact.lastName}
-    </c:if>
-    <c:if test="${requestScope.user.driver.drivingLicenceNum != null}">
-        ${requestScope.user.driver.drivingLicenceNum}
-    </c:if>
-    <c:if test="${requestScope.user.driver.car.licencePlateNum != null}">
-        ${requestScope.user.driver.car.licencePlateNum }
-    </c:if>
-    <c:if test="${requestScope.user.driver.car.model != null}">
-        ${requestScope.user.driver.car.model }
-    </c:if>
-</div>
-<div bgcolor="#f9d700" class="home-about-area section-gap" >
+<div class="header-right" id="child">
     <!-- user info here -->
-    hi user!
-    <div class="columns is-centered">
-        <div class="column is-two-thirds">
-            <div class="columns">
-                <div class="column is-half" style="float: left">
-
-                    <h4 class="pb-30">Book now!</h4>
-                    <form class="form">
-                        <div class="from-group">
-                            <input class="form-control txt-field" type="text" id="pickLocation" name="pickLocation" placeholder="<fmt:message key="pickLocation"/>"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="pickLocation"/>">
-                            <input class="form-control txt-field" type="text" id="dropLocation" name="dropLocation" placeholder="<fmt:message key="dropLocation"/>"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="dropLocation"/>">
-                        </div>
-                        <div class="form-group">
-                            <div class="default-select" id="default-select">
-                                <select>
-                                    <option value="" disabled selected hidden>From Destination</option>
-                                    <option value="1">Destination One</option>
-                                    <option value="2">Destination Two</option>
-                                    <option value="3">Destination Three</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="default-select" id="default-select2">
-                                <select>
-                                    <option value="" disabled selected hidden>To Destination</option>
-                                    <option value="1">Destination One</option>
-                                    <option value="2">Destination Two</option>
-                                    <option value="3">Destination Three</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group dates-wrap">
-                                <input id="datepicker2" class="dates form-control"  placeholder="Date & time" type="text">
-                                <div class="input-group-prepend">
-                                    <span  class="input-group-text"><span class="lnr lnr-calendar-full"></span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-default btn-lg btn-block text-center text-uppercase">book</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <h5 class="pb-30"><c:if test="${sessionScope.user.contact.firstName != null}">
+        ${sessionScope.user.contact.firstName }
+    </c:if>
+        <c:if test="${sessionScope.user.contact.lastName != null}">
+            ${sessionScope.user.contact.lastName}
+        </c:if></h5>
+    <c:if test="${sessionScope.user.driver.drivingLicenceNum != null}">
+        ${sessionScope.user.driver.drivingLicenceNum}
+    </c:if>
+    <c:if test="${sessionScope.user.driver.car.licencePlateNum != null}">
+        ${sessionScope.user.driver.car.licencePlateNum }
+    </c:if>
+    <c:if test="${sessionScope.user.driver.car.model != null}">
+        ${sessionScope.user.driver.car.model }
+    </c:if>
+    <div>
+        <div class="col-lg-4 btn-left">
+            <nav:common-actions/>
         </div>
-        </section>
+        <c:choose>
+            <c:when test="${sessionScope.userRole == Role.ADMIN}">
+                <div class="col-lg-4 btn-left">
+                    <nav:admin-actions/>
+                </div>
+            </c:when>
+            <c:when test="${sessionScope.userRole == Role.CLIENT}">
+                <div class="col-lg-4 btn-left">
+                    <nav:user-actions/>
+                </div>
+            </c:when>
+        <c:otherwise></c:otherwise>
+        </c:choose>
     </div>
-</div>
 </body>
 </html>

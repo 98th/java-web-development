@@ -1,6 +1,7 @@
 package by.training.taxi.user;
 
 
+import by.training.taxi.SecurityContext;
 import by.training.taxi.bean.Bean;
 import by.training.taxi.command.Command;
 import by.training.taxi.command.CommandException;
@@ -25,24 +26,23 @@ public class LoginUserCommand implements Command {
     private UserAccountService userAccountService;
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException{
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String login = request.getParameter(PARAM_USER_LOGIN);
         String password = Md5Util.md5Apache(request.getParameter(PARAM_USER_PASSWORD));
         try {
             Optional<UserAccountDto> userAccountDtoOptional = userAccountService.findByLoginAndPassword(login, password);
             if(userAccountDtoOptional.isPresent()) {
                 UserAccountDto userAccountDto = userAccountDtoOptional.get();
-                HttpSession session = request.getSession(true);
-                session.setAttribute(PARAM_USER, userAccountDto);
-                session.setAttribute(PARAM_USER_ROLE, userAccountDto.getRole().toString());
+                request.getSession().setAttribute(PARAM_USER, userAccountDto);
+                request.getSession().setAttribute(PARAM_USER_ROLE, userAccountDto.getRole());
                 response.sendRedirect(request.getContextPath() + "?commandName=" + USER_PAGE_CMD);
             } else {
                 request.setAttribute(VIEWNAME_REQ_PARAMETER, GET_LOGIN_VIEW);
                 request.setAttribute("error", "Wrong login or password");
                 request.getRequestDispatcher("jsp/layout.jsp").forward(request, response);
             }
-        } catch (IOException  e) {
-            e.printStackTrace();
+        } catch (UserServiceException | ServletException | IOException  e) {
+            throw new CommandException(e.getMessage());
         }
     }
 }

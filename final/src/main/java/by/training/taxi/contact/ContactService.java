@@ -1,5 +1,7 @@
 package by.training.taxi.contact;
 
+import by.training.taxi.car.CarServiceException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +16,8 @@ public interface ContactService {
     boolean deleteContact(ContactDto contactDto)  throws ContactServiceException;
 
     boolean saveContact(ContactDto entity);
+
+    boolean isEmailUnique(String email) throws ContactServiceException;
+
+    boolean update(ContactDto contactDto) throws  ContactServiceException;
 }

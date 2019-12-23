@@ -15,8 +15,8 @@ public class CarDto {
     private long id;
     private String color;
     private String model;
+    private boolean isWorking;
     private String licencePlateNum;
-    private CarStatus carStatus;
     private long driverId;
-    private Set<RequirementDto> requirement;
+    private Set<RequirementType> requirement;
 }

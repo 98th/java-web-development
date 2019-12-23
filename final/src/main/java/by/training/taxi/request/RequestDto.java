@@ -1,8 +1,10 @@
 package by.training.taxi.request;
 
 
-import by.training.taxi.feedback.FeedbackDto;
 import lombok.*;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
@@ -11,12 +13,12 @@ import lombok.*;
 @Getter
 @Setter
 public class RequestDto {
-    private long requestId;
+    private long id;
+    private long driverId;
+    private long clientId;
     private RequestStatus requestStatus;
     private String pickLocation;
     private String dropLocation;
-    private byte passengersNum;
-    private long driverId;
-    private long customerId;
-    private FeedbackDto feedbackDto;
+    private BigDecimal price;
+    private Date requestDate;
 }

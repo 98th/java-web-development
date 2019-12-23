@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -17,17 +16,14 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ConnectionPoolImpl implements ConnectionPool {
     private static final Logger log = Logger.getLogger(ConnectionPoolImpl.class);
 
-    private  String url;
-    private  String user;
-    private  String password;
-    private  String driver;
-    private  int poolSize;
-
-    private static ConnectionPoolImpl instance;
+    private static ConnectionPoolImpl INSTANCE;
     private static Lock lock = new ReentrantLock();
 
-    private BlockingQueue<Connection> connectionQueue;
-    private BlockingQueue<Connection> usedConnections;
+    private final int POOL_SIZE = 15;
+    private BlockingQueue<Connection> connectionQueue = new ArrayBlockingQueue<>(POOL_SIZE);
+    private BlockingQueue<Connection> usedConnections = new ArrayBlockingQueue<>(POOL_SIZE);
+
+    private Driver driver;
 
     private ConnectionPoolImpl() {
         init();
@@ -35,22 +31,20 @@ public class ConnectionPoolImpl implements ConnectionPool {
 
     private void init() {
         ResourceBundle resource = ResourceBundle.getBundle("db");
-
-        driver = resource.getString("db.driver");
-        url = resource.getString("db.url");
-        user = resource.getString("db.user");
-        password = resource.getString("db.password");
-        poolSize = Integer.parseInt(resource.getString("db.poolSize"));
-        connectionQueue = new ArrayBlockingQueue<Connection>(poolSize);
-        usedConnections = new ArrayBlockingQueue<Connection>(poolSize);
+        String driverName = resource.getString("db.driver");
+        String url = resource.getString("db.url");
+        String user = resource.getString("db.user");
+        String password = resource.getString("db.password");
         try {
-            Class.forName(driver);
-            for (int i = 0; i < poolSize; i++) {
+            Class driverClass = Class.forName(driverName);
+            driver = (Driver)driverClass.newInstance();
+            DriverManager.registerDriver(driver);
+            for (int i = 0; i < POOL_SIZE; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 connectionQueue.add(connection);
             }
-        } catch (ClassNotFoundException e) {
-            log.error(e);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            log.error("Driver cannot be found");
             throw new ConnectionPoolException("Driver cannot be found", e);
         } catch(SQLException e) {
             log.error(e);
@@ -60,49 +54,41 @@ public class ConnectionPoolImpl implements ConnectionPool {
     }
 
     public static ConnectionPoolImpl getInstance() throws ConnectionPoolException {
-        if (instance == null) {
+        if (INSTANCE == null) {
             lock.lock();
-            if (instance == null) {
-                instance = new ConnectionPoolImpl();
+            try {
+                if (INSTANCE == null) {
+                    INSTANCE = new ConnectionPoolImpl();
+                }
+            } finally {
+                lock.unlock();
             }
-            lock.unlock();
         }
-        return instance;
+        return INSTANCE;
     }
 
     public Connection getConnection() throws ConnectionPoolException {
-        lock.lock();
-        Connection proxyConnection = null;
         try {
             Connection connection = connectionQueue.take();
-            usedConnections.add(connection);
-            proxyConnection = createProxyConnection(connection);
-            return proxyConnection;
+            usedConnections.put(connection);
+            log.info("Connection was taken from connection pool");
+            return createProxyConnection(connection);
         } catch (InterruptedException e) {
+            log.error("Cannot get connection from connection pool");
             throw new ConnectionPoolException(e);
-        } finally {
-            lock.unlock();
         }
     }
 
     public void releaseConnection(Connection connection) {
-        try {
-            lock.lock();
-            if (!usedConnections.contains(connection)) {
-                log.error("connection in not from connection pool");
-                throw new ConnectionPoolException("connection is not from connection pool");
-            }
-            if (!connection.isClosed()) {
-                connection.close();
-            }
-            usedConnections.remove(connection);
-            connectionQueue.offer(connection); // TODO
-        } catch(SQLException e) {
-            throw new ConnectionPoolException(e);
+        if (!usedConnections.contains(connection)) {
+            log.error("connection is not from connection pool");
+            throw new ConnectionPoolException("connection is not from connection pool");
         }
-        finally {
-            lock.unlock();
+        if (usedConnections.remove(connection)) {
+            connectionQueue.offer(connection);
         }
+        log.info("connection was offered to connection pool");
+        log.info("connection pool size " + connectionQueue.size());
     }
 
     @Override
@@ -114,12 +100,10 @@ public class ConnectionPoolImpl implements ConnectionPool {
             for (Connection i : usedConnections) {
                 i.close();
             }
-            instance = null;
-            Enumeration<Driver> drivers = DriverManager.getDrivers();
-            while (drivers.hasMoreElements()){
-                DriverManager.deregisterDriver(drivers.nextElement());
-            }
+            INSTANCE = null;
+            DriverManager.deregisterDriver(driver);
         } catch (SQLException e) {
+            log.error("Exception while closing all connections");
         }
     }
 
@@ -130,8 +114,6 @@ public class ConnectionPoolImpl implements ConnectionPool {
                     if ("close".equals(method.getName())) {
                         releaseConnection(connection);
                         return null;
-                    } else if ("hashCode".equals(method.getName())) {
-                        return connection.hashCode();
                     } else {
                         return method.invoke(connection, args);
                     }

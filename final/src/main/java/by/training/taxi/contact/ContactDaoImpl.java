@@ -4,6 +4,7 @@ import by.training.taxi.bean.Bean;
 import by.training.taxi.dao.ConnectionManager;
 import by.training.taxi.dao.DAOException;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Bean
 @AllArgsConstructor
+@Log4j
 public class ContactDaoImpl implements ContactDao {
 
     private final static AtomicLong COUNTER = new AtomicLong(1);
@@ -26,7 +28,7 @@ public class ContactDaoImpl implements ContactDao {
                                                          " FROM user_contact WHERE user_account_id = ?";
     private static final String SELECT_BY_EMAIL_QUERY = "SELECT first_name, last_name, email, phone,  user_account_id FROM user_contact WHERE email = ?";
     private static final String INSERT_QUERY = "INSERT INTO user_contact (first_name, last_name, email, phone,  user_account_id) values (?,?,?,?,?)";
-    private static final String UPDATE_QUERY = "UPDATE user_contact SET email=?, phone=?, first_name=?, last_name=? user_id=? WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE user_contact SET email=?, phone=?, first_name=?, last_name=?, user_account_id=? WHERE contact_id = ?";
     private static final String DELETE_QUERY = "DELETE FROM user_contact WHERE  contact_id = ?";
 
     private ConnectionManager connectionManager;
@@ -51,8 +53,10 @@ public class ContactDaoImpl implements ContactDao {
             }
             return id;
 
-        } catch (SQLException e) { }
-        return entity.getId();
+        } catch (SQLException e) {
+            log.error("Failed to save a  user contact");
+            throw  new DAOException();
+        }
     }
 
     @Override
@@ -65,10 +69,12 @@ public class ContactDaoImpl implements ContactDao {
             updateStmt.setString(++i, entity.getPhone());
             updateStmt.setString(++i, entity.getFirstName());
             updateStmt.setString(++i, entity.getLastName());
+            updateStmt.setLong(++i, entity.getId());
             updateStmt.setLong(++i, entity.getUserId());
-            updateStmt.setLong(++i, entity.getUserId());
+
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Failed to update a user contact");
             throw new DAOException();
         }
     }
@@ -81,6 +87,7 @@ public class ContactDaoImpl implements ContactDao {
             updateStmt.setLong(1, entity.getId());
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Failed to delete a user contact");
             throw new DAOException();
         }
     }
@@ -174,6 +181,7 @@ public class ContactDaoImpl implements ContactDao {
 
     private ContactEntity fromDto(ContactDto dto) {
         ContactEntity entity = new ContactEntity();
+        entity.setId(dto.getId());
         entity.setEmail(dto.getEmail());
         entity.setLastName(dto.getLastName());
         entity.setPhone(dto.getPhone());
@@ -184,6 +192,7 @@ public class ContactDaoImpl implements ContactDao {
 
     private ContactDto fromEntity(ContactEntity entity) {
         ContactDto dto = new ContactDto();
+        dto.setId(entity.getId());
         dto.setEmail(entity.getEmail());
         dto.setFirstName(entity.getFirstName());
         dto.setUserId(entity.getUserId());

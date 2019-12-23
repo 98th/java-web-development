@@ -1,6 +1,7 @@
 package by.training.taxi.contact;
 
 import by.training.taxi.bean.Bean;
+import by.training.taxi.car.CarServiceException;
 import by.training.taxi.dao.DAOException;
 import by.training.taxi.dao.Transactional;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,24 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ContactServiceImpl implements ContactService {
     private ContactDao contactDao;
+
+    @Override
+    public boolean update(ContactDto contactDto) throws ContactServiceException {
+        try {
+            return contactDao.update(contactDto);
+        } catch (DAOException e) {
+            throw  new ContactServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean isEmailUnique(String email) throws ContactServiceException {
+        try {
+            return !contactDao.getByEmail(email).isPresent();
+        } catch (DAOException e) {
+            throw new ContactServiceException(e.getMessage());
+        }
+    }
 
     @Override
     @Transactional

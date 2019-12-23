@@ -1,6 +1,6 @@
 package by.training.taxi.wallet;
 
-public class WalletServiceException extends RuntimeException {
+public class WalletServiceException extends Exception {
     public WalletServiceException() {
     }
 
