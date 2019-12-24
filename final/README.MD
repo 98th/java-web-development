@@ -3,25 +3,25 @@
 The application for booking a car
 
 
-USER:
+**USER:**
 
-*can view a book history
+* can view a book history
 
-*can book a car with  a broad spectrum of the additional requirement (baby-seat, booster-seat, pet-friendly) 
-
-
-ADMIN:
-
-*has access to the user list
-
-*has access to the driver list
-
-*can block them both
-
-*can give a discount to a user
+* can book a car with  a broad spectrum of the additional requirement (baby-seat, booster-seat, pet-friendly) 
 
 
-DRIVER:
+**ADMIN:**
+
+* has access to the user list
+
+* has access to the driver list
+
+* can block them both
+
+* can give a discount to a user
+
+
+**DRIVER:**
 (IN PROGRESS)
-*just exists and can perform basic user's action (edit profile, update wallet, etc)
+* just exists and can perform basic user's action (edit profile, update wallet, etc)
  
