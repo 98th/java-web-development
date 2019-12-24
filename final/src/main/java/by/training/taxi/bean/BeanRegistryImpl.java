@@ -87,7 +87,6 @@ public class BeanRegistryImpl implements BeanRegistry {
     }
 
     private RegistryInfo calculateRegistryInfo(Class<?> beanClass) {
-
         Bean bean = beanClass.getAnnotation(Bean.class);
         if (bean == null) {
             throw new MissedAnnotationException(beanClass.getName() + " doesn't have @Bean annotation");

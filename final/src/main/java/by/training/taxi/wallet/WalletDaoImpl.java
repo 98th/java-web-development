@@ -33,18 +33,18 @@ public class WalletDaoImpl implements WalletDao {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement insertStmt = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             int i = 0;
+            insertStmt.setLong(++i, entity.getId());
             insertStmt.setBigDecimal(++i, entity.getAmount());
             insertStmt.executeUpdate();
             ResultSet generatedKeys = insertStmt.getGeneratedKeys();
-            while (generatedKeys.next()) {
-                entity.setId(generatedKeys.getLong(1));
+            long id = 0;
+            if (generatedKeys.next()) {
+                id = generatedKeys.getLong(1);
             }
-
+            return id;
         } catch (SQLException e) {
-            log.error("Failed to save wallet");
             throw new DAOException(e.getMessage());
         }
-        return entity.getId();
     }
 
     @Override
@@ -53,8 +53,8 @@ public class WalletDaoImpl implements WalletDao {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(UPDATE_QUERY)){
             int i = 0;
-            updateStmt.setBigDecimal(++i, entity.getAmount());
             updateStmt.setLong(++i, entity.getId());
+            updateStmt.setBigDecimal(++i, entity.getAmount());
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
             log.error("Failed to update wallet");

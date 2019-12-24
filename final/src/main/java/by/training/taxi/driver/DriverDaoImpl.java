@@ -35,7 +35,7 @@ public class DriverDaoImpl implements DriverDao {
     private static final String SELECT_BY_USER_ID_QUERY = "SELECT driver_id, driving_licence_number," +
             " user_account_id FROM driver WHERE user_account_id = ?";
 
-    private static final String SELECT_WITH_INFO = "SELECT  D.driver_id, C.first_name, C.last_name, " +
+    private static final String SELECT_WITH_INFO = "SELECT  D.driver_id, D.user_account_id, C.first_name, C.last_name, " +
             "C.phone, car.car_color, car.car_model, car.licence_plate_number, UA.is_locked, " +
             "L.longitude, L.latitude " +
             "FROM driver AS D " +
@@ -45,13 +45,12 @@ public class DriverDaoImpl implements DriverDao {
             "JOIN user_account AS UA ON UA.id = D.user_account_id " +
             "WHERE D.driver_id = ?";
 
-    private static final String SELECT_ALL_WITH_INFO = "SELECT  D.driver_id, C.first_name, C.last_name, C.phone, " +
-            "car.car_color, car.car_model, car.licence_plate_number, D.driving_licence_number, D.user_account_id, UA.is_locked," +
-            "L.longitude, L.latitude " +
+    private static final String SELECT_ALL_WITH_INFO = "SELECT  D.driver_id, D.user_account_id, C.first_name, C.last_name, C.phone, " +
+            "car.car_color, car.car_model, car.licence_plate_number, D.driving_licence_number, D.user_account_id, UA.is_locked " +
             "FROM driver AS D " +
             "JOIN user_contact AS C ON C.user_account_id = D.user_account_id " +
             "JOIN car ON car.driver_id = D.driver_id " +
-            "JOIN user_account AS UA ON UA.id = D.user_account_id ";
+            "JOIN user_account AS UA ON UA.id = D.user_account_id";
 
     private ConnectionManager connectionManager;
 
@@ -89,11 +88,13 @@ public class DriverDaoImpl implements DriverDao {
                             .latitude(latitude)
                             .longitude(longitude)
                             .build();
+                    long userAccountId = resultSet.getLong("user_account_id");
                     DriverDto driver = DriverDto.builder()
                             .id(id)
                             .car(car)
                             .contact(contact)
                             .location(locationDto)
+                            .userId(userAccountId)
                             .build();
                     result.add(driver);
                 }

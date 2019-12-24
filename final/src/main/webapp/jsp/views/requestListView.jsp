@@ -1,6 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="headerUserPage.jsp"/>
+
+<jsp:include page="headerUserPage.jsp"/>
+
+
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
         <c:choose>

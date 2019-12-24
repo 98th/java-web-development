@@ -1,6 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<jsp:include page="headerUserPage.jsp"/>
+
+
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
         <c:choose>
@@ -14,7 +18,6 @@
                         <th class="mdl-data-table__cell--non-numeric"><fmt:message key="driver.drivingLicenceNum"/></th>
                         <th class="mdl-data-table__cell--non-numeric"><fmt:message key="driver.carModel"/></th>
                         <th class="mdl-data-table__cell--non-numeric"><fmt:message key="user.blocking"/></th>
-
                     </tr>
                     </thead>
                     <tbody>
@@ -25,6 +28,7 @@
                             <td class="mdl-data-table__cell--non-numeric">${d.contact.phone}</td>
                             <td class="mdl-data-table__cell--non-numeric">${d.drivingLicenceNum}</td>
                             <td class="mdl-data-table__cell--non-numeric">${d.car.model}</td>
+                            <td class="mdl-data-table__cell--non-numeric">${d.userAccount.isBlocking}</td>
                             <td class="mdl-data-table__cell--non-numeric">
                                 <form action="${pageContext.request.contextPath}/" method="POST">
                                     <input type="hidden" name="userId" value="${d.userId}"/>

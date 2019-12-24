@@ -24,11 +24,11 @@ public class DriverDataValidator implements Validator {
         String licencePlateNum = request.getParameter(PARAM_CAR_LICENCE_PLATE_NUM);
 
         if (isStrEmpty(licencePlateNum) || !licencePlateNum.matches(LICENCE_PLATE_NUMBER_REGEX)) {
-            validationResult.addMessage(PARAM_CAR_LICENCE_PLATE_NUM, "Incorrect licence plate number");
+            validationResult.addMessage(PARAM_ERROR, "error.invalid.licence.plate.num");
         }
 
         if (isStrEmpty(drivingLicenceNum) || !drivingLicenceNum.matches(DRIVING_LICENCE_NUM_REGEX)){
-            validationResult.addMessage(PARAM_DRIVER_LICENCE_NUM, "Incorrect driving licence number");
+            validationResult.addMessage(PARAM_DRIVER_LICENCE_NUM, "");
         }
 
         return validationResult;

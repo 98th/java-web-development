@@ -25,7 +25,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
     private static final String SELECT_BY_ID_QUERY = "select id, login, password, user_role, is_locked from user_account where id = ?";
     private static final String SELECT_BY_LOGIN_QUERY = "select id, login, password, user_role, is_locked from user_account where login = ?";
     private static final String SELECT_BY_LOGIN_PASS_QUERY = "select id, login, password, user_role, is_locked from user_account where login = ? and password = ?";
-    private static final String INSERT_QUERY = "insert into user_account (login, password, user_role, is_locked) values (?,?,?,?)";
+    private static final String INSERT_QUERY = "insert into user_account (login, password, user_role, is_locked) values (?,?,?::user_role,?)";
     private static final String UPDATE_QUERY = "update user_account set login=?, password=?, user_role=?::user_role, is_locked = ? where id = ?";
     private static final String DELETE_QUERY = "delete from user_account where id = ?";
     private static final String SELECT_ALL_WITH_CONTACT_QUERY = "SELECT UA.id, UA.login, UC.first_name, UC.last_name, UC.email, " +
@@ -48,7 +48,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
             int i = 0;
             insertStmt.setString(++i, entity.getLogin());
             insertStmt.setString(++i, entity.getPassword());
-            insertStmt.setString(++i, entity.getRole().toString());
+            insertStmt.setString(++i, entity.getRole().getValue());
             insertStmt.setBoolean(++i, entity.isLocked());
             insertStmt.executeUpdate();
             ResultSet generatedKeys = insertStmt.getGeneratedKeys();

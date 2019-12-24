@@ -14,6 +14,7 @@ import by.training.taxi.driver.DriverService;
 import by.training.taxi.driver.DriverServiceException;
 import by.training.taxi.user.UserAccountDto;
 import by.training.taxi.util.LocationUtil;
+import by.training.taxi.util.RequestUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -51,21 +52,21 @@ public class FindCarCommand implements Command {
         try {
             final List<CarDto> allCars = carService.getCarsWithRequirement(requirement);
             DriverDto driver = findNearest(user, allCars);
-            requestDto.setDriverId(driver.getId());
+            requestDto.setDriverId(driver.getUserId());
             requestDto.setRequestDate(new Date());
             log.info("founded driver  " + driver.getId());
             Double distance = calculateDistance(user, driver);
-            double price = calculatePrice(distance, userId);
+            String price = calculatePrice(distance, userId);
             requestDto.setPrice(new BigDecimal(price));
             int waitingTimeInt = calculateWaitingTime(distance);
             String  waitingTime = waitingTimeInt == 0 ? "<1" : String.valueOf(waitingTimeInt);
+            requestService.registerRequest(requestDto);
             request.getSession().setAttribute("driver", driver);
             request.getSession().setAttribute("request", requestDto);
             request.getSession().setAttribute("waitingTime", waitingTime);
             request.getSession().setAttribute("carRequest", requestDto);
-            request.setAttribute(VIEWNAME_REQ_PARAMETER, GET_SUITABLE_DRIVER_VIEW);
-            response.sendRedirect(request.getContextPath() + "?commandName=" + GET_SUITABLE_DRIVER_VIEW);
-        } catch (DriverServiceException | DiscountServiceException | CarServiceException | IOException e) {
+            RequestUtil.sendRedirectToCommand(request, response, GET_SUITABLE_DRIVER_VIEW);
+        } catch (DriverServiceException| RequestServiceException | DiscountServiceException | CarServiceException e) {
             log.error("Exception in find car command", e);
             throw new CommandException(e);
         }
@@ -82,10 +83,10 @@ public class FindCarCommand implements Command {
         return 2 * R * asin(sqrt(sin1 * sin1 + sin2 * sin2 * cos(latClient) * cos(latDriver)));
     }
 
-    private Double calculatePrice(double distance, long userId) throws DiscountServiceException  {
+    private String calculatePrice(double distance, long userId) throws DiscountServiceException  {
         DiscountDto discount = discountService.getById(userId);
         double output =  3 + distance * 0.5 * (1 - discount.getAmount() * 0.01 );
-        return Double.parseDouble(String.format("%.2f", output).replace(',', '.'));
+        return String.format("%.2f", output).replace(',', '.');
     }
 
     private int calculateWaitingTime(double distance) {

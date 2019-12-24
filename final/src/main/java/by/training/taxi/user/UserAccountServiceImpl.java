@@ -14,12 +14,14 @@ import by.training.taxi.driver.DriverDao;
 import by.training.taxi.driver.DriverDto;
 import by.training.taxi.location.LocationDao;
 import by.training.taxi.location.LocationDto;
+import by.training.taxi.util.LocationUtil;
 import by.training.taxi.wallet.WalletDao;
 import by.training.taxi.wallet.WalletDto;
 import by.training.taxi.wallet.WalletService;
 import by.training.taxi.wallet.WalletServiceException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.h2.engine.User;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -156,24 +158,34 @@ public class UserAccountServiceImpl implements UserAccountService{
 
     @Override
     @Transactional
-    public boolean registerUser(UserAccountDto user) {
+    public long registerUser(UserAccountDto user) throws UserServiceException, SQLException {
         try {
+            transactionManager.beginTransaction();
             Long id = userAccountDao.save(user);
             ContactDto contact = user.getContact();
             contact.setUserId(id);
             contactDao.save(contact);
             user.setContact(contact);
-            WalletDto wallet = user.getWallet();
+            WalletDto wallet = WalletDto.builder()
+                    .id(id)
+                    .amount(new BigDecimal("0"))
+                    .build();
             walletDao.save(wallet);
             user.setWallet(wallet);
-            LocationDto location = user.getLocation();
-            location.setId(id);
+            DiscountDto discount = DiscountDto.builder()
+                    .id(id)
+                    .amount(0)
+                    .build();
+            LocationDto location = LocationDto.builder()
+                    .id(id)
+                    .latitude(LocationUtil.generateLatitude())
+                    .longitude(LocationUtil.generateLongitude())
+                    .build();
             locationDao.save(location);
             user.setLocation(location);
-            DiscountDto discount = user.getDiscount();
-            discount.setId(id);
             discountDao.save(discount);
             user.setDiscount(discount);
+            user.setId(id);
             if (DRIVER == user.getRole()) {
                 DriverDto driver = user.getDriver();
                 driver.setLocation(location);
@@ -184,10 +196,13 @@ public class UserAccountServiceImpl implements UserAccountService{
                 carDao.save(car);
                 driver.setCar(car);
                 user.setDriver(driver);
+                transactionManager.commitTransaction();
             }
-            return true;
-        } catch (DAOException e) {
-            return false;
+            return id;
+        } catch (DAOException  e) {
+            transactionManager.rollbackTransaction();
+            log.error("Failed to register user");
+            throw new UserServiceException();
         }
     }
 

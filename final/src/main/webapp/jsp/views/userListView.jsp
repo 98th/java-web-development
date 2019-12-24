@@ -8,6 +8,7 @@
 </head>
 
 <body>
+<jsp:include page="headerUserPage.jsp"/>
 
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">

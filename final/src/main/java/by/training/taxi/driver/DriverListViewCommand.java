@@ -3,6 +3,7 @@ package by.training.taxi.driver;
 import by.training.taxi.bean.Bean;
 import by.training.taxi.command.Command;
 import by.training.taxi.command.CommandException;
+import by.training.taxi.util.RequestUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -27,9 +28,8 @@ public class DriverListViewCommand implements Command {
         try {
             final List<DriverDto> allDrivers = driverService.findAllWithInfo();
             req.setAttribute("drivers", allDrivers);
-            req.setAttribute(VIEWNAME_REQ_PARAMETER, GET_DRIVER_LIST_VIEW);
-            req.getRequestDispatcher("/jsp/layout.jsp").forward(req, resp);
-        } catch (DriverServiceException | ServletException | IOException e) {
+            RequestUtil.forward(req, resp, GET_DRIVER_LIST_VIEW);
+        } catch (DriverServiceException e) {
             log.error("Exception occurred while displaying the driver list ", e);
             throw new CommandException(e);
         }

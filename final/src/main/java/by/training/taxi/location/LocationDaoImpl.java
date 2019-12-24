@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class LocationDaoImpl implements LocationDao {
 
     private static final String SELECT_ALL_QUERY = "select location_id, latitude, longitude from location";
-    private static final String INSERT_QUERY = "insert into location (latitude, longitude) values (?,?)";
+    private static final String INSERT_QUERY = "insert into location (location_id, latitude, longitude) values (?,?,?)";
     private static final String UPDATE_QUERY = "update location set latitude=?, longitude=? where location_id = ?";
     private static final String DELETE_QUERY = "delete from location where location_id = ?";
     private static final String SELECT_BY_ID_QUERY = "select location_id, latitude, longitude from location where location_id = ?";

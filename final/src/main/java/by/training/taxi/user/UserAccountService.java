@@ -4,6 +4,7 @@ import by.training.taxi.wallet.WalletServiceException;
 import org.h2.engine.User;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,7 @@ public interface UserAccountService {
 
     UserAccountDto findById(Long id) throws UserServiceException;
 
-    boolean registerUser(UserAccountDto userDto) throws UserServiceException;
+    long  registerUser(UserAccountDto userDto) throws UserServiceException, SQLException;
 
     Optional<UserAccountDto> findByLogin(String login) throws UserServiceException;
 

@@ -624,12 +624,6 @@ td, th {
     flex-grow: 1;
 }
 
-.flex-wrap {
-    -webkit-flex-wrap: wrap;
-    -moz-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-}
 
 .flex-left {
     -webkit-box-pack: start;
@@ -1199,27 +1193,10 @@ h1, h2, h3, h4, h5, h6 {
     padding-right: 50px;
 }
 
-.progress-table .table-head {
+.table-flex {
     display: flex;
 }
 
-.progress-table .table-head .serial, .progress-table .table-head .country, .progress-table .table-head .visit, .progress-table .table-head .percentage {
-    color: #222222;
-    line-height: 40px;
-    text-transform: uppercase;
-    font-weight: 500;
-}
-
-.progress-table .table-row {
-    padding: 15px 0;
-    border-top: 1px solid #edf3fd;
-    display: flex;
-}
-
-.progress-table .table-row .serial, .progress-table .table-row .country, .progress-table .table-row .visit, .progress-table .table-row .percentage {
-    display: flex;
-    align-items: center;
-}
 
 .progress-table .table-row .country img {
     margin-right: 15px;
@@ -1744,13 +1721,14 @@ h1, h2, h3, h4, h5, h6 {
 .nav-menu,
 .nav-menu * {
     margin: 0;
+    display: flex;
     padding: 0;
     list-style: none;
 }
 
 .nav-menu ul {
     position: absolute;
-    display: none;
+    display: flex;
     top: 100%;
     right: 0;
     z-index: 99;

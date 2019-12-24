@@ -2,6 +2,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="headerUserPage.jsp"/>
+
+
 <div name="wallet" method="POST" action="app" class="header-right" id="child">
     <form class="form">
         <h6 class="pb-30"><fmt:message key="discount.amount"/>  :  ${sessionScope.user.discount.amount} </h6>

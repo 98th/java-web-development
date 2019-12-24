@@ -7,24 +7,24 @@ import by.training.taxi.command.CommandException;
 import by.training.taxi.contact.ContactDto;
 import by.training.taxi.discount.DiscountDto;
 import by.training.taxi.driver.DriverDto;
-import by.training.taxi.driver.DriverService;
-import by.training.taxi.driver.DriverServiceException;
+
 import by.training.taxi.role.Role;
 import by.training.taxi.util.Md5Util;
 import by.training.taxi.util.RequestUtil;
 import by.training.taxi.validator.DriverDataValidator;
 import by.training.taxi.validator.UserDataValidator;
+import by.training.taxi.validator.ValidationResult;
 import by.training.taxi.validator.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Map;
 
 import static by.training.taxi.ApplicationConstants.*;
+import static by.training.taxi.role.Role.CLIENT;
 import static by.training.taxi.role.Role.DRIVER;
 
 @Bean(name=POST_USER_REGISTRATION)
@@ -32,29 +32,31 @@ import static by.training.taxi.role.Role.DRIVER;
 @Log4j
 public class RegistrationUserCommand implements Command {
     private UserAccountService userAccountService;
-    private DriverService driverService;
-
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             Validator userInfoValidator = new UserDataValidator();
             Validator driverInfoValidator = new DriverDataValidator();
+            ValidationResult userResult = userInfoValidator.validate(request);
+            if (!userResult.isValid()) {
+                setErrors(request, userResult);
+                RequestUtil.forward(request, response, GET_USER_REGISTRATION);
+                return;
+            }
             String login = request.getParameter(PARAM_USER_LOGIN);
             String email = request.getParameter(PARAM_USER_EMAIL);
             String password = Md5Util.md5Apache(request.getParameter(PARAM_USER_PASSWORD));
-            String passwordRepeated = Md5Util.md5Apache(request.getParameter(PARAM_USER_PASSWORD_REPEATED));
-            if (!passwordRepeated.equals(password)) {
-                throw new CommandException();
-            }
             String firstName = request.getParameter(PARAM_USER_F_NAME);
             String lastName = request.getParameter(PARAM_USER_L_NAME);
             String phone = request.getParameter(PARAM_USER_PHONE);
-            Role role = Role.valueOf(request.getParameter(PARAM_USER_PHONE).toUpperCase());
+            Role role = Role.getRoleFromText(request.getParameter(PARAM_USER_ROLE)).
+                    orElse(CLIENT);
             UserAccountDto userAccountDto = UserAccountDto.builder()
                     .login(login)
                     .password(password)
                     .role(role)
+                    .isLocked(false)
                     .build();
             ContactDto contactDto = ContactDto.builder()
                     .firstName(firstName)
@@ -62,22 +64,15 @@ public class RegistrationUserCommand implements Command {
                     .email(email)
                     .phone(phone)
                     .build();
-            DiscountDto discount = DiscountDto.builder()
-                    .amount(0)
-                    .build();
-            userAccountDto.setDiscount(discount);
             userAccountDto.setContact(contactDto);
-            userAccountService.registerUser(userAccountDto);
-            if (role == DRIVER) {
+            if (DRIVER == role) {
                 String drivingLicence = request.getParameter(PARAM_DRIVER_LICENCE_NUM);
-                String carColor = request.getParameter("carColor");
-                String carModel = request.getParameter("carModel");
+                String carColor = request.getParameter(PARAM_CAR_COLOR);
+                String carModel = request.getParameter(PARAM_CAR_MODEL);
                 String licencePlateNumber = request.getParameter(PARAM_CAR_LICENCE_PLATE_NUM);
                 DriverDto driverDto = DriverDto.builder()
                         .drivingLicenceNum(drivingLicence)
                         .build();
-                userAccountDto.setDriver(driverDto);
-                driverService.save(driverDto);
                 CarDto carDto = CarDto.builder()
                         .color(carColor)
                         .model(carModel)
@@ -85,15 +80,31 @@ public class RegistrationUserCommand implements Command {
                         .driverId(driverDto.getId())
                         .build();
                 driverDto.setCar(carDto);
+                userAccountDto.setDriver(driverDto);
             }
+            userAccountService.registerUser(userAccountDto);
             request.getSession().setAttribute(PARAM_USER, userAccountDto);
-            request.setAttribute(VIEWNAME_REQ_PARAMETER, GET_USER_PAGE_VIEW);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/layout.jsp");
-            requestDispatcher.forward(request, response);
-        } catch (ServletException | IOException | UserServiceException | DriverServiceException e) {
+            request.getSession().setAttribute(PARAM_USER_ROLE, role);
+            RequestUtil.sendRedirectToCommand(request, response, USER_PAGE_CMD);
+        } catch (UserServiceException | SQLException e) {
             request.setAttribute("error", "error.saving_error");
             RequestUtil.forward(request, response, ERROR_VIEW);
         }
     }
 
+
+
+    private boolean isLoginUnique(HttpServletRequest request) throws UserServiceException {
+        boolean isLoginUnique = userAccountService.isLoginUnique(request.getParameter(PARAM_USER_LOGIN));
+        if (!isLoginUnique) {
+            request.setAttribute("error", "error.invalid.login");
+        }
+        return isLoginUnique;
+    }
+
+    private void setErrors(HttpServletRequest request, ValidationResult vr) {
+        for (Map.Entry<String, String> result : vr.getResult().entrySet()) {
+            request.setAttribute(result.getKey(), result.getValue());
+        }
+    }
 }

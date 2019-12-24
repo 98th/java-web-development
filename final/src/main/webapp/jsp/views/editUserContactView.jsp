@@ -2,6 +2,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="headerUserPage.jsp"/>
+
+
 <div name="userInfo" method="POST" action="app" class="header-right" id="child">
     <form class="form">
         <div class="from-group">

@@ -3,23 +3,42 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags/nav" %>
 
+<jsp:include page="header.jsp"/>
+
+
 <form name="registrationForm" method="POST" action="app" class="header-right" id="child">
-    <h4 class="pb-30">Welcome!</h4>
+    <h4 class="pb-30"><fmt:message key="label.welcome"/></h4>
+    <c:if test="${not empty error}">
+        <h6 class="pb-30"> <fmt:message key="${requestScope.error}"/> </h6>
+    </c:if>
+    </br>
     <form class="form">
         <div class="from-group">
             <input type="hidden" name="commandName" value="postUserReg"/>
-            <input class="form-control txt-field" type="text" name="login" placeholder="<fmt:message key="user.login"/>"
-                   onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="user.login"/>">
-            <input class="form-control txt-field" type="password" name="password"
-                   placeholder="<fmt:message key="user.pass"/>"
-                   onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="user.pass"/>">
-            <input class="form-control txt-field" type="password" name="passwordRepeated"
-                   placeholder="<fmt:message key="user.pass.confirm"/>"
-                   onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="user.pass.confirm"/>">
-            <input class="form-control txt-field" type="text" name="firstName" placeholder="<fmt:message key="contact.f.name"/>"
-                   onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="contact.f.name"/>">
-            <input class="form-control txt-field" type="text" name="lastName" placeholder="<fmt:message key="contact.l.name"/>"
-                   onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="contact.l.name"/>">
+            <table width="100%" cellspacing="0" cellpadding="5">
+                <tr>
+                    <td width="200" valign="top">
+                        <input class="form-control txt-field" type="text" name="login" placeholder="<fmt:message key="user.login"/>"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="user.login"/>">
+                        <input class="form-control txt-field" type="password" name="password"
+                               placeholder="<fmt:message key="user.pass"/>"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="user.pass"/>">
+                        <input class="form-control txt-field" type="password" name="passwordRepeated"
+                               placeholder="<fmt:message key="user.pass.confirm"/>"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="user.pass.confirm"/>">
+                    </td>
+                    <td valign="top">
+                        <input class="form-control txt-field" type="text" name="firstName" placeholder="<fmt:message key="contact.f.name"/>"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="contact.f.name"/>">
+                        <input class="form-control txt-field" type="text" name="lastName" placeholder="<fmt:message key="contact.l.name"/>"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="contact.l.name"/>">
+                        <input class="form-control txt-field" type="text" name="phone" placeholder="<fmt:message key="contact.phone"/>"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="contact.phone"/>">
+                        <input class="form-control txt-field" type="text" name="email" placeholder="<fmt:message key="contact.email"/>"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = <fmt:message key="contact.email"/>">
+                    </td>
+                </tr>
+            </table>
             <div class="radio">
                 <label>
                     <input type="radio" name="role" value="driver"

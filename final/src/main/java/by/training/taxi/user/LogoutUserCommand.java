@@ -11,16 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static by.training.taxi.ApplicationConstants.LOGOUT_CMD_NAME;
+import static by.training.taxi.ApplicationConstants.LOGOUT_CMD;
 
-@Bean(name = LOGOUT_CMD_NAME)
+@Bean(name = LOGOUT_CMD)
 @Log4j
 public class LogoutUserCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             SecurityContext.getInstance().deleteSession(request.getSession());
-            response.sendRedirect(request.getContextPath());
+            response.sendRedirect(request.getContextPath() + "/");
         } catch (IOException e) {
             log.error("cannot log out the user");
             throw new CommandException();

@@ -3,7 +3,6 @@ package by.training.taxi.servlet;
 import by.training.taxi.ApplicationContext;
 import by.training.taxi.command.Command;
 import by.training.taxi.command.CommandException;
-import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

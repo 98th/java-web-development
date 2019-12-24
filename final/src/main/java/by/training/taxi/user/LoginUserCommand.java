@@ -1,19 +1,17 @@
 package by.training.taxi.user;
 
 
-import by.training.taxi.SecurityContext;
 import by.training.taxi.bean.Bean;
 import by.training.taxi.command.Command;
 import by.training.taxi.command.CommandException;
 import by.training.taxi.util.Md5Util;
+import by.training.taxi.util.RequestUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -32,13 +30,18 @@ public class LoginUserCommand implements Command {
         try {
             Optional<UserAccountDto> userAccountDtoOptional = userAccountService.findByLoginAndPassword(login, password);
             if(userAccountDtoOptional.isPresent()) {
+                if(userAccountDtoOptional.get().getIsLocked()) {
+                    request.setAttribute(PARAM_ERROR, "error.blocking");
+                    RequestUtil.forward(request, response, GET_LOGIN_VIEW);
+                    return;
+                }
                 UserAccountDto userAccountDto = userAccountDtoOptional.get();
                 request.getSession().setAttribute(PARAM_USER, userAccountDto);
                 request.getSession().setAttribute(PARAM_USER_ROLE, userAccountDto.getRole());
-                response.sendRedirect(request.getContextPath() + "?commandName=" + USER_PAGE_CMD);
+                RequestUtil.sendRedirectToCommand(request, response, USER_PAGE_CMD);
             } else {
                 request.setAttribute(VIEWNAME_REQ_PARAMETER, GET_LOGIN_VIEW);
-                request.setAttribute("error", "Wrong login or password");
+                request.setAttribute(PARAM_ERROR, "error.wrong.login.or.pass");
                 request.getRequestDispatcher("jsp/layout.jsp").forward(request, response);
             }
         } catch (UserServiceException | ServletException | IOException  e) {

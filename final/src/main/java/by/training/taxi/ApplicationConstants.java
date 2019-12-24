@@ -18,6 +18,8 @@ public class ApplicationConstants {
     public static final String GET_WALLET_VIEW = "walletView";
     public static final String ERROR_VIEW = "error";
     public static final String GET_REQUEST_LIST_VIEW = "requestListView";
+    public static final String GET_CANCEL_RIDE_VIEW = "cancelRide";
+
     //params
     public static final String PARAM_USER_LOGIN = "login";
     public static final String PARAM_DISCOUNT = "discountAmount";
@@ -33,7 +35,8 @@ public class ApplicationConstants {
     public static final String PARAM_USER_L_NAME = "lastName";
     public static final String PARAM_CAR_COLOR = "carColor";
     public static final String PARAM_CAR_MODEL = "carModel";
-    public static final String GET_CANCEL_RIDE_VIEW = "cancelRide";
+    public static final String PARAM_ERROR = "error";
+    public static final String PARAM_REQUEST = "carRequest";
     //commands
     public static final String ERROR_CMD = "error";
     public static final String POST_FILL_WALLET = "postFillWallet";
@@ -44,17 +47,23 @@ public class ApplicationConstants {
     public static final String POST_EDIT_USER_INFO = "postEditUserInfo";
     public static final String POST_USER_LOGIN = "postUserLogin";
     public static final String POST_ASSIGN_DISCOUNT = "postAssignDiscount";
-    public static final String LOGOUT_CMD_NAME = "logoutUser";
+    public static final String POST_DELETE_REQUEST = "deleteRequest";
+    public static final String LOGOUT_CMD = "logoutUser";
     public static final String ABOUT_VIEW = "aboutView";
     public static final String POST_CAR_REQUIREMENT = "postCarRequirement";
-    public static final String POST_CONFIRM_REQUEST = "postConfirmRequest";
+    public static final String POST_CONFIRM_REQUEST = "postConfirmRide";
     public static final String LOCK_USER_CMD = "lockUser";
+    public static final String POST_CANCEL_RIDE = "postCancelRide";
+    public static final String DECLINE_CMD = "declineRide";
+
 
     public static final Set<String> ALL_COMMANDS = new HashSet<>();
 
     static {
+        ALL_COMMANDS.add(POST_CANCEL_RIDE);
         ALL_COMMANDS.add(POST_ASSIGN_DISCOUNT);
         ALL_COMMANDS.add(LOCK_USER_CMD);
+        ALL_COMMANDS.add(DECLINE_CMD);
         ALL_COMMANDS.add(CHANGE_LANGUAGE_CMD);
         ALL_COMMANDS.add(GET_EDIT_CONTACT_VIEW);
         ALL_COMMANDS.add(POST_CONFIRM_REQUEST);
@@ -63,7 +72,7 @@ public class ApplicationConstants {
         ALL_COMMANDS.add(USER_PAGE_CMD);
         ALL_COMMANDS.add(POST_EDIT_USER_INFO);
         ALL_COMMANDS.add(POST_FILL_WALLET);
-        ALL_COMMANDS.add(LOGOUT_CMD_NAME);
+        ALL_COMMANDS.add(LOGOUT_CMD);
         ALL_COMMANDS.add(GET_USER_LIST_VIEW);
         ALL_COMMANDS.add(GET_LOGIN_VIEW);
         ALL_COMMANDS.add(GET_WALLET_VIEW);

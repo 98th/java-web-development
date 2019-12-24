@@ -2,8 +2,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags/nav" %>
+
+<jsp:include page="header.jsp"/>
+
 <form name="loginForm" method="POST" action="app" class="header-right" id="child" >
     <h4 class="pb-30"><fmt:message key="label.welcome"/></h4>
+        <c:if test="${not empty error}">
+        <h6 class="pb-30"> <fmt:message key="${requestScope.error}"/> </h6>
+        </c:if>
+        </br>
     <form class="form">
         <div class="from-group">
             <input type="hidden" name="commandName" value="postUserLogin" />

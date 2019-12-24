@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static by.training.taxi.ApplicationConstants.*;
+import static by.training.taxi.role.Role.DRIVER;
 
 @Bean(name=USER_PAGE_CMD)
 @AllArgsConstructor
@@ -58,7 +59,7 @@ public class UserPageViewCommand implements Command {
           DiscountDto discount = discountService.getById(id);
           userAccountDto.setDiscount(discount);
           userAccountDto.setWallet(wallet);
-          if (userAccountDto.getRole() == Role.DRIVER) {
+          if (DRIVER == userAccountDto.getRole()) {
               CarDto car = carService.getByUserId(id);
               DriverDto driver = driverService.getByUserId(id);
               driver.setCar(car);

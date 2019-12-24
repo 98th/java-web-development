@@ -32,15 +32,16 @@ public class DiscountDaoImpl implements DiscountDao {
             int i = 0;
             insertStmt.setLong(++i, entity.getId());
             insertStmt.setDouble(++i, entity.getAmount());
+            insertStmt.executeUpdate();
             ResultSet generatedKeys = insertStmt.getGeneratedKeys();
-            while (generatedKeys.next()) {
-                entity.setId(generatedKeys.getLong(1));
+            long id = 0;
+            if (generatedKeys.next()) {
+                id = generatedKeys.getLong(1);
             }
+            return id;
         } catch (SQLException e) {
             throw new DAOException(e.getMessage());
         }
-
-        return entity.getId();
     }
 
     @Override

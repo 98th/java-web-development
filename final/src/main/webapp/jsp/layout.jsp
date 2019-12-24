@@ -19,12 +19,10 @@
     <script src="js/material.min.js"></script>
     <script src="js/main.js"></script>
     <script type="module" src ="js/dialog-polyfill-master/index.js"></script>
-    <script src ="js/dialog-polyfill-master/index.js"></script>
     <link rel="stylesheet" type="text/css" href="js/dialog-polyfill-master/dist/dialog-polyfill.css" />
 
 </head>
 <body>
-<jsp:include page="/jsp/views/header.jsp"/>
 
 <div class="banner-area" id="parent">
     <c:choose>

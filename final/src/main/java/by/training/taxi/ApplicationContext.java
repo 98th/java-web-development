@@ -100,10 +100,12 @@ public class ApplicationContext implements BeanRegistry {
         registerBean(AssignDiscountCommand.class);
         registerBean(CarDaoImpl.class);
         registerBean(CarServiceImpl.class);
+        registerBean(CancelRideCommand.class);
         registerBean(CancelRideViewCommand.class);
         registerBean(ContactDaoImpl.class);
         registerBean(ContactServiceImpl.class);
         registerBean(ConfirmRequestCommand.class);
+        registerBean(DeclineRideCommand.class);
         registerBean(DiscountServiceImpl.class);
         registerBean(DiscountDaoImpl.class);
         registerBean(DriverDaoImpl.class);
@@ -114,6 +116,7 @@ public class ApplicationContext implements BeanRegistry {
         registerBean(FillWalletCommand.class);
         registerBean(LockUserCommand.class);
         registerBean(LoginUserViewCommand.class);
+        registerBean(LogoutUserCommand.class);
         registerBean(UserPageViewCommand.class);
         registerBean(RequirementViewCommand.class);
         registerBean(RegistrationUserViewCommand.class);
@@ -133,8 +136,6 @@ public class ApplicationContext implements BeanRegistry {
         registerBean(WalletServiceImpl.class);
         registerBean(WalletDaoImpl.class);
         registerBean(WalletViewCommand.class);
-
-
     }
 
     @Override

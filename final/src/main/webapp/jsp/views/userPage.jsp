@@ -6,6 +6,9 @@
 
 <%@ page import="by.training.taxi.role.Role" %>
 
+<jsp:include page="headerUserPage.jsp"/>
+
+
 <!DOCTYPE html>
 <body>
 <div class="header-right" id="child">

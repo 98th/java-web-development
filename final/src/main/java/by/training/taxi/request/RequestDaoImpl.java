@@ -24,7 +24,7 @@ public class RequestDaoImpl implements RequestDao {
     private static final String SELECT_BY_ID_QUERY = "SELECT request_id, client_id, driver_id, request_date, " +
             " request_price, pick_location, drop_location, request_status FROM car_request where  request_id = ?";
     private static final String INSERT_QUERY = "insert into car_request (client_id, driver_id, request_date, " +
-            " pick_location, drop_location, request_price, request_status) values (?,?,?,?,?,?,?)";
+            " pick_location, drop_location, request_price, request_status) values (?,?,?,?,?,?,?::request_status)";
     private static final String UPDATE_QUERY = "update car_request set client_id = ?, driver_id=?, request_date=?, " +
             "pick_location=?, drop_location=?, request_price=?, request_status=?::request_status where request_id = ?";
     private static final String DELETE_QUERY = "delete from car_request where request_id = ?";
@@ -158,7 +158,7 @@ public class RequestDaoImpl implements RequestDao {
         String pickLocation = resultSet.getString("pick_location");
         String dropLocation = resultSet.getString("drop_location");
         BigDecimal price = resultSet.getBigDecimal("request_price");
-        RequestStatus status = RequestStatus.getFromText(resultSet.getString("request_status")).get();
+        RequestStatus status = RequestStatus.getFromText(resultSet.getString("request_status")).orElse(null);
         return RequestEntity.builder()
                 .id(id)
                 .clientId(clientId)
@@ -166,6 +166,8 @@ public class RequestDaoImpl implements RequestDao {
                 .requestDate(requestDate)
                 .pickLocation(pickLocation)
                 .dropLocation(dropLocation)
+                .price(price)
+                .requestStatus(status)
                 .build();
     }
 
@@ -189,7 +191,7 @@ public class RequestDaoImpl implements RequestDao {
         dto.setDriverId(entity.getDriverId());
         dto.setClientId(entity.getClientId());
         dto.setDropLocation(entity.getDropLocation());
-        dto.setRequestDate(entity.getRequestDate());
+        dto.setPickLocation(entity.getPickLocation());
         dto.setRequestDate(entity.getRequestDate());
         dto.setRequestStatus(entity.getRequestStatus());
         dto.setPrice(entity.getPrice());

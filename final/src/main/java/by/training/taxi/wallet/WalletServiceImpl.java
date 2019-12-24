@@ -31,7 +31,7 @@ public class WalletServiceImpl implements WalletService {
     public WalletDto getById(Long id) throws WalletServiceException {
         try {
             Optional<WalletDto> walletOptional = Optional.ofNullable(walletDao.getById(id));
-            return walletOptional.orElseGet(() -> new WalletDto(new BigDecimal(0), id));
+            return walletOptional.orElseGet(() -> new WalletDto(new BigDecimal("0"), id));
         } catch (DAOException e) {
             throw new WalletServiceException(e.getMessage());
         }

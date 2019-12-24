@@ -1,17 +1,12 @@
-package by.training.taxi.request;
+package by.training.taxi.role;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum RequestStatus {
-    OFFERED("offered"),
-    CONFIRM("confirmed"),
-    DECLINED("declined"),
-    CANCELLED("cancelled");
-
+public enum Role {
+    ADMIN("admin"), CLIENT("client"), DRIVER("driver"), GUEST("guest");
     private String value;
-
-    RequestStatus(String value){
+    Role(String value){
         this.value = value;
     }
 
@@ -19,7 +14,7 @@ public enum RequestStatus {
         return value;
     }
 
-    public static Optional<RequestStatus> getFromText(String role) {
+    public static Optional<Role> getRoleFromText(String role) {
         return Arrays.stream(values())
                 .filter(i -> i.value.equalsIgnoreCase(role))
                 .findFirst();

@@ -28,8 +28,6 @@ public class CarDaoImpl implements CarDao {
                                                 "  where car_id = ?";
     private static final String DELETE_QUERY = "delete from car where car_id = ?";
 
-    private static final String CREATE_REQUIREMENT_QUERY ="INSERT INTO car_requirement_relation (car_id, requirement) \n" +
-                                                          "VALUES (?,?)";
 
     private static final String SELECT_BY_USER_ID_QUERY =  "SELECT car_id, car_model, car_color, driver_id, licence_plate_number "+
             "FROM car "+

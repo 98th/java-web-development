@@ -2,6 +2,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="headerUserPage.jsp"/>
+
+
 <div name="requirementForm" method="POST" action="app" class="header-right" id="child">
     <h4 class="pb-30">Book now!</h4>
     <fmt:message key="request.currentLocation"/> :
@@ -33,9 +36,5 @@
             <button class="btn btn-default btn-lg btn-block text-center text-uppercase"
                     value="postCarRequirement"><fmt:message key="label.submit"/></button>
         </div>
-    </form>
-    <form action="${pageContext.request.contextPath}/" method="GET">
-        <input type="hidden" name="commandName" value="driverListView"/>
-        <input class="mdl-button mdl-js-button" type="submit" value="find all drivers"/>
     </form>
 </div>

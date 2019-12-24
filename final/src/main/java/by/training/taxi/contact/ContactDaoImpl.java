@@ -48,11 +48,10 @@ public class ContactDaoImpl implements ContactDao {
             insertStmt.executeUpdate();
             ResultSet generatedKeys = insertStmt.getGeneratedKeys();
             long id = 0;
-            if (generatedKeys.next()) {
+            while (generatedKeys.next()) {
                 id = generatedKeys.getLong(1);
             }
             return id;
-
         } catch (SQLException e) {
             log.error("Failed to save a  user contact");
             throw  new DAOException();

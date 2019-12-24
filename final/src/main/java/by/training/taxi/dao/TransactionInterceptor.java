@@ -23,7 +23,6 @@ public class TransactionInterceptor implements BeanInterceptor {
 
     @Override
     public void before(Object proxy, Object service, Method method, Object[] args) {
-
         if (isMethodHasTransaction(service, method)) {
             try {
                 transactionManager.beginTransaction();
@@ -35,7 +34,6 @@ public class TransactionInterceptor implements BeanInterceptor {
 
     @Override
     public void success(Object proxy, Object service, Method method, Object[] args) {
-
         if (isMethodHasTransaction(service, method)) {
             try {
                 transactionManager.commitTransaction();
