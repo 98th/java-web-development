@@ -23,5 +23,6 @@ The application for booking a car
 
 **DRIVER:**
 (IN PROGRESS)
+
 * just exists and can perform basic user's action (edit profile, update wallet, etc)
  
