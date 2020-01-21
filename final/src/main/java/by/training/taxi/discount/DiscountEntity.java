@@ -7,8 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Data
-@Setter
-@Getter
 public class DiscountEntity {
     private long id;
     private double amount;

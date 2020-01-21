@@ -10,8 +10,6 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class RequestDto {
     private long id;
     private long driverId;

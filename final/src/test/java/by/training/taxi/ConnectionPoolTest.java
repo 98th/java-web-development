@@ -39,7 +39,6 @@ public class ConnectionPoolTest {
         assertThrows(RuntimeException.class, () -> connectionPool.releaseConnection(connection));
     }
 
-
     @After
     public void destroy(){
         connectionPool.close();

@@ -1,16 +1,19 @@
 package by.training.taxi.contact;
 
 import by.training.taxi.bean.Bean;
-import by.training.taxi.car.CarServiceException;
 import by.training.taxi.dao.DAOException;
+import by.training.taxi.dao.TransactionSupport;
 import by.training.taxi.dao.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 import java.util.List;
 import java.util.Optional;
 
 @Bean
 @AllArgsConstructor
+@Log4j
+@TransactionSupport
 public class ContactServiceImpl implements ContactService {
     private ContactDao contactDao;
 
@@ -24,11 +27,12 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public boolean isEmailUnique(String email) throws ContactServiceException {
+    public boolean isEmailUnique(String email) {
         try {
-            return !contactDao.getByEmail(email).isPresent();
+            contactDao.getByEmail(email);
+            return true;
         } catch (DAOException e) {
-            throw new ContactServiceException(e.getMessage());
+            return false;
         }
     }
 
@@ -45,7 +49,7 @@ public class ContactServiceImpl implements ContactService {
 
 
     @Override
-    public Optional<ContactDto> findByUserId(Long id) throws ContactServiceException {
+    public ContactDto getByUserId(Long id) throws ContactServiceException {
         try {
             return contactDao.getByUserId(id);
         } catch (DAOException e) {
@@ -55,7 +59,7 @@ public class ContactServiceImpl implements ContactService {
 
 
     @Override
-    public Optional<ContactDto> findByEmail(String email) throws ContactServiceException  {
+    public ContactDto getByEmail(String email) throws ContactServiceException  {
         try {
             return contactDao.getByEmail(email);
         } catch (DAOException e) {
@@ -73,9 +77,9 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public boolean deleteContact(ContactDto contactDto) throws ContactServiceException {
+    public boolean deleteContact(Long id) throws ContactServiceException {
         try {
-            return contactDao.delete(contactDto);
+            return contactDao.delete(id);
         } catch (DAOException e) {
             throw new ContactServiceException(e.getMessage());
         }

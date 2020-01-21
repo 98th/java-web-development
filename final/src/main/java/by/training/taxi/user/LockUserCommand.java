@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static by.training.taxi.ApplicationConstants.GET_USER_LIST_VIEW;
 import static by.training.taxi.ApplicationConstants.LOCK_USER_CMD;
-import static by.training.taxi.role.Role.ADMIN;
+import static by.training.taxi.user.Role.ADMIN;
 
 @Bean(name = LOCK_USER_CMD)
 @AllArgsConstructor

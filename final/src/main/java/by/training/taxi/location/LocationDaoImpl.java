@@ -18,7 +18,6 @@ public class LocationDaoImpl implements LocationDao {
     private static final String DELETE_QUERY = "delete from location where location_id = ?";
     private static final String SELECT_BY_ID_QUERY = "select location_id, latitude, longitude from location where location_id = ?";
 
-
     private ConnectionManager connectionManager;
 
     public LocationDaoImpl(ConnectionManager connectionManager) {
@@ -78,11 +77,10 @@ public class LocationDaoImpl implements LocationDao {
     }
 
     @Override
-    public boolean delete(LocationDto locationDto) throws DAOException {
-        LocationEntity entity = fromDto(locationDto);
+    public boolean delete(Long id) throws DAOException {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(DELETE_QUERY)){
-            updateStmt.setLong(1, entity.getId());
+            updateStmt.setLong(1, id);
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DAOException();
@@ -107,7 +105,7 @@ public class LocationDaoImpl implements LocationDao {
     }
 
     private LocationEntity parseResultSet(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("location_id");
+        long id = resultSet.getLong("location_id");
         double latitude = resultSet.getDouble("latitude");
         double longitude = resultSet.getDouble("longitude");
         return LocationEntity.builder()

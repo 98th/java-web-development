@@ -7,7 +7,7 @@ public interface CRUDDao <KEY, ENTITY> {
 
     boolean update(ENTITY entity) throws DAOException;
 
-    boolean delete(ENTITY entity) throws DAOException;
+    boolean delete(KEY key) throws DAOException;
 
     ENTITY getById(KEY id) throws DAOException;
 

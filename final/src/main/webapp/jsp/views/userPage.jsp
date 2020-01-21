@@ -1,10 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags/nav" %>
 
 
-<%@ page import="by.training.taxi.role.Role" %>
+<%@ page import="by.training.taxi.user.Role" %>
 
 <jsp:include page="headerUserPage.jsp"/>
 
@@ -33,18 +33,18 @@
             <nav:common-actions/>
         </div>
         <c:choose>
-            <c:when test="${sessionScope.userRole == Role.ADMIN}">
+            <c:when test="${Role.ADMIN == sessionScope.userRole}">
                 <div class="col-lg-4 btn-left">
                     <nav:admin-actions/>
                 </div>
             </c:when>
-            <c:when test="${sessionScope.userRole == Role.CLIENT}">
+            <c:when test="${ Role.CLIENT == sessionScope.userRole}">
                 <div class="col-lg-4 btn-left">
                     <nav:user-actions/>
                 </div>
             </c:when>
-        <c:otherwise></c:otherwise>
         </c:choose>
     </div>
+</div>
 </body>
 </html>

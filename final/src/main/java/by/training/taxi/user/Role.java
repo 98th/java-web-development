@@ -1,4 +1,4 @@
-package by.training.taxi.role;
+package by.training.taxi.user;
 
 import java.util.Arrays;
 import java.util.Optional;

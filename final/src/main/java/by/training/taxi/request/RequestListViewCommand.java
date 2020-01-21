@@ -27,7 +27,7 @@ public class RequestListViewCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws CommandException {
         try {
             UserAccountDto user = (UserAccountDto)req.getSession().getAttribute(PARAM_USER);
-            final List<RequestDto> requests = requestService.getAllForClient(user.getId());
+            final List<RequestDto> requests = requestService.getAllByClientId(user.getId());
             req.setAttribute("requests", requests);
             RequestUtil.forward(req, resp, GET_REQUEST_LIST_VIEW);
         } catch (RequestServiceException e) {

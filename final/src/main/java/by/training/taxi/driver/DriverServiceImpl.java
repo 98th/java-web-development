@@ -56,7 +56,6 @@ public class DriverServiceImpl implements DriverService  {
     }
 
     @Override
-    @Transactional
     public boolean registerDriver(DriverDto driverDto) {
         try {
             driverDao.save(driverDto);

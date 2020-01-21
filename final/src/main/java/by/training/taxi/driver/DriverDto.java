@@ -11,15 +11,16 @@ import java.sql.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Data
 public class DriverDto {
     private long id;
-    private long userId;
     private String drivingLicenceNum;
+    private long userId;
+    private long carId;
+    private boolean isWorking;
+
     private CarDto car;
+    private UserAccountDto userAccount;
     private ContactDto contact;
     private LocationDto location;
-    private UserAccountDto userAccount;
 }

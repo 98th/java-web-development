@@ -3,45 +3,33 @@ package by.training.taxi.car;
 import by.training.taxi.bean.Bean;
 import by.training.taxi.dao.ConnectionManager;
 import by.training.taxi.dao.DAOException;
-import by.training.taxi.user.UserAccountDto;
+import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @Bean
+@Log4j
 public class CarDaoImpl implements CarDao {
 
-    private static final String SELECT_ALL_QUERY = "select car_id, car_model, car_color, driver_id, licence_plate_number from car";
-    private static final String SELECT_BY_ID_QUERY = "select car_id, car_model, car_color, driver_id, licence_plate_number from car " +
+    private static final String SELECT_ALL_QUERY = "select car_id, car_model, car_color, licence_plate_number from car";
+    private static final String SELECT_BY_ID_QUERY = "select car_id, car_model, car_color, licence_plate_number from car " +
                                                      "where car_id = ?";
-    private static final String SELECT_BY_DRIVER_ID_QUERY = "SELECT car_id, car_model, car_color, driver_id, licence_plate_number " +
-                                                             "FROM car " +
-                                                              "WHERE driver_id = ?";
-    private static final String INSERT_QUERY = "insert into car (car_model, car_color, driver_id, licence_plate_number ) " +
-                                                "values (?,?,?,?)";
-    private static final String UPDATE_QUERY = "update сar set car_model=?, car_color=?, driver_id=?, licence_plate_number=?" +
+    private static final String INSERT_QUERY = "insert into car (car_model, car_color, licence_plate_number) " +
+                                                "values (?,?,?)";
+    private static final String UPDATE_QUERY = "update car set car_model=?, car_color=?, licence_plate_number=?" +
                                                 "  where car_id = ?";
     private static final String DELETE_QUERY = "delete from car where car_id = ?";
-
-
-    private static final String SELECT_BY_USER_ID_QUERY =  "SELECT car_id, car_model, car_color, driver_id, licence_plate_number "+
-            "FROM car "+
-            "WHERE driver_id =("+
-            "SELECT driver.driver_id "+
-            "FROM driver JOIN user_account ON driver.user_account_id = user_account.id "+
-            "WHERE user_account.id = ?"+
-            ")";
-
     private static final String SELECT_BY_REQUIREMENT_QUERY = "SELECT car.car_id,  CR.requirement_type, car_model," +
             " car.car_color, car.licence_plate_number, car.driver_id, car.is_working " +
             "            FROM car_requirement_relation AS CR JOIN car ON car.car_id = CR.car_id " +
             "            WHERE CR.requirement_type = ?::requirement_type  AND car.is_working = true";
-
+    private static final String INSERT_REQUIREMENT_QUERY = "INSERT INTO car_requirement_relation (car_id, requirement_type) " +
+            "VALUES (?, ?::requirement_type )";
     private ConnectionManager connectionManager;
 
     public CarDaoImpl(ConnectionManager connectionManager) {
@@ -60,15 +48,11 @@ public class CarDaoImpl implements CarDao {
                     String model = resultSet.getString("car_model");
                     String color = resultSet.getString("car_color");
                     String licencePlateNum = resultSet.getString("licence_plate_number");
-                    long driverId = resultSet.getLong("driver_id");
-                    boolean isWorking = resultSet.getBoolean("is_working");
                     CarEntity entity = CarEntity.builder()
                             .id(id)
                             .model(model)
-                            .driverId(driverId)
                             .licencePlateNum(licencePlateNum)
                             .color(color)
-                            .isWorking(isWorking)
                             .build();
                     output.add(entity);
                 }
@@ -87,7 +71,6 @@ public class CarDaoImpl implements CarDao {
             int i = 0;
             insertStmt.setString(++i, entity.getModel());
             insertStmt.setString(++i, entity.getColor());
-            insertStmt.setLong(++i, entity.getDriverId());
             insertStmt.setString(++i, entity.getLicencePlateNum());
             insertStmt.executeUpdate();
             ResultSet generatedKeys = insertStmt.getGeneratedKeys();
@@ -109,60 +92,24 @@ public class CarDaoImpl implements CarDao {
             int i = 0;
             updateStmt.setString(++i, entity.getModel());
             updateStmt.setString(++i, entity.getColor());
-            updateStmt.setLong(++i, entity.getDriverId());
             updateStmt.setString(++i, entity.getLicencePlateNum());
+            updateStmt.setLong(++i, entity.getId());
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Failed to update a car");
             throw new DAOException();
         }
     }
 
     @Override
-    public boolean delete(CarDto userDto) throws DAOException {
-        CarEntity entity = fromDto(userDto);
+    public boolean delete(Long id) throws DAOException {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(DELETE_QUERY)){
-            updateStmt.setLong(1, entity.getId());
+            updateStmt.setLong(1, id);
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DAOException();
         }
-    }
-
-
-
-    @Override
-    public CarDto getByUserId(long userId) throws DAOException {
-        List<CarEntity> result = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement selectStmt = connection.prepareStatement(SELECT_BY_USER_ID_QUERY)) {
-            selectStmt.setLong(1, userId);
-            ResultSet resultSet = selectStmt.executeQuery();
-            while (resultSet.next()) {
-                CarEntity entity = parseResultSet(resultSet);
-                result.add(entity);
-            }
-        } catch (SQLException e) {
-            throw new DAOException();
-        }
-        return result.stream().map(this::fromEntity).findFirst().orElseThrow(() -> new DAOException());
-    }
-
-    @Override
-    public CarDto getByDriverId(long driverId) throws DAOException {
-        List<CarEntity> result = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement selectStmt = connection.prepareStatement(SELECT_BY_DRIVER_ID_QUERY)) {
-            selectStmt.setLong(1, driverId);
-            ResultSet resultSet = selectStmt.executeQuery();
-            while (resultSet.next()) {
-                CarEntity entity = parseResultSet(resultSet);
-                result.add(entity);
-            }
-        } catch (SQLException e) {
-            throw new DAOException();
-        }
-        return result.stream().map(this::fromEntity).findFirst().orElseThrow(() -> new DAOException());
     }
 
     @Override
@@ -198,23 +145,31 @@ public class CarDaoImpl implements CarDao {
         return result.stream().map(this::fromEntity).collect(Collectors.toList());
     }
 
-
     @Override
-    public boolean addRequirementForCar(long id, Set<RequirementType> requirementTypes) {
-        return false;
+    public boolean addRequirementToCar(long id, Set<RequirementType> requirementTypes) {
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement insertStm = connection.prepareStatement(INSERT_REQUIREMENT_QUERY)) {
+            for (RequirementType requirementType : requirementTypes) {
+                int i = 0;
+                insertStm.setLong(++i, id);
+                insertStm.setString(++i, requirementType.getValue());
+                insertStm.addBatch();
+            }
+            return insertStm.executeBatch().length > 0;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     private CarEntity parseResultSet(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("car_id");
+        long id = resultSet.getLong("car_id");
         String model = resultSet.getString("car_model");
         String color = resultSet.getString("car_color");
-        Long driverId = resultSet.getLong("driver_id");
         String licenceNum = resultSet.getString("licence_plate_number");
         return CarEntity.builder()
                 .id(id)
                 .model(model)
                 .color(color)
-                .driverId(driverId)
                 .licencePlateNum(licenceNum)
                 .build();
     }
@@ -222,7 +177,6 @@ public class CarDaoImpl implements CarDao {
     private CarEntity fromDto(CarDto dto) {
         CarEntity entity = new CarEntity();
         entity.setId(dto.getId());
-        entity.setDriverId(dto.getDriverId());
         entity.setLicencePlateNum(dto.getLicencePlateNum());
         entity.setModel(dto.getModel());
         entity.setColor(dto.getColor());
@@ -234,7 +188,6 @@ public class CarDaoImpl implements CarDao {
         dto.setId(entity.getId());
         dto.setLicencePlateNum(entity.getLicencePlateNum());
         dto.setModel(entity.getModel());
-        dto.setDriverId(entity.getDriverId());
         dto.setColor(entity.getColor());
         return dto;
     }

@@ -12,7 +12,16 @@ public class RequestServiceImpl implements RequestService {
     private RequestDao requestDao;
 
     @Override
-    public boolean update(RequestDto requestDto) throws RequestServiceException {
+    public RequestDto getById(long id) throws RequestServiceException {
+        try {
+            return requestDao.getById(id);
+        } catch (DAOException e) {
+            throw  new RequestServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean update(RequestDto requestDto) {
         try {
             return requestDao.update(requestDto);
         } catch (DAOException e) {
@@ -30,16 +39,16 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public boolean delete(RequestDto requestDto) throws RequestServiceException {
+    public boolean delete(Long id) throws RequestServiceException {
         try {
-            return requestDao.delete(requestDto);
+            return requestDao.delete(id);
         } catch (DAOException e) {
             throw  new RequestServiceException(e.getMessage());
         }
     }
 
     @Override
-    public List<RequestDto> getAllForClient(long id) throws RequestServiceException {
+    public List<RequestDto> getAllByClientId(long id) throws RequestServiceException {
         try {
             return requestDao.getAllForClient(id);
         } catch (DAOException e) {

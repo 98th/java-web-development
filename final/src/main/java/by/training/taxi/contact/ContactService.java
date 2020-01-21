@@ -1,19 +1,16 @@
 package by.training.taxi.contact;
 
-import by.training.taxi.car.CarServiceException;
-
 import java.util.List;
 import java.util.Optional;
 
 public interface ContactService {
+    ContactDto getByUserId(Long id) throws ContactServiceException;
 
-    Optional<ContactDto> findByUserId(Long id) throws ContactServiceException;
-
-    Optional<ContactDto> findByEmail(String email) throws ContactServiceException ;
+    ContactDto getByEmail(String email) throws ContactServiceException ;
 
     List<ContactDto> getAllContacts() throws ContactServiceException;
 
-    boolean deleteContact(ContactDto contactDto)  throws ContactServiceException;
+    boolean deleteContact(Long id)  throws ContactServiceException;
 
     boolean saveContact(ContactDto entity);
 

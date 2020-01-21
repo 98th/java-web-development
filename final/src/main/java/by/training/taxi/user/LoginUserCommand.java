@@ -40,11 +40,10 @@ public class LoginUserCommand implements Command {
                 request.getSession().setAttribute(PARAM_USER_ROLE, userAccountDto.getRole());
                 RequestUtil.sendRedirectToCommand(request, response, USER_PAGE_CMD);
             } else {
-                request.setAttribute(VIEWNAME_REQ_PARAMETER, GET_LOGIN_VIEW);
                 request.setAttribute(PARAM_ERROR, "error.wrong.login.or.pass");
-                request.getRequestDispatcher("jsp/layout.jsp").forward(request, response);
+                RequestUtil.forward(request, response, GET_LOGIN_VIEW);
             }
-        } catch (UserServiceException | ServletException | IOException  e) {
+        } catch (UserServiceException  e) {
             throw new CommandException(e.getMessage());
         }
     }

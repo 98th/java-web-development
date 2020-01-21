@@ -10,8 +10,8 @@ import static by.training.taxi.ApplicationConstants.PARAM_DRIVER_LICENCE_NUM;
 import static by.training.taxi.util.ValidatorUtil.isStrEmpty;
 
 
-@Bean
-public class DriverDataValidator implements Validator {
+@Bean(name=DRIVER_VALIDATOR)
+public class DriverValidator implements Validator {
     private static final String DRIVING_LICENCE_NUM_REGEX = "([1-9]{1})([a-zA-Z]{2})(\\s?)([0-9]{6})";
     private static final String LICENCE_PLATE_NUMBER_REGEX = "([0-9]{4})(\\s?)([a-zA-Z]{2}-[1-9]{1})";
 

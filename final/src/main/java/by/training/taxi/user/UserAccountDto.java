@@ -4,11 +4,6 @@ import by.training.taxi.contact.ContactDto;
 import by.training.taxi.discount.DiscountDto;
 import by.training.taxi.driver.DriverDto;
 import by.training.taxi.location.LocationDto;
-import by.training.taxi.request.RequestDto;
-import by.training.taxi.role.Role;
-import by.training.taxi.role.RoleDto;
-
-import java.util.List;
 
 import by.training.taxi.wallet.WalletDto;
 import lombok.*;
@@ -17,8 +12,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class UserAccountDto {
     private Long id;
     private String login;

@@ -7,11 +7,11 @@ import java.sql.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Data
 public class DriverEntity {
     private long id;
-    private long userId;
     private String drivingLicenceNum;
+    private long userId;
+    private long carId;
+    private boolean isWorking;
 }

@@ -1,9 +1,7 @@
 package by.training.taxi.driver;
 
 import by.training.taxi.bean.Bean;
-import by.training.taxi.car.CarDao;
 import by.training.taxi.car.CarDto;
-import by.training.taxi.car.CarEntity;
 import by.training.taxi.contact.ContactDto;
 import by.training.taxi.dao.ConnectionManager;
 import by.training.taxi.dao.DAOException;
@@ -24,32 +22,36 @@ import java.util.stream.Collectors;
 @Log4j
 public class DriverDaoImpl implements DriverDao {
     private static final String SELECT_ALL_QUERY = "SELECT driver_id, driving_licence_number, " +
-            " user_account_id FROM driver";
-    private static final String SELECT_BY_ID_QUERY = "SELECT driver_id, driving_licence_number,  user_account_id FROM driver WHERE driver_id = ?";
+            " user_account_id, car_id, is_working FROM driver";
+    private static final String SELECT_BY_ID_QUERY = "SELECT driver_id, driving_licence_number, user_account_id, car_id, " +
+            "is_working FROM driver WHERE driver_id = ?";
     private static final String INSERT_QUERY = "INSERT INTO driver (driving_licence_number," +
-            " user_account_id) values (?,?,?)";
-    private static final String UPDATE_QUERY =  "UPDATE driver " +
-                                                "SET  driving_licence_number=?,  user_account_id=?," +
+            " user_account_id, car_id, is_working) values (?,?,?,?)";
+    private static final String UPDATE_QUERY =  "UPDATE driver SET  driving_licence_number=?,  user_account_id=?, " +
+                                                "car_id=?, is_working=? " +
                                                 "WHERE driver_id = ?";
     private static final String DELETE_QUERY = "DELETE FROM driver WHERE driver_id = ?";
     private static final String SELECT_BY_USER_ID_QUERY = "SELECT driver_id, driving_licence_number," +
-            " user_account_id FROM driver WHERE user_account_id = ?";
+            " user_account_id, car_id, is_working FROM driver WHERE user_account_id = ?";
 
-    private static final String SELECT_WITH_INFO = "SELECT  D.driver_id, D.user_account_id, C.first_name, C.last_name, " +
+    private static final String SELECT_WITH_INFO = "SELECT  D.driver_id, D.user_account_id, D.car_id,  " +
+            "C.first_name, C.last_name, " +
             "C.phone, car.car_color, car.car_model, car.licence_plate_number, UA.is_locked, " +
             "L.longitude, L.latitude " +
             "FROM driver AS D " +
             "JOIN user_contact AS C ON C.user_account_id = D.user_account_id " +
-            "JOIN car ON car.driver_id = D.driver_id "  +
+            "JOIN car ON car.car_id = D.car_id "  +
             "JOIN location AS L ON L.location_id = D.user_account_id " +
             "JOIN user_account AS UA ON UA.id = D.user_account_id " +
             "WHERE D.driver_id = ?";
 
     private static final String SELECT_ALL_WITH_INFO = "SELECT  D.driver_id, D.user_account_id, C.first_name, C.last_name, C.phone, " +
-            "car.car_color, car.car_model, car.licence_plate_number, D.driving_licence_number, D.user_account_id, UA.is_locked " +
+            "car.car_color, car.car_model, car.licence_plate_number, D.driving_licence_number, D.user_account_id, UA.is_locked, " +
+            "L.longitude, L.latitude " +
             "FROM driver AS D " +
             "JOIN user_contact AS C ON C.user_account_id = D.user_account_id " +
-            "JOIN car ON car.driver_id = D.driver_id " +
+            "JOIN car ON car.car_id = D.car_id " +
+            "JOIN location AS L ON L.location_id = D.user_account_id " +
             "JOIN user_account AS UA ON UA.id = D.user_account_id";
 
     private ConnectionManager connectionManager;
@@ -81,8 +83,8 @@ public class DriverDaoImpl implements DriverDao {
                             .model(model)
                             .build();
                     LocationDto locationDto;
-                    Double longitude = resultSet.getDouble("longitude");
-                    Double latitude = resultSet.getDouble("latitude");
+                    double longitude = resultSet.getDouble("longitude");
+                    double latitude = resultSet.getDouble("latitude");
                     locationDto = LocationDto.builder()
                             .id(id)
                             .latitude(latitude)
@@ -117,23 +119,19 @@ public class DriverDaoImpl implements DriverDao {
     public DriverDto getByUserId(Long id) throws DAOException {
         List<DriverEntity> result = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection();
-            PreparedStatement selectStmt = connection.prepareStatement(SELECT_BY_USER_ID_QUERY)) {
+             PreparedStatement selectStmt = connection.prepareStatement(SELECT_BY_USER_ID_QUERY)) {
             selectStmt.setLong(1, id);
             ResultSet resultSet = selectStmt.executeQuery();
             while (resultSet.next()) {
                 DriverEntity entity = parseResultSet(resultSet);
                 result.add(entity);
             }
-        }   catch (SQLException e) {
-            throw new DAOException("Exception in user dao");
+        } catch (SQLException e) {
+            throw new DAOException("Driver not founded with the user account id: " + id);
         }
-        Optional<DriverDto> output = result.stream().map(this::fromEntity).findFirst();
-        if(!output.isPresent()){
-            throw new DAOException();
-        }
-        return output.get();
+        return result.stream().map(this::fromEntity).findFirst()
+                .orElseThrow(() -> new DAOException("Driver not founded with  the user account id: " + id));
     }
-
 
     @Override
     public Long save(DriverDto userDto) throws DAOException {
@@ -143,12 +141,14 @@ public class DriverDaoImpl implements DriverDao {
             int i = 0;
             insertStmt.setString(++i, entity.getDrivingLicenceNum());
             insertStmt.setLong(++i, entity.getUserId());
+            insertStmt.setLong(++i, entity.getCarId());
+            insertStmt.setBoolean(++i, entity.isWorking());
             insertStmt.executeUpdate();
-            ResultSet generatedKeys = insertStmt.getGeneratedKeys();
-            while (generatedKeys.next()) {
-                entity.setId(generatedKeys.getLong(1));
+            try(ResultSet generatedKeys = insertStmt.getGeneratedKeys()) {
+                while (generatedKeys.next()) {
+                    entity.setId(generatedKeys.getLong(1));
+                }
             }
-
         } catch (SQLException e) {
             throw new DAOException();
         }
@@ -163,6 +163,9 @@ public class DriverDaoImpl implements DriverDao {
             int i = 0;
             updateStmt.setString(++i, entity.getDrivingLicenceNum());
             updateStmt.setLong(++i, entity.getUserId());
+            updateStmt.setLong(++i, entity.getCarId());
+            updateStmt.setBoolean(++i, entity.isWorking());
+            updateStmt.setLong(++i, entity.getId());
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DAOException();
@@ -170,11 +173,10 @@ public class DriverDaoImpl implements DriverDao {
     }
 
     @Override
-    public boolean delete(DriverDto userDto) throws DAOException {
-        DriverEntity entity = fromDto(userDto);
+    public boolean delete(Long id) throws DAOException {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(DELETE_QUERY)){
-            updateStmt.setLong(1, entity.getId());
+            updateStmt.setLong(1, id);
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DAOException();
@@ -210,14 +212,11 @@ public class DriverDaoImpl implements DriverDao {
                 DriverEntity entity = parseResultSet(resultSet);
                 result.add(entity);
             }
-        }   catch (SQLException e) {
-            throw new DAOException("Exception in user dao");
+        } catch (SQLException e) {
+            throw new DAOException("Driver not found with id " + id);
         }
-        Optional<DriverDto> output = result.stream().map(this::fromEntity).findFirst();
-        if(!output.isPresent()){
-            throw new DAOException();
-        }
-        return output.get();
+        return result.stream().map(this::fromEntity).findFirst()
+                .orElseThrow(() -> new DAOException("Driver not found with id " + id));
     }
 
     @Override
@@ -248,7 +247,13 @@ public class DriverDaoImpl implements DriverDao {
                 String drivingLicence = resultSet.getString("driving_licence_number");
                 long userId = resultSet.getLong("user_account_id");
                 boolean isLocked = resultSet.getBoolean("is_locked");
-                UserAccountDto user = UserAccountDto.builder().isLocked(isLocked).build();
+                double longitude = resultSet.getDouble("longitude");
+                double latitude = resultSet.getDouble("latitude");
+                LocationDto location = LocationDto.builder()
+                        .longitude(longitude)
+                        .latitude(latitude)
+                        .build();
+                UserAccountDto user = UserAccountDto.builder().isLocked(isLocked).location(location).build();
                 driver = DriverDto.builder()
                         .id(id)
                         .car(car)
@@ -269,10 +274,14 @@ public class DriverDaoImpl implements DriverDao {
         long entityId = resultSet.getLong("driver_id");
         String drivingLicenceNum = resultSet.getString("driving_licence_number");
         long userId = resultSet.getLong("user_account_id");
+        long carId = resultSet.getLong("car_id");
+        boolean isWorking = resultSet.getBoolean("is_working");
         return DriverEntity.builder()
                 .id(entityId)
                 .drivingLicenceNum(drivingLicenceNum)
                 .userId(userId)
+                .carId(carId)
+                .isWorking(isWorking)
                 .build();
     }
 
@@ -281,6 +290,8 @@ public class DriverDaoImpl implements DriverDao {
         entity.setId(dto.getId());
         entity.setDrivingLicenceNum(dto.getDrivingLicenceNum());
         entity.setUserId(dto.getUserId());
+        entity.setCarId(dto.getCarId());
+        entity.setWorking(dto.isWorking());
         return entity;
     }
 
@@ -289,6 +300,8 @@ public class DriverDaoImpl implements DriverDao {
         dto.setId(entity.getId());
         dto.setDrivingLicenceNum(entity.getDrivingLicenceNum());
         dto.setUserId(entity.getUserId());
+        dto.setCarId(entity.getCarId());
+        dto.setWorking(entity.isWorking());
         return dto;
     }
 }

@@ -38,23 +38,4 @@ public class CarServiceImpl implements CarService {
             throw new CarServiceException();
         }
     }
-
-
-    @Override
-    public CarDto getByUserId(long id) throws CarServiceException{
-        try {
-            return carDao.getByUserId(id);
-        } catch (DAOException e) {
-            throw new CarServiceException();
-        }
-    }
-
-    @Override
-    public CarDto getByDriverId(long id) throws CarServiceException{
-        try {
-            return carDao.getByDriverId(id);
-        } catch (DAOException e) {
-            throw new CarServiceException();
-        }
-    }
 }

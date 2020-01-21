@@ -17,7 +17,6 @@ import java.util.Optional;
 public class WalletServiceImpl implements WalletService {
     private WalletDao walletDao;
 
-
     @Override
     public boolean update (WalletDto wallet) throws  WalletServiceException {
         try {
@@ -36,4 +35,6 @@ public class WalletServiceImpl implements WalletService {
             throw new WalletServiceException(e.getMessage());
         }
     }
+
+
 }

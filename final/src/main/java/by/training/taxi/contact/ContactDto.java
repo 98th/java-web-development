@@ -4,10 +4,8 @@ import lombok.*;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
 public class ContactDto {
     private Long id;
     private String firstName;

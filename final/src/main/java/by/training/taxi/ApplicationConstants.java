@@ -19,7 +19,6 @@ public class ApplicationConstants {
     public static final String ERROR_VIEW = "error";
     public static final String GET_REQUEST_LIST_VIEW = "requestListView";
     public static final String GET_CANCEL_RIDE_VIEW = "cancelRide";
-
     //params
     public static final String PARAM_USER_LOGIN = "login";
     public static final String PARAM_DISCOUNT = "discountAmount";
@@ -40,7 +39,6 @@ public class ApplicationConstants {
     //commands
     public static final String ERROR_CMD = "error";
     public static final String POST_FILL_WALLET = "postFillWallet";
-    public static final String CHANGE_LANGUAGE_CMD = "changeLanguage";
     public static final String USER_PAGE_CMD = "getUserPage";
     public static final String CMD_REQ_PARAMETER = "commandName";
     public static final String POST_USER_REGISTRATION = "postUserReg";
@@ -48,6 +46,7 @@ public class ApplicationConstants {
     public static final String POST_USER_LOGIN = "postUserLogin";
     public static final String POST_ASSIGN_DISCOUNT = "postAssignDiscount";
     public static final String POST_DELETE_REQUEST = "deleteRequest";
+    public static final String POST_CHOOSE_CAR = "chooseCar";
     public static final String LOGOUT_CMD = "logoutUser";
     public static final String ABOUT_VIEW = "aboutView";
     public static final String POST_CAR_REQUIREMENT = "postCarRequirement";
@@ -55,16 +54,23 @@ public class ApplicationConstants {
     public static final String LOCK_USER_CMD = "lockUser";
     public static final String POST_CANCEL_RIDE = "postCancelRide";
     public static final String DECLINE_CMD = "declineRide";
+    public static final String DELETE_REQUEST_CMD = "deleteRequest";
+    //validators
+    public static final String USER_ACCOUNT_VALIDATOR = "userAccountValidator";
+    public static final String CONTACT_VALIDATOR = "contactValidator";
+    public static final String DISCOUNT_VALIDATOR = "discountValidator";
+    public static final String DRIVER_VALIDATOR = "driverValidator";
 
 
     public static final Set<String> ALL_COMMANDS = new HashSet<>();
 
     static {
+        ALL_COMMANDS.add(POST_CHOOSE_CAR);
         ALL_COMMANDS.add(POST_CANCEL_RIDE);
         ALL_COMMANDS.add(POST_ASSIGN_DISCOUNT);
         ALL_COMMANDS.add(LOCK_USER_CMD);
         ALL_COMMANDS.add(DECLINE_CMD);
-        ALL_COMMANDS.add(CHANGE_LANGUAGE_CMD);
+        ALL_COMMANDS.add(DELETE_REQUEST_CMD);
         ALL_COMMANDS.add(GET_EDIT_CONTACT_VIEW);
         ALL_COMMANDS.add(POST_CONFIRM_REQUEST);
         ALL_COMMANDS.add(GET_SUITABLE_DRIVER_VIEW);

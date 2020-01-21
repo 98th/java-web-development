@@ -2,11 +2,10 @@ package by.training.taxi.contact;
 
 import lombok.*;
 
+@Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
 public class ContactEntity {
     private Long id;
     private String firstName;

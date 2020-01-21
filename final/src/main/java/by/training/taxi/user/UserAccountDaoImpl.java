@@ -5,8 +5,6 @@ import by.training.taxi.contact.ContactDto;
 import by.training.taxi.dao.ConnectionManager;
 import by.training.taxi.dao.DAOException;
 import by.training.taxi.discount.DiscountDto;
-import by.training.taxi.driver.DriverDto;
-import by.training.taxi.role.Role;
 import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
@@ -15,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static by.training.taxi.role.Role.getRoleFromText;
+import static by.training.taxi.user.Role.getRoleFromText;
 
 @Bean
 @Log4j
@@ -79,11 +77,10 @@ public class UserAccountDaoImpl implements UserAccountDao {
     }
 
     @Override
-    public boolean delete(UserAccountDto userDto) throws DAOException {
-        UserAccountEntity entity = fromDto(userDto);
+    public boolean delete(Long id) throws DAOException {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(DELETE_QUERY)){
-            updateStmt.setLong(1, entity.getId());
+            updateStmt.setLong(1, id);
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DAOException();
@@ -101,9 +98,8 @@ public class UserAccountDaoImpl implements UserAccountDao {
                 UserAccountEntity entity = parseResultSet(resultSet);
                 result.add(entity);
             }
-
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Failed to get the user by id " + id);
         }
         return result.stream().map(this::fromEntity).findFirst().orElseThrow(() -> new IllegalArgumentException("Entity not found with given id: " + id));
     }
@@ -145,7 +141,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
                         .email(email)
                         .phone(phone)
                         .build();
-                Double amount = resultSet.getDouble("discount_amount");
+                double amount = resultSet.getDouble("discount_amount");
                 DiscountDto discount = DiscountDto.builder().amount(amount).build();
                 UserAccountDto user = UserAccountDto.builder()
                         .id(id)
@@ -178,9 +174,8 @@ public class UserAccountDaoImpl implements UserAccountDao {
                 result.add(entity);
             }
         } catch (SQLException e) {
-            throw new DAOException("Exception in user dao");
+            throw new DAOException("Failed to get the user by login and password" + login);
         }
-
         return result.stream().map(this::fromEntity).findFirst();
     }
 
@@ -196,9 +191,8 @@ public class UserAccountDaoImpl implements UserAccountDao {
                 result.add(entity);
             }
         }   catch (SQLException e) {
-            throw new DAOException("Exception in user dao");
+            throw new DAOException("Failed to get by login " + login);
         }
-
         return result.stream().map(this::fromEntity).findFirst();
     }
 

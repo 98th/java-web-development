@@ -1,6 +1,5 @@
 package by.training.taxi;
 
-
 import by.training.taxi.bean.BeanRegistry;
 import by.training.taxi.bean.BeanRegistryImpl;
 import by.training.taxi.car.CarDaoImpl;
@@ -21,8 +20,10 @@ import by.training.taxi.driver.DriverDaoImpl;
 import by.training.taxi.driver.DriverServiceImpl;
 import by.training.taxi.user.*;
 import by.training.taxi.dao.*;
-import by.training.taxi.role.RoleDaoImpl;
-import by.training.taxi.role.RoleServiceImpl;
+import by.training.taxi.validator.ContactValidator;
+import by.training.taxi.validator.DiscountValidator;
+import by.training.taxi.validator.DriverValidator;
+import by.training.taxi.validator.UserAccountValidator;
 import by.training.taxi.wallet.FillWalletCommand;
 import by.training.taxi.wallet.WalletDaoImpl;
 import by.training.taxi.wallet.WalletServiceImpl;
@@ -56,7 +57,6 @@ public class ApplicationContext implements BeanRegistry {
                 INSTANCE = context;
                 INITIALIZED.set(true);
             }
-
         } finally {
             INITIALIZE_LOCK.unlock();
         }
@@ -95,21 +95,26 @@ public class ApplicationContext implements BeanRegistry {
     }
 
     private void registerClasses() {
-        registerBean(DriverListViewCommand.class);
         registerBean(AboutViewCommand.class);
         registerBean(AssignDiscountCommand.class);
         registerBean(CarDaoImpl.class);
         registerBean(CarServiceImpl.class);
         registerBean(CancelRideCommand.class);
         registerBean(CancelRideViewCommand.class);
+        registerBean(ChooseCarCommand.class);
         registerBean(ContactDaoImpl.class);
         registerBean(ContactServiceImpl.class);
+        registerBean(ContactValidator.class);
         registerBean(ConfirmRequestCommand.class);
         registerBean(DeclineRideCommand.class);
+        registerBean(DeleteRequestCommand.class);
         registerBean(DiscountServiceImpl.class);
         registerBean(DiscountDaoImpl.class);
+        registerBean(DiscountValidator.class);
         registerBean(DriverDaoImpl.class);
         registerBean(DriverServiceImpl.class);
+        registerBean(DriverListViewCommand.class);
+        registerBean(DriverValidator.class);
         registerBean(EditContactCommand.class);
         registerBean(EditContactViewCommand.class);
         registerBean(FindCarCommand.class);
@@ -124,11 +129,10 @@ public class ApplicationContext implements BeanRegistry {
         registerBean(RequestDaoImpl.class);
         registerBean(RequestServiceImpl.class);
         registerBean(RequestListViewCommand.class);
-        registerBean(RoleDaoImpl.class);
-        registerBean(RoleServiceImpl.class);
         registerBean(SuitableDriverViewCommand.class);
         registerBean(UserAccountDaoImpl.class);
         registerBean(UserAccountServiceImpl.class);
+        registerBean(UserAccountValidator.class);
         registerBean(UserListViewCommand.class);
         registerBean(LoginUserCommand.class);
         registerBean(LocationDaoImpl.class);
@@ -146,7 +150,6 @@ public class ApplicationContext implements BeanRegistry {
 
     @Override
     public <T> void registerBean(Class<T> beanClass) {
-
         this.beanRegistry.registerBean(beanClass);
     }
 

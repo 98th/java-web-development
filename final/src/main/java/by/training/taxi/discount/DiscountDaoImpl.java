@@ -59,11 +59,10 @@ public class DiscountDaoImpl implements DiscountDao {
     }
 
     @Override
-    public boolean delete(DiscountDto userDto) throws DAOException {
-        DiscountEntity entity = fromDto(userDto);
+    public boolean delete(Long id) throws DAOException {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(DELETE_QUERY)) {
-            updateStmt.setLong(1, entity.getId());
+            updateStmt.setLong(1, id);
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw  new DAOException(e.getMessage());

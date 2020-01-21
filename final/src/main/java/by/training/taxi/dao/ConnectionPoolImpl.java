@@ -71,7 +71,6 @@ public class ConnectionPoolImpl implements ConnectionPool {
         try {
             Connection connection = connectionQueue.take();
             usedConnections.put(connection);
-            log.info("Connection was taken from connection pool");
             return createProxyConnection(connection);
         } catch (InterruptedException e) {
             log.error("Cannot get connection from connection pool");
@@ -81,14 +80,12 @@ public class ConnectionPoolImpl implements ConnectionPool {
 
     public void releaseConnection(Connection connection) {
         if (!usedConnections.contains(connection)) {
-            log.error("connection is not from connection pool");
-            throw new ConnectionPoolException("connection is not from connection pool");
+            log.error("Connection is not from connection pool");
+            throw new ConnectionPoolException("Connection is not from connection pool");
         }
         if (usedConnections.remove(connection)) {
             connectionQueue.offer(connection);
         }
-        log.info("connection was offered to connection pool");
-        log.info("connection pool size " + connectionQueue.size());
     }
 
     @Override

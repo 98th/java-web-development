@@ -7,6 +7,7 @@ import by.training.taxi.contact.ContactDao;
 import by.training.taxi.contact.ContactDto;
 import by.training.taxi.dao.DAOException;
 import by.training.taxi.dao.TransactionManager;
+import by.training.taxi.dao.TransactionSupport;
 import by.training.taxi.dao.Transactional;
 import by.training.taxi.discount.DiscountDao;
 import by.training.taxi.discount.DiscountDto;
@@ -17,31 +18,29 @@ import by.training.taxi.location.LocationDto;
 import by.training.taxi.util.LocationUtil;
 import by.training.taxi.wallet.WalletDao;
 import by.training.taxi.wallet.WalletDto;
-import by.training.taxi.wallet.WalletService;
 import by.training.taxi.wallet.WalletServiceException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.h2.engine.User;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import static by.training.taxi.role.Role.DRIVER;
+import static by.training.taxi.user.Role.DRIVER;
 
 @AllArgsConstructor
 @Bean
 @Log4j
+@TransactionSupport
 public class UserAccountServiceImpl implements UserAccountService{
-    private TransactionManager transactionManager;
 
     private UserAccountDao userAccountDao;
-    private WalletDao walletDao;
     private ContactDao contactDao;
     private DriverDao driverDao;
     private CarDao carDao;
     private LocationDao locationDao;
+    private WalletDao walletDao;
     private DiscountDao discountDao;
 
     public boolean fill(long id, BigDecimal amount) throws WalletServiceException {
@@ -75,15 +74,6 @@ public class UserAccountServiceImpl implements UserAccountService{
     }
 
     @Override
-    public Optional<UserAccountDto> findByLogin(String login) throws UserServiceException {
-        try {
-            return userAccountDao.getByLogin(login);
-        } catch (DAOException  e) {
-            throw new UserServiceException(e.getMessage());
-        }
-    }
-
-    @Override
     public boolean update(UserAccountDto userAccountDto) throws UserServiceException {
         try {
             return userAccountDao.update(userAccountDto);
@@ -96,9 +86,8 @@ public class UserAccountServiceImpl implements UserAccountService{
 
     @Override
     @Transactional
-    public void transfer(long userId, long driverId, BigDecimal amount) throws  UserServiceException {
+    public void transfer(long userId, long driverId, BigDecimal amount)  throws  UserServiceException {
         try {
-            transactionManager.beginTransaction();
             WalletDto userWallet = walletDao.getById(userId);
             WalletDto driverWallet = walletDao.getById(driverId);
             BigDecimal sumFrom = userWallet.getAmount();
@@ -107,13 +96,9 @@ public class UserAccountServiceImpl implements UserAccountService{
             driverWallet.setAmount(sumTo.add(amount));
             walletDao.update(userWallet);
             walletDao.update(driverWallet);
-            transactionManager.commitTransaction();
-        } catch (SQLException | DAOException e) {
-            try {
-                transactionManager.rollbackTransaction();
-            } catch (SQLException k) {
-                throw new UserServiceException();
-            }
+        } catch ( DAOException e) {
+            log.error("Failed to transfer money from the user " + userId + " to " + driverId);
+           throw new UserServiceException("Failed to transfer money");
         }
     }
 
@@ -130,7 +115,6 @@ public class UserAccountServiceImpl implements UserAccountService{
     @Transactional
     public void fullUpdate(UserAccountDto user) throws  UserServiceException {
         try {
-            transactionManager.beginTransaction();
             userAccountDao.update(user);
             ContactDto contact = user.getContact();
             contactDao.update(contact);
@@ -145,22 +129,17 @@ public class UserAccountServiceImpl implements UserAccountService{
                 CarDto car = driver.getCar();
                 carDao.update(car);
             }
-            transactionManager.commitTransaction();
-        } catch (SQLException | DAOException e) {
-            try {
-                transactionManager.rollbackTransaction();
-            } catch (SQLException ex) {
-                throw new UserServiceException();
-            }
+        } catch ( DAOException e) {
+            log.error("Failed to update user " + user.getId());
+            throw new UserServiceException();
         }
     }
 
 
     @Override
     @Transactional
-    public long registerUser(UserAccountDto user) throws UserServiceException, SQLException {
+    public long registerUser(UserAccountDto user) throws UserServiceException {
         try {
-            transactionManager.beginTransaction();
             Long id = userAccountDao.save(user);
             ContactDto contact = user.getContact();
             contact.setUserId(id);
@@ -192,15 +171,13 @@ public class UserAccountServiceImpl implements UserAccountService{
                 driver.setUserId(id);
                 Long driverId = driverDao.save(driver);
                 CarDto car = driver.getCar();
-                car.setDriverId(driverId);
+                //TODO
                 carDao.save(car);
                 driver.setCar(car);
                 user.setDriver(driver);
-                transactionManager.commitTransaction();
             }
             return id;
         } catch (DAOException  e) {
-            transactionManager.rollbackTransaction();
             log.error("Failed to register user");
             throw new UserServiceException();
         }

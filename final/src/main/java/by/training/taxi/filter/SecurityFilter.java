@@ -1,17 +1,12 @@
 package by.training.taxi.filter;
 
-import by.training.taxi.ApplicationConstants;
-import by.training.taxi.SecurityContext;
 import by.training.taxi.command.CommandType;
-import by.training.taxi.role.Role;
-import javafx.beans.property.ObjectProperty;
+import by.training.taxi.user.Role;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;

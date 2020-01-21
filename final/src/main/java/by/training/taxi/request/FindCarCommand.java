@@ -55,7 +55,7 @@ public class FindCarCommand implements Command {
             requestDto.setDriverId(driver.getUserId());
             requestDto.setRequestDate(new Date());
             log.info("founded driver  " + driver.getId());
-            Double distance = calculateDistance(user, driver);
+            double distance = calculateDistance(user, driver);
             String price = calculatePrice(distance, userId);
             requestDto.setPrice(new BigDecimal(price));
             int waitingTimeInt = calculateWaitingTime(distance);
@@ -94,16 +94,7 @@ public class FindCarCommand implements Command {
     }
 
     private DriverDto findNearest(UserAccountDto user, List<CarDto> cars) throws DriverServiceException  {
-        boolean seen = false;
-        DriverDto output = null;
-        Comparator<DriverDto> comparator = Comparator.comparing(i -> calculateDistance(user, i));
-        for (CarDto carDto : cars) {
-            DriverDto byId = driverService.getWithInfo(carDto.getDriverId());
-            if (!seen || comparator.compare(byId, output) < 0) {
-                seen = true;
-                output = byId;
-            }
-        }
-        return  output;
+       //TODO
+        return null;
     }
 }

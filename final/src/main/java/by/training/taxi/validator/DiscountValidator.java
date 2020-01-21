@@ -1,11 +1,14 @@
 package by.training.taxi.validator;
 
+import by.training.taxi.bean.Bean;
 import by.training.taxi.util.ValidatorUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static by.training.taxi.ApplicationConstants.DISCOUNT_VALIDATOR;
 import static by.training.taxi.ApplicationConstants.PARAM_DISCOUNT;
 
+@Bean(name=DISCOUNT_VALIDATOR)
 public class DiscountValidator implements Validator{
 
     @Override
@@ -21,11 +24,7 @@ public class DiscountValidator implements Validator{
     private boolean checkDiscount(String discount) {
         try {
             double output = Double.parseDouble(discount);
-            if (output >= 0 && output < 100) {
-                return true;
-            } else {
-                return false;
-            }
+            return output >= 0 && output < 100 ? true : false;
         } catch (NumberFormatException e) {
             return false;
         }

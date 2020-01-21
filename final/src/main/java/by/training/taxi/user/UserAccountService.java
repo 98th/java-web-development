@@ -16,9 +16,7 @@ public interface UserAccountService {
 
     long  registerUser(UserAccountDto userDto) throws UserServiceException, SQLException;
 
-    Optional<UserAccountDto> findByLogin(String login) throws UserServiceException;
-
-    Optional<UserAccountDto> findByLoginAndPassword(String login, String password) throws UserServiceException;
+    Optional<UserAccountDto>  findByLoginAndPassword(String login, String password) throws UserServiceException;
 
     List<UserAccountDto> findAll() throws UserServiceException;
 

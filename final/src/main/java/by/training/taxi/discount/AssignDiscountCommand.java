@@ -24,12 +24,12 @@ import static by.training.taxi.ApplicationConstants.POST_ASSIGN_DISCOUNT;
 @Log4j
 public class AssignDiscountCommand implements Command {
     private DiscountService discountService;
+    private DiscountValidator discountValidator;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
-            Validator validator = new DiscountValidator();
-            ValidationResult validationResult = validator.validate(request);
+            ValidationResult validationResult = discountValidator.validate(request);
             if (validationResult.isValid()) {
                 Long id = Long.parseLong(request.getParameter("userId"));
                 double discount = Double.parseDouble(request.getParameter("discountAmount"));

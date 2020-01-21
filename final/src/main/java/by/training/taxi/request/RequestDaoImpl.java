@@ -100,14 +100,13 @@ public class RequestDaoImpl implements RequestDao {
     }
 
     @Override
-    public boolean delete(RequestDto requestDto) throws DAOException {
-        RequestEntity entity = fromDto(requestDto);
+    public boolean delete(Long id) throws DAOException {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(DELETE_QUERY)){
-            updateStmt.setLong(1, entity.getId());
+            updateStmt.setLong(1, id);
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            log.error("Failed to delete request");
+            log.error("Failed to delete request " + id);
             throw new DAOException();
         }
     }

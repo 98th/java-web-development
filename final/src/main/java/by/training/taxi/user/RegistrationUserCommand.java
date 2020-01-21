@@ -5,16 +5,13 @@ import by.training.taxi.car.CarDto;
 import by.training.taxi.command.Command;
 import by.training.taxi.command.CommandException;
 import by.training.taxi.contact.ContactDto;
-import by.training.taxi.discount.DiscountDto;
 import by.training.taxi.driver.DriverDto;
 
-import by.training.taxi.role.Role;
 import by.training.taxi.util.Md5Util;
 import by.training.taxi.util.RequestUtil;
-import by.training.taxi.validator.DriverDataValidator;
-import by.training.taxi.validator.UserDataValidator;
+import by.training.taxi.validator.DriverValidator;
+import by.training.taxi.validator.UserAccountValidator;
 import by.training.taxi.validator.ValidationResult;
-import by.training.taxi.validator.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -24,21 +21,21 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import static by.training.taxi.ApplicationConstants.*;
-import static by.training.taxi.role.Role.CLIENT;
-import static by.training.taxi.role.Role.DRIVER;
+import static by.training.taxi.user.Role.CLIENT;
+import static by.training.taxi.user.Role.DRIVER;
 
 @Bean(name=POST_USER_REGISTRATION)
 @AllArgsConstructor
 @Log4j
 public class RegistrationUserCommand implements Command {
     private UserAccountService userAccountService;
+    private DriverValidator driverValidator;
+    private UserAccountValidator userAccountValidator;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
-            Validator userInfoValidator = new UserDataValidator();
-            Validator driverInfoValidator = new DriverDataValidator();
-            ValidationResult userResult = userInfoValidator.validate(request);
+            ValidationResult userResult = userAccountValidator.validate(request);
             if (!userResult.isValid()) {
                 setErrors(request, userResult);
                 RequestUtil.forward(request, response, GET_USER_REGISTRATION);
@@ -77,8 +74,8 @@ public class RegistrationUserCommand implements Command {
                         .color(carColor)
                         .model(carModel)
                         .licencePlateNum(licencePlateNumber)
-                        .driverId(driverDto.getId())
                         .build();
+//TODO
                 driverDto.setCar(carDto);
                 userAccountDto.setDriver(driverDto);
             }

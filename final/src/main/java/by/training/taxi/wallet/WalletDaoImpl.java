@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @Log4j
 @AllArgsConstructor
 public class WalletDaoImpl implements WalletDao {
-    private final static AtomicLong COUNTER = new AtomicLong(1);
 
     private static final String SELECT_ALL_QUERY = "select wallet_id, amount from user_wallet";
     private static final String SELECT_BY_ID_QUERY = "select wallet_id, amount from user_wallet where wallet_id = ?";
@@ -63,14 +62,13 @@ public class WalletDaoImpl implements WalletDao {
     }
 
     @Override
-    public boolean delete(WalletDto walletDto) throws DAOException {
-        WalletEntity entity = fromDto(walletDto);
+    public boolean delete(Long id) throws DAOException {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(DELETE_QUERY)){
-            updateStmt.setLong(1, entity.getId());
+            updateStmt.setLong(1, id);
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            log.error("Failed to delete wallet");
+            log.error("Failed to delete wallet " + id);
             throw new DAOException();
         }
     }
