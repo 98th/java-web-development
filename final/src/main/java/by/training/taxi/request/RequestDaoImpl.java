@@ -127,7 +127,8 @@ public class RequestDaoImpl implements RequestDao {
             log.error("Failed to get the request by id");
             throw new DAOException("Failed to get the request by id");
         }
-        return result.stream().map(this::fromEntity).findFirst().orElseThrow(() -> new IllegalArgumentException("Entity not found with given id: " + id));
+        return result.stream().map(this::fromEntity).findFirst()
+                .orElseThrow(() -> new DAOException("Entity not found with given id: " + id));
     }
 
     @Override

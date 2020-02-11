@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum CommandType {
-    USER_PAGE_CMD("getUserPage"),
+    USER_PROFILE_CMD("getUserProfile"),
     GET_REQUEST_HISTORY("getRequestHistory"),
     POST_USER_REGISTRATION("postUserReg"),
     POST_EDIT_USER_INFO ("postEdinUserInfo"),

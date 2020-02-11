@@ -22,7 +22,7 @@ public class UserAccountDaoTest {
 
     @Before
     public void createTable() throws SQLException {
-        String createEnum = "CREATE TYPE user_role " +
+        String createEnum = "CREATE TYPE IF NOT EXISTS  user_role " +
                 "AS ENUM ('client', 'driver', 'admin');";
         String sql = "CREATE TABLE user_account" +
                 "(" +
@@ -30,37 +30,24 @@ public class UserAccountDaoTest {
                 "    login character varying NOT NULL," +
                 "    password character varying," +
                 "    is_locked boolean," +
-                "    user_role user_role" +
+                "    user_role user_role," +
+                "    avatar binary" +
                 ");";
         executeSql(createEnum);
         executeSql(sql);
+        String insertUser = "INSERT INTO user_account (login, password, is_locked, user_role) " +
+                "                VALUES ('testUser0', '123456', false, 'driver')";
+        executeSql(insertUser);
+        String insertUser2 = "INSERT INTO user_account (login, password, is_locked, user_role) " +
+                "                VALUES ('testUser1', '654321', true, 'admin')";
+        executeSql(insertUser2);
     }
 
     @Test
     public void shouldFindAllUsers() throws DAOException {
         UserAccountDao userDao = ApplicationContext.getInstance().getBean(UserAccountDao.class);
         Assert.assertNotNull(userDao);
-        UserAccountDto dto1 = UserAccountDto.builder()
-                .id(1L)
-                .password("s9856eds5fs")
-                .login("testUser1")
-                .role(DRIVER)
-                .isLocked(false)
-                .build();
-        UserAccountDto dto2 = UserAccountDto.builder()
-                .id(2L)
-                .password("s9856eds5fs")
-                .login("testUser2")
-                .role(DRIVER)
-                .isLocked(true)
-                .build();
-        long saved1 = userDao.save(dto1);
-        long saved2 = userDao.save(dto2);
         Assert.assertEquals(2, userDao.findAll().size());
-        boolean isDeleted1 = userDao.delete(saved1);
-        Assert.assertTrue(isDeleted1);
-        boolean isDeleted2 = userDao.delete(saved2);
-        Assert.assertTrue(isDeleted2);
     }
 
     @Test
@@ -68,14 +55,13 @@ public class UserAccountDaoTest {
         UserAccountDao userDao = ApplicationContext.getInstance().getBean(UserAccountDao.class);
         Assert.assertNotNull(userDao);
         UserAccountDto dto = UserAccountDto.builder()
-                .id(1L)
                 .password("s9856eds5fs")
                 .login("testUser0")
                 .role(DRIVER)
                 .isLocked(false)
                 .build();
         long userId  = userDao.save(dto);
-        Assert.assertEquals(1, userId);
+        Assert.assertEquals(3, userId);
         boolean isUserPresent = userDao.getByLogin("testUser0").isPresent();
         Assert.assertTrue(isUserPresent);
         Assert.assertTrue(userDao.delete(userId));
@@ -85,17 +71,16 @@ public class UserAccountDaoTest {
     public void shouldFindUserByLogin() throws DAOException {
         UserAccountDao userDao = ApplicationContext.getInstance().getBean(UserAccountDao.class);
         Assert.assertNotNull(userDao);
-        UserAccountDto dto = UserAccountDto.builder()
-                .id(1L)
-                .password("s9856eds5fs")
-                .login("testUser2")
-                .role(DRIVER)
-                .isLocked(false)
-                .build();
-        long userId  = userDao.save(dto);
-        Assert.assertEquals(1, userId);
-        boolean isUserPresent = userDao.getByLogin("testUser2").isPresent();
+        boolean isUserPresent = userDao.getByLogin("testUser0").isPresent();
         Assert.assertTrue(isUserPresent);
+    }
+
+    @Test
+    public void shouldNotFindUserByLogin() throws DAOException {
+        UserAccountDao userDao = ApplicationContext.getInstance().getBean(UserAccountDao.class);
+        Assert.assertNotNull(userDao);
+        boolean isUserPresent = userDao.getByLogin("testUser2").isPresent();
+        Assert.assertFalse(isUserPresent);
     }
 
     @After

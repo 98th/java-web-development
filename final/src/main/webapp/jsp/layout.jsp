@@ -18,9 +18,6 @@
     <link rel="stylesheet" href="static/style/css/material.min.css">
     <script src="js/material.min.js"></script>
     <script src="js/main.js"></script>
-    <script type="module" src ="js/dialog-polyfill-master/index.js"></script>
-    <link rel="stylesheet" type="text/css" href="js/dialog-polyfill-master/dist/dialog-polyfill.css" />
-
 </head>
 <body>
 

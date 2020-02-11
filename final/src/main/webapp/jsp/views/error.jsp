@@ -11,9 +11,15 @@
 </head>
 <body>
 <div class="banner-content"  id="child">
-    <c:if test="${not empty error}">
-        <h1 class="pb-30"> <fmt:message key="${requestScope.error}"/> </h1>
-    </c:if>
+
+    <c:choose>
+        <c:when test="${not empty error}">
+            <h1 class="pb-30"> <fmt:message key="${requestScope.error}"/> </h1>
+        </c:when>
+        <c:otherwise>
+            <h1 class="pb-30"> <fmt:message key="error.general"/> </h1>
+        </c:otherwise>
+    </c:choose>
 </div>
 
 </body>

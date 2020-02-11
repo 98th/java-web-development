@@ -12,5 +12,5 @@ public class UserAccountEntity {
     private String password;
     private Role role;
     private boolean isLocked;
-
+    private byte[] avatar;
 }

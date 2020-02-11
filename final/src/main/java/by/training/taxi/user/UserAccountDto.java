@@ -5,6 +5,7 @@ import by.training.taxi.discount.DiscountDto;
 import by.training.taxi.driver.DriverDto;
 import by.training.taxi.location.LocationDto;
 
+import by.training.taxi.util.ImageUtil;
 import by.training.taxi.wallet.WalletDto;
 import lombok.*;
 
@@ -16,9 +17,9 @@ public class UserAccountDto {
     private Long id;
     private String login;
     private String password;
-    private byte[] avatar;
     private Role role;
     private boolean isLocked;
+    private byte[] avatar;
 
     private ContactDto contact;
     private WalletDto wallet;
@@ -29,5 +30,9 @@ public class UserAccountDto {
 
     public boolean getIsLocked() {
         return isLocked;
+    }
+
+    public  String getToBase64()  {
+        return ImageUtil.toBase64(avatar);
     }
 }

@@ -4,7 +4,6 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-
 </head>
 
 <body>
@@ -80,9 +79,6 @@
         </c:choose>
     </div>
 
-
-    <script src="js/dialog-polyfill-master/dist/dialog-polyfill.js"></script>
-
     <script>
         var dialog = document.querySelector('dialog');
         var  showDialogButtons = document.querySelectorAll('.show-dialog');
@@ -98,7 +94,6 @@
             dialog.close();
         });
     </script>
-
 </div>
 </body>
 </html>

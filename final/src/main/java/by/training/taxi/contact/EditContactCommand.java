@@ -52,7 +52,7 @@ public class EditContactCommand implements Command {
             if (DRIVER == userAccountDto.getRole()) {
                 driverService.updateWithInfo(buildDriver(request, response, userAccountDto, contact));
             }
-            RequestUtil.sendRedirectToCommand(request, response, USER_PAGE_CMD);
+            RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
         } catch (ContactServiceException | DriverServiceException e) {
             throw new CommandException(e.getMessage());
         }

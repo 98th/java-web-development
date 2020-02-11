@@ -83,7 +83,6 @@ public class UserAccountServiceImpl implements UserAccountService{
         }
     }
 
-
     @Override
     @Transactional
     public void transfer(long userId, long driverId, BigDecimal amount)  throws  UserServiceException {
@@ -135,51 +134,41 @@ public class UserAccountServiceImpl implements UserAccountService{
         }
     }
 
-
     @Override
     @Transactional
     public long registerUser(UserAccountDto user) throws UserServiceException {
         try {
-            Long id = userAccountDao.save(user);
+            Long userId = userAccountDao.save(user);
             ContactDto contact = user.getContact();
-            contact.setUserId(id);
+            contact.setUserId(userId);
             contactDao.save(contact);
-            user.setContact(contact);
             WalletDto wallet = WalletDto.builder()
-                    .id(id)
+                    .userId(userId)
                     .amount(new BigDecimal("0"))
                     .build();
             walletDao.save(wallet);
-            user.setWallet(wallet);
             DiscountDto discount = DiscountDto.builder()
-                    .id(id)
+                    .id(userId)
                     .amount(0)
                     .build();
             LocationDto location = LocationDto.builder()
-                    .id(id)
+                    .id(userId)
                     .latitude(LocationUtil.generateLatitude())
                     .longitude(LocationUtil.generateLongitude())
                     .build();
             locationDao.save(location);
-            user.setLocation(location);
             discountDao.save(discount);
-            user.setDiscount(discount);
-            user.setId(id);
             if (DRIVER == user.getRole()) {
                 DriverDto driver = user.getDriver();
-                driver.setLocation(location);
-                driver.setUserId(id);
-                Long driverId = driverDao.save(driver);
+                driver.setUserId(userId);
+                driverDao.save(driver);
                 CarDto car = driver.getCar();
-                //TODO
                 carDao.save(car);
-                driver.setCar(car);
-                user.setDriver(driver);
             }
-            return id;
-        } catch (DAOException  e) {
+            return userId;
+        } catch (DAOException e) {
             log.error("Failed to register user");
-            throw new UserServiceException();
+            throw new UserServiceException(e.getMessage());
         }
     }
 

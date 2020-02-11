@@ -6,8 +6,7 @@
 <!DOCTYPE html>
 <html>
 <header id="header">
-    <div class="header-top">
-    </div>
+    <div class="header-top"></div>
     <div class="container main-menu">
         <div class="row justify-content-between d-flex"  style="float: right;">
             <nav id="nav-menu-container">

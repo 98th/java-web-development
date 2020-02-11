@@ -29,7 +29,7 @@ public class FillWalletCommand implements Command {
             UserAccountDto user = (UserAccountDto)request.getSession().getAttribute(PARAM_USER);
             userAccountService.fill(user.getId(), amount);
             log.info("wallet was updated with value " + amount);
-            RequestUtil.sendRedirectToCommand(request, response, USER_PAGE_CMD);
+            RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
         } catch (WalletServiceException e) {
             throw new CommandException("Failed to fill the wallet ");
         }

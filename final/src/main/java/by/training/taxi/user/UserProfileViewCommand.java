@@ -28,10 +28,10 @@ import javax.servlet.http.HttpServletResponse;
 import static by.training.taxi.ApplicationConstants.*;
 import static by.training.taxi.user.Role.DRIVER;
 
-@Bean(name=USER_PAGE_CMD)
+@Bean(name=USER_PROFILE_CMD)
 @AllArgsConstructor
 @Log4j
-public class UserPageViewCommand implements Command {
+public class UserProfileViewCommand implements Command {
     private DriverService driverService;
     private ContactService contactService;
     private LocationService locationService;
@@ -58,7 +58,7 @@ public class UserPageViewCommand implements Command {
                 userAccountDto.setDriver(driver);
             }
             request.getSession().setAttribute(PARAM_USER, userAccountDto);
-            RequestUtil.forward(request, response, GET_USER_PAGE_VIEW);
+            RequestUtil.forward(request, response, GET_USER_PROFILE_VIEW);
         } catch (WalletServiceException | ContactServiceException | LocationServiceException |
                 DiscountServiceException | DriverServiceException e) {
             throw new CommandException(e.getMessage());

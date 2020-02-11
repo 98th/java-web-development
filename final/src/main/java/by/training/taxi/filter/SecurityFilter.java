@@ -49,13 +49,13 @@ public class SecurityFilter implements Filter {
         Optional<CommandType> commandOptional = CommandType.getCommandFromString(command);
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         if (!commandOptional.isPresent()){
-        //    log.info("unknown command"  + command);
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             Role currentUserRole = (Role) httpServletRequest.getSession().getAttribute(PARAM_USER_ROLE);
             if(currentUserRole == null) {
                 currentUserRole = Role.GUEST;
             }
+            log.info("current user role " + currentUserRole.getValue());
             List<Role> commandRoles = permissions.get(commandOptional.get());
             if (commandRoles.contains(currentUserRole)) {
                 filterChain.doFilter(servletRequest, servletResponse);

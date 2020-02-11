@@ -5,6 +5,8 @@ import by.training.taxi.contact.ContactDto;
 import by.training.taxi.dao.ConnectionManager;
 import by.training.taxi.dao.DAOException;
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
+@RunWith(JUnit4.class)
 public class ContactDaoTest {
 
     @BeforeClass

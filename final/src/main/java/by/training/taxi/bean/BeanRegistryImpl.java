@@ -189,7 +189,6 @@ public class BeanRegistryImpl implements BeanRegistry {
         Class<?>[] interfaces = info.getInterfaces().toArray(toProxy);
         return (T) Proxy.newProxyInstance(this.getClass().getClassLoader(), interfaces,
                 (proxy, method, args) -> {
-
                     try {
                         for (BeanInterceptor interceptor : interceptors) {
                             interceptor.before(proxy, service, method, args);

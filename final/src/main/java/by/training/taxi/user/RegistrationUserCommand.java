@@ -7,6 +7,7 @@ import by.training.taxi.command.CommandException;
 import by.training.taxi.contact.ContactDto;
 import by.training.taxi.driver.DriverDto;
 
+import by.training.taxi.util.LocationUtil;
 import by.training.taxi.util.Md5Util;
 import by.training.taxi.util.RequestUtil;
 import by.training.taxi.validator.DriverValidator;
@@ -47,8 +48,7 @@ public class RegistrationUserCommand implements Command {
             String firstName = request.getParameter(PARAM_USER_F_NAME);
             String lastName = request.getParameter(PARAM_USER_L_NAME);
             String phone = request.getParameter(PARAM_USER_PHONE);
-            Role role = Role.getRoleFromText(request.getParameter(PARAM_USER_ROLE)).
-                    orElse(CLIENT);
+            Role role = Role.getRoleFromText(request.getParameter(PARAM_USER_ROLE)).orElse(CLIENT);
             UserAccountDto userAccountDto = UserAccountDto.builder()
                     .login(login)
                     .password(password)
@@ -67,34 +67,32 @@ public class RegistrationUserCommand implements Command {
                 String carColor = request.getParameter(PARAM_CAR_COLOR);
                 String carModel = request.getParameter(PARAM_CAR_MODEL);
                 String licencePlateNumber = request.getParameter(PARAM_CAR_LICENCE_PLATE_NUM);
-                DriverDto driverDto = DriverDto.builder()
-                        .drivingLicenceNum(drivingLicence)
-                        .build();
                 CarDto carDto = CarDto.builder()
                         .color(carColor)
                         .model(carModel)
                         .licencePlateNum(licencePlateNumber)
                         .build();
-//TODO
-                driverDto.setCar(carDto);
+                DriverDto driverDto = DriverDto.builder()
+                        .drivingLicenceNum(drivingLicence)
+                        .isWorking(false)
+                        .car(carDto)
+                        .build();
                 userAccountDto.setDriver(driverDto);
             }
             userAccountService.registerUser(userAccountDto);
             request.getSession().setAttribute(PARAM_USER, userAccountDto);
             request.getSession().setAttribute(PARAM_USER_ROLE, role);
-            RequestUtil.sendRedirectToCommand(request, response, USER_PAGE_CMD);
-        } catch (UserServiceException | SQLException e) {
-            request.setAttribute("error", "error.saving_error");
+            RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
+        } catch (UserServiceException e) {
+            request.setAttribute(PARAM_ERROR, "error.saving_error");
             RequestUtil.forward(request, response, ERROR_VIEW);
         }
     }
 
-
-
     private boolean isLoginUnique(HttpServletRequest request) throws UserServiceException {
         boolean isLoginUnique = userAccountService.isLoginUnique(request.getParameter(PARAM_USER_LOGIN));
         if (!isLoginUnique) {
-            request.setAttribute("error", "error.invalid.login");
+            request.setAttribute(PARAM_ERROR, "error.invalid.login");
         }
         return isLoginUnique;
     }

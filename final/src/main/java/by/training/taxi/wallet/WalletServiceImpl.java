@@ -29,12 +29,28 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public WalletDto getById(Long id) throws WalletServiceException {
         try {
-            Optional<WalletDto> walletOptional = Optional.ofNullable(walletDao.getById(id));
-            return walletOptional.orElseGet(() -> new WalletDto(new BigDecimal("0"), id));
+            return walletDao.getById(id);
+        } catch (DAOException e) {
+            log.error(e.getMessage());
+            throw new WalletServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<WalletDto> getByUserId(Long id) throws WalletServiceException {
+        try {
+            return walletDao.getByUserId(id);
         } catch (DAOException e) {
             throw new WalletServiceException(e.getMessage());
         }
     }
 
-
+    @Override
+    public boolean delete(Long id) {
+        try {
+            return walletDao.delete(id);
+        } catch (DAOException e) {
+            return false;
+        }
+    }
 }

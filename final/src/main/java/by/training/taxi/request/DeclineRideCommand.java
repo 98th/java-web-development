@@ -24,7 +24,7 @@ public class DeclineRideCommand implements Command {
             requestDto.setRequestStatus(DECLINED);
             requestService.update(requestDto);
             if (requestService.update(requestDto)) {
-                RequestUtil.sendRedirectToCommand(request, response, USER_PAGE_CMD);
+                RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
             }
         } catch (RequestServiceException e) {
             throw new CommandException(e.getMessage());

@@ -19,15 +19,15 @@ import static by.training.taxi.user.Role.getRoleFromText;
 @Log4j
 public class UserAccountDaoImpl implements UserAccountDao {
 
-    private static final String SELECT_ALL_QUERY = "select id, login, password, user_role, is_locked from user_account";
-    private static final String SELECT_BY_ID_QUERY = "select id, login, password, user_role, is_locked from user_account where id = ?";
-    private static final String SELECT_BY_LOGIN_QUERY = "select id, login, password, user_role, is_locked from user_account where login = ?";
-    private static final String SELECT_BY_LOGIN_PASS_QUERY = "select id, login, password, user_role, is_locked from user_account where login = ? and password = ?";
+    private static final String SELECT_ALL_QUERY = "select id, login, password, user_role, is_locked, avatar from user_account";
+    private static final String SELECT_BY_ID_QUERY = "select id, login, password, user_role, is_locked, avatar from user_account where id = ?";
+    private static final String SELECT_BY_LOGIN_QUERY = "select id, login, password, user_role, is_locked, avatar from user_account where login = ?";
+    private static final String SELECT_BY_LOGIN_PASS_QUERY = "select id, login, password, user_role, is_locked, avatar from user_account where login = ? and password = ?";
     private static final String INSERT_QUERY = "insert into user_account (login, password, user_role, is_locked) values (?,?,?::user_role,?)";
-    private static final String UPDATE_QUERY = "update user_account set login=?, password=?, user_role=?::user_role, is_locked = ? where id = ?";
+    private static final String UPDATE_QUERY = "update user_account set login=?, password=?, user_role=?::user_role, is_locked = ?, avatar = ? where id = ?";
     private static final String DELETE_QUERY = "delete from user_account where id = ?";
     private static final String SELECT_ALL_WITH_CONTACT_QUERY = "SELECT UA.id, UA.login, UC.first_name, UC.last_name, UC.email, " +
-            "UC.phone, UA.user_role, UA.is_locked, D.discount_amount " +
+            "UC.phone, UA.user_role, UA.is_locked, UA.avatar,  D.discount_amount " +
             "FROM user_account AS UA LEFT JOIN user_contact AS UC ON UA.id = UC.user_account_id " +
             "JOIN discount AS D on D.discount_id = UA.id " +
             "WHERE UA.user_role = 'client' OR UA.user_role = 'admin'";
@@ -69,6 +69,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
             updateStmt.setString(++i, entity.getPassword());
             updateStmt.setString(++i, entity.getRole().getValue());
             updateStmt.setBoolean(++i, entity.isLocked());
+            updateStmt.setBytes(++i, entity.getAvatar());
             updateStmt.setLong(++i, entity.getId());
             return updateStmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -127,10 +128,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_WITH_CONTACT_QUERY)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Long id = resultSet.getLong("id");
-                String login = resultSet.getString("login");
-                String userRole = resultSet.getString("user_role");
-                boolean isLocked = resultSet.getBoolean("is_locked");
+                UserAccountEntity entity = parseResultSet(resultSet);
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
                 String phone = resultSet.getString("phone");
@@ -143,14 +141,10 @@ public class UserAccountDaoImpl implements UserAccountDao {
                         .build();
                 double amount = resultSet.getDouble("discount_amount");
                 DiscountDto discount = DiscountDto.builder().amount(amount).build();
-                UserAccountDto user = UserAccountDto.builder()
-                        .id(id)
-                        .login(login)
-                        .role(Role.getRoleFromText(userRole).get())
-                        .isLocked(isLocked)
-                        .discount(discount)
-                        .contact(contact)
-                        .build();
+
+                UserAccountDto user = fromEntity(entity);
+                user.setDiscount(discount);
+                user.setContact(contact);
                 result.add(user);
             }
             return result;
@@ -202,6 +196,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
         String password = resultSet.getString("password");
         Role role = getRoleFromText(resultSet.getString("user_role")).get();
         boolean isLocked = resultSet.getBoolean("is_locked");
+        byte [] avatar = resultSet.getBytes("avatar");
         return UserAccountEntity.builder()
                 .id(id)
                 .login(login)
@@ -218,6 +213,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());
         entity.setLocked(dto.getIsLocked());
+        entity.setAvatar(dto.getAvatar());
         return entity;
     }
 
@@ -228,6 +224,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
         dto.setPassword(entity.getPassword());
         dto.setRole(entity.getRole());
         dto.setLocked(entity.isLocked());
+        dto.setAvatar(entity.getAvatar());
         return dto;
     }
 }

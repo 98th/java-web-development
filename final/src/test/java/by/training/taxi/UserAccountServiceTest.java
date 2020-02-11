@@ -4,21 +4,16 @@ import by.training.taxi.car.CarDao;
 import by.training.taxi.contact.ContactDao;
 import by.training.taxi.contact.ContactDto;
 import by.training.taxi.dao.DAOException;
-import by.training.taxi.dao.TransactionManager;
 import by.training.taxi.discount.DiscountDao;
 import by.training.taxi.driver.DriverDao;
 import by.training.taxi.location.LocationDao;
-import by.training.taxi.location.LocationDto;
-import by.training.taxi.user.UserAccountDao;
-import by.training.taxi.user.UserAccountDto;
-import by.training.taxi.user.UserAccountService;
-import by.training.taxi.user.UserAccountServiceImpl;
+import by.training.taxi.user.*;
 import by.training.taxi.wallet.WalletDao;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -47,10 +42,13 @@ public class UserAccountServiceTest {
         userList.add(expectedUser);
 
         UserAccountDao mockUserDao = Mockito.mock(UserAccountDao.class);
+        Mockito.when(mockUserDao.save(Mockito.any())).thenReturn(1L);
         Mockito.when(mockUserDao.findAll()).thenReturn(userList);
         Mockito.when(mockUserDao.getByLogin("testUser0")).thenReturn(Optional.of(expectedUser));
         Mockito.when(mockUserDao.getByLogin("unknownUser")).thenThrow(new DAOException());
         Mockito.when(mockUserDao.getById(1L)).thenReturn(expectedUser);
+        Mockito.when(mockUserDao.getByLoginAndPassword("login", "pass")).thenReturn(Optional.of(expectedUser));
+        Mockito.when(mockUserDao.getByLoginAndPassword("login", "wrongPass")).thenThrow(new DAOException());
 
         WalletDao mockWalletDao = Mockito.mock(WalletDao.class);
         LocationDao mockLocationDao = Mockito.mock(LocationDao.class);
@@ -64,12 +62,28 @@ public class UserAccountServiceTest {
     }
 
     @Test
-    public void shouldRegisterUser () {
+    public void shouldRegisterUser () throws UserServiceException {
         UserAccountDto user = new UserAccountDto();
         user.setRole(CLIENT);
         ContactDto contact = new ContactDto();
-        LocationDto location = new LocationDto();
-        user.setLocation(location);
         user.setContact(contact);
+        userService.registerUser(user);
     }
+
+    @Test(expected = UserServiceException.class)
+    public void shouldNotFindByLoginAndPassword () throws UserServiceException {
+        Optional<UserAccountDto> user = userService.findByLoginAndPassword("login", "wrongPass");
+    }
+
+    @Test
+    public void shouldFindByLoginAndPassword () throws UserServiceException {
+        Optional<UserAccountDto> user = userService.findByLoginAndPassword("login", "pass");
+        Assert.assertEquals(1L, (long) user.get().getId());
+    }
+
+    @Test
+    public void shouldFindAllUsers() throws UserServiceException {
+        Assert.assertEquals(1, userService.findAll().size());
+    }
+
 }

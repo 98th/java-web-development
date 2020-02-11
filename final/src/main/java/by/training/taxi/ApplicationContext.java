@@ -24,10 +24,7 @@ import by.training.taxi.validator.ContactValidator;
 import by.training.taxi.validator.DiscountValidator;
 import by.training.taxi.validator.DriverValidator;
 import by.training.taxi.validator.UserAccountValidator;
-import by.training.taxi.wallet.FillWalletCommand;
-import by.training.taxi.wallet.WalletDaoImpl;
-import by.training.taxi.wallet.WalletServiceImpl;
-import by.training.taxi.wallet.WalletViewCommand;
+import by.training.taxi.wallet.*;
 
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -107,6 +104,7 @@ public class ApplicationContext implements BeanRegistry {
         registerBean(ContactValidator.class);
         registerBean(ConfirmRequestCommand.class);
         registerBean(DeclineRideCommand.class);
+        registerBean(DeleteWalletCommand.class);
         registerBean(DeleteRequestCommand.class);
         registerBean(DiscountServiceImpl.class);
         registerBean(DiscountDaoImpl.class);
@@ -122,7 +120,8 @@ public class ApplicationContext implements BeanRegistry {
         registerBean(LockUserCommand.class);
         registerBean(LoginUserViewCommand.class);
         registerBean(LogoutUserCommand.class);
-        registerBean(UserPageViewCommand.class);
+        registerBean(UpdateUserAvatarCommand.class);
+        registerBean(UserProfileViewCommand.class);
         registerBean(RequirementViewCommand.class);
         registerBean(RegistrationUserViewCommand.class);
         registerBean(RegistrationUserCommand.class);
