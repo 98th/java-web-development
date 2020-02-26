@@ -4,12 +4,12 @@ The application for booking a car.
 
 
 **Web Project:**
-*Servlet/JSP
-*data stored with PostgreSQL
-*Logging with Log4j
-*JUnit, Mockito tests
-*Validation on the client and server side.
-*BE|EN localization
+* Servlet/JSP
+* data stored with PostgreSQL
+* Logging with Log4j
+* JUnit, Mockito tests
+* Validation on the client and server side.
+* BE|EN localization
 
 **USER:**
 * can view a book history
