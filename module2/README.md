@@ -1,4 +1,4 @@
-# XML\XSD #
+# XML\XSD # 
 
 Create xml-file storing info about  entities of a certain area. XSD-schema must be disigned for xml-file  validation. Parsing of xml-file must be performed using DOM, SAX, StAX parsers. 
 
@@ -13,16 +13,12 @@ Create xml-file storing info about  entities of a certain area. XSD-schema must 
 * using Builder pattern for parsers
 *  Log4J2 
 * tests
-2. Алмазный фонд 
 
-Precious and semiprecious gems: 
+#Diamond Fund #
 
-Name – gem's name. 
-
-Preciousness – presious or semipresious. 
-
-Origin – quarry. 
-
-Visual parameters (several) – color, transparency, number of facets   
-
-Value – gem's weight
+* Precious and semiprecious gems: 
+* Name – gem's name. 
+* Preciousness – presious or semipresious. 
+* Origin – quarry. 
+* Visual parameters (several) – color, transparency, number of facets   
+* Value – gem's weight
