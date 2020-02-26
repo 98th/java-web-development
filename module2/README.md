@@ -14,7 +14,7 @@ Create xml-file storing info about  entities of a certain area. XSD-schema must 
 *  Log4J2 
 * tests
 
-#Diamond Fund #
+### Diamond Fund ###
 
 * Precious and semiprecious gems: 
 * Name – gem's name. 
