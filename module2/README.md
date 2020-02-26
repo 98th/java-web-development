@@ -14,9 +14,15 @@ Create xml-file storing info about  entities of a certain area. XSD-schema must 
 *  Log4J2 
 * tests
 2. Алмазный фонд 
+
 Precious and semiprecious gems: 
+
 Name – gem's name. 
+
 Preciousness – presious or semipresious. 
+
 Origin – quarry. 
+
 Visual parameters (several) – color, transparency, number of facets   
+
 Value – gem's weight
