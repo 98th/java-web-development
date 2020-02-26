@@ -16,18 +16,21 @@
     <link rel="stylesheet" href="static/style/css/bootstrap.css">
     <link rel="stylesheet" href="static/style/css/main.css">
     <link rel="stylesheet" href="static/style/css/material.min.css">
+    <link rel="stylesheet" href="static/style/css/dialog-polyfill.css">
     <script src="js/material.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/dialog-polyfill.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.js"></script>
 </head>
 <body>
 
 <div class="banner-area" id="parent">
     <c:choose>
         <c:when test="${not empty viewName}">
-            <jsp:include page="views/${viewName}.jsp" />
+            <jsp:include page="views/${viewName}.jsp"/>
         </c:when>
         <c:otherwise>
-            <jsp:include page="views/homeView.jsp" />
+            <jsp:include page="views/homeView.jsp"/>
         </c:otherwise>
     </c:choose>
 </div>

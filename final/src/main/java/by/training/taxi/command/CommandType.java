@@ -2,12 +2,10 @@ package by.training.taxi.command;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public enum CommandType {
-    USER_PROFILE_CMD("getUserProfile"),
-    GET_REQUEST_HISTORY("getRequestHistory"),
+    GET_USER_PROFILE_VIEW("userProfile"),
+    GET_REQUEST_LIST_VIEW("getRequestHistory"),
     POST_USER_REGISTRATION("postUserReg"),
     POST_EDIT_USER_INFO ("postEdinUserInfo"),
     POST_USER_LOGIN ("postUserLogin"),

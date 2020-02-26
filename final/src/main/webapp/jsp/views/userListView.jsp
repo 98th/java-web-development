@@ -9,6 +9,10 @@
 <body>
 <jsp:include page="headerUserPage.jsp"/>
 
+<c:if test="${not empty error}">
+    <h6 class="pb-30"> <fmt:message key="${requestScope.error}"/> </h6>
+</c:if>
+
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
         <c:choose>
@@ -48,27 +52,27 @@
                                 <form action="${pageContext.request.contextPath}/" method="POST">
                                     <input type="hidden" name="userId" value="${u.id}"/>
                                     <input type="hidden" name="commandName" value="lockUser"/>
-                                    <input class="mdl-button mdl-js-button" type="submit" value="lock/unlock user"/>
+                                    <input class="mdl-button mdl-js-button" type="submit" value="<fmt:message key="label.lock"/>"/>
                                 </form>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric">
                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                 <button  id="show-dialog-btn${count}" type="button" class="mdl-button show-dialog"> <fmt:message key="label.additional.inf"/>  </button>
+                                <dialog class="mdl-dialog">
+                                    <h6 class="mdl-dialog__title"> ${u.contact.firstName} ${u.contact.lastName} </h6>
+                                    <div class="mdl-dialog__content">
+                                        <p>
+                                                ${u.contact.email}
+                                            </br>
+                                                ${u.contact.phone}
+                                        </p>
+                                    </div>
+                                    <div class="mdl-dialog__actions">
+                                        <button type="button" class="mdl-button close"><fmt:message key="label.back"/></button>
+                                    </div>
+                                </dialog>
                             </td>
                         </tr>
-                        <dialog class="mdl-dialog">
-                            <h6 class="mdl-dialog__title"> ${u.contact.firstName} ${u.contact.lastName} </h6>
-                            <div class="mdl-dialog__content">
-                                <p>
-                                        ${u.contact.email}
-                                    </br>
-                                        ${u.contact.phone}
-                                </p>
-                            </div>
-                            <div class="mdl-dialog__actions">
-                                <button type="button" class="mdl-button close"><fmt:message key="label.back"/></button>
-                            </div>
-                        </dialog>
                     </c:forEach>
                     </tbody>
                 </table>
@@ -79,7 +83,9 @@
         </c:choose>
     </div>
 
+
     <script>
+        window.dialogPolyfill = dialogPolyfill;
         var dialog = document.querySelector('dialog');
         var  showDialogButtons = document.querySelectorAll('.show-dialog');
         if (!dialog.showModal) {
@@ -94,6 +100,7 @@
             dialog.close();
         });
     </script>
+
 </div>
 </body>
 </html>

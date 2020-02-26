@@ -13,15 +13,5 @@ public interface DriverDao extends CRUDDao<Long, DriverDto> {
     DriverDto getWithInfo(Long id) throws DAOException;
     List<DriverDto> findAll() throws DAOException;
     List<DriverDto> findAllWithInfo() throws DAOException;
-   /* boolean acceptRequest(RequestDto requestDto);
-    boolean declineRequest(RequestDto requestDto);
-    RequestDto getSelectedRequest();
-    boolean setStatus(final RequestStatus status);
-    RequestStatus getStatus();
-
-    boolean startWaiting();
-    int endWaiting();
-    boolean leaveWaiting();
-    boolean getPayment();
-    boolean closeOrder(); */
+    DriverDto getByCarId(Long id) throws DAOException;
 }

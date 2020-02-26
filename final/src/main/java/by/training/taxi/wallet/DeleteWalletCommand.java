@@ -11,8 +11,8 @@ import lombok.extern.log4j.Log4j;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static by.training.taxi.ApplicationConstants.GET_USER_PROFILE_VIEW;
 import static by.training.taxi.ApplicationConstants.POST_DELETE_WALLET;
-import static by.training.taxi.ApplicationConstants.USER_PROFILE_CMD;
 
 @Bean(name = POST_DELETE_WALLET)
 @AllArgsConstructor
@@ -25,6 +25,6 @@ public class DeleteWalletCommand implements Command {
         Long id = Long.parseLong(request.getParameter("walletId"));
         walletService.delete(id);
         log.info("wallet " + id + " has been deleted");
-        RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
+        RequestUtil.sendRedirectToCommand(request, response, GET_USER_PROFILE_VIEW);
     }
 }

@@ -8,7 +8,7 @@
 <form name="loginForm" method="POST" action="app" class="header-right" id="child" >
     <h4 class="pb-30"><fmt:message key="label.welcome"/></h4>
         <c:if test="${not empty error}">
-        <h6 class="pb-30"> <fmt:message key="${requestScope.error}"/> </h6>
+             <h6 class="pb-30"> <fmt:message key="${requestScope.error}"/> </h6>
         </c:if>
         </br>
     <form class="form">

@@ -1,8 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags/nav" %>
-
 
 <%@ page import="by.training.taxi.user.Role" %>
 
@@ -11,16 +10,18 @@
 
 <!DOCTYPE html>
 <body>
+
 <div class="header-right" id="child">
     <c:set var="avatar" value="${pageContext.request.contextPath}/static/style/img/default-avatar.png"/>
     <c:if test="${sessionScope.user.avatar != null}">
         <c:set var="avatar" value="data:image/jpg;base64,${sessionScope.user.toBase64()}"/>
     </c:if>
-    <img src="${avatar}" />
+    <img src="${avatar}" class="avatar"/>
     <script>
         function getFile() {
             document.getElementById("upfile").click();
         }
+
         function sub() {
             document.getElementById('myForm').submit();
         }
@@ -29,17 +30,17 @@
         .hidden {
             height: 0;
             width: 0;
-            overflow:hidden;
+            overflow: hidden;
         }
     </style>
-    <div id="yourBtn" class="btn btn-default btn-lg btn-block text-center text-uppercase" onclick="getFile()">click to upload a file</div>
+    <div class="btn btn-default btn-lg btn-block text-center text-uppercase" onclick="getFile()">
+        <fmt:message key="links.change.avatar"/></div>
     <div class="hidden">
-        <form name="myForm"
-              id="myForm"
-              action=""
-              method="POST"
+        <form name="myForm" id="myForm" action="${pageContext.request.contextPath}/" method="POST"
               enctype='multipart/form-data'>
-            <input name="userAvatar" id="upfile" type="file" value="updateAvatar" onchange="sub()"/>
+            <input type="hidden" name="commandName" value="updateAvatar"/>
+            <input name="userAvatar" id="upfile" type="file" value="userAvatar" onchange="sub()"
+                   accept="image/jpeg,image/png"/>
         </form>
     </div>
     <!-- user info -->
@@ -69,6 +70,9 @@
                 </c:when>
                 <c:when test="${ Role.CLIENT == sessionScope.userRole}">
                     <nav:user-actions/>
+                </c:when>
+                <c:when test="${ Role.DRIVER == sessionScope.userRole}">
+                    <nav:driver-actions/>
                 </c:when>
             </c:choose>
         </div>

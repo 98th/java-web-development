@@ -7,6 +7,11 @@
 
 <div name="userInfo" method="POST" action="app" class="header-right" id="child">
     <form class="form">
+        <c:if test="${not empty error}">
+            <c:forEach items="${errors}" var="e">
+                <h6 class="pb-30"> <fmt:message key="${requestScope.error}"/> </h6>
+            </c:forEach>
+        </c:if>
         <div class="from-group">
             <input type="hidden" name="commandName" value="postEditUserInfo"/>
             <input class="form-control txt-field"  type="text" name="firstName"

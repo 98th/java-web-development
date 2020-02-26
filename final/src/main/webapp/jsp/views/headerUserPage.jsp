@@ -12,7 +12,7 @@
         <div class="row justify-content-between d-flex"  style="float: right;">
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
-                    <a class="mdl-navigation__link" href="?${ApplicationConstants.CMD_REQ_PARAMETER}=${ApplicationConstants.USER_PROFILE_CMD}"><fmt:message key="links.account"/></a>
+                    <a class="mdl-navigation__link" href="?${ApplicationConstants.CMD_REQ_PARAMETER}=${ApplicationConstants.GET_USER_PROFILE_VIEW}"><fmt:message key="links.account"/></a>
                     <a class="mdl-navigation__link" href="?${ApplicationConstants.CMD_REQ_PARAMETER}=${ApplicationConstants.LOGOUT_CMD}"><fmt:message key="links.logout"/></a>
                     <nav:lang />
                 </ul>

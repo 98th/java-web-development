@@ -1,5 +1,7 @@
 package by.training.taxi.driver;
 
+import by.training.taxi.dao.DAOException;
+
 import java.util.List;
 
 public interface DriverService {
@@ -11,5 +13,5 @@ public interface DriverService {
     List<DriverDto> findAll() throws DriverServiceException;
     List<DriverDto> findAllWithInfo()  throws DriverServiceException;
     boolean updateWithInfo(DriverDto driverDto)  throws DriverServiceException;
-
+    DriverDto getByCarId(Long id) throws DriverServiceException;
 }

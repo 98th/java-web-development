@@ -12,6 +12,12 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
     private CarDao carDao;
 
+    @Override
+    public List<CarDto> getAllFree() throws CarServiceException {
+        try {
+            return carDao.getAllFree();
+        } catch (DAOException e) {throw  new CarServiceException(e.getMessage());}
+    }
 
     @Override
     public List<CarDto> getCarsWithRequirement(String requirementId) throws CarServiceException {
