@@ -1,17 +1,12 @@
 package by.training.taxi.util;
 
-import by.training.taxi.validator.ValidationResult;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import static by.training.taxi.ApplicationConstants.PARAM_ERROR;
 import static by.training.taxi.ApplicationConstants.VIEWNAME_REQ_PARAMETER;
 
 @Log4j
@@ -43,13 +38,6 @@ public class RequestUtil {
         } catch (IOException e) {
             log.error("Failed to redirect to command", e);
             throw new RequestUtilException(e);
-        }
-    }
-
-    public static void setErrors(HttpServletRequest request, ValidationResult vr) {
-        for (Map.Entry<String, String> result : vr.getResult().entrySet()) {
-            request.setAttribute(result.getKey(), result.getValue());
-
         }
     }
 }

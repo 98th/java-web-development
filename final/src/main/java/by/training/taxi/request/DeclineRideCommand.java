@@ -10,20 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static by.training.taxi.ApplicationConstants.*;
-import static by.training.taxi.request.RequestStatus.CANCELLED;
+import static by.training.taxi.request.RequestStatus.DECLINED;
 
-@Bean(name = POST_CANCEL_RIDE)
+@Bean(name=DECLINE_CMD)
 @AllArgsConstructor
-public class CancelRideCommand implements Command {
+public class DeclineRideCommand implements Command {
     private RequestService requestService;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             RequestDto requestDto = (RequestDto) request.getSession().getAttribute(PARAM_REQUEST);
-            requestDto.setRequestStatus(CANCELLED);
+            requestDto.setRequestStatus(DECLINED);
             requestService.update(requestDto);
-            RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
+            if (requestService.update(requestDto)) {
+                RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
+            }
         } catch (RequestServiceException e) {
             throw new CommandException(e.getMessage());
         }

@@ -62,12 +62,6 @@ public class UserAccountServiceTest {
     }
 
     @Test
-    public void shouldTestIfLoginUnique () throws UserServiceException {
-        boolean isLoginUnique = userService.isLoginUnique("testUser0");
-        Assert.assertFalse(isLoginUnique);
-    }
-
-    @Test
     public void shouldRegisterUser () throws UserServiceException {
         UserAccountDto user = new UserAccountDto();
         user.setRole(CLIENT);
@@ -91,7 +85,5 @@ public class UserAccountServiceTest {
     public void shouldFindAllUsers() throws UserServiceException {
         Assert.assertEquals(1, userService.findAll().size());
     }
-
-
 
 }

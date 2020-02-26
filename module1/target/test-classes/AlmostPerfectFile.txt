@@ -1,7 +1,0 @@
-type:ertyui|model:TTTTTTTTT|passengers:yio0|fuelConsumption:-1856254|loadCapacity:52g8.84|speed:12g5|missileNumber:5
-type:military|model:K855|passengers:1|fuelConsumption:86|loadCapacity:578.64|speed:122|missileNumber:31
-type:military|model:W785|passengers:57|fuelConsumption:21|loadCapacity:247.57|speed:146|missileNumber:48
-type:military|model:D456|passengers:24|fuelConsumption:48|loadCapacity:100|speed:157|missileNumber:12
-type:medical|model:K451|passengers:4|fuelConsumption:18|loadCapacity:50|speed:125|resuscitationEquipment:true|firstAidKits:5
-type:medical|model:W854|passengers:3|fuelConsumption:23|loadCapacity:54|speed:78|resuscitationEquipment:false|firstAidKits:2
-type:medical|model:V894|passengers:54|fuelConsumption:78|loadCapacity:37|speed:175|resuscitationEquipment:true|firstAidKits:1

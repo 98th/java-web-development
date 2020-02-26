@@ -444,21 +444,3 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: auto;
     margin-left: auto;
 }
-
-.img-icons {
-    height: 25px;
-    width:30px;
-    background-color:#ffffff;
-}
-
-.avatar {
-    height:150px;
-    width:150px;
-    border-radius:50%;
-    object-fit: cover;
-}
-
-.requirement {
-    position:absolute;
-    margin-top:-9px;
-}

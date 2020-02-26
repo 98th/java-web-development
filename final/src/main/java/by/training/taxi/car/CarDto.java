@@ -15,7 +15,4 @@ public class CarDto {
     private String model;
     private String licencePlateNum;
     private Set<RequirementType> requirement;
-
-    private String waitingTime;
-    private double price;
 }

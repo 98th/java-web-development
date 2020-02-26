@@ -48,7 +48,7 @@ public class UserAccountServiceImpl implements UserAccountService{
             WalletDto wallet = walletDao.getById(id);
             BigDecimal sum = wallet.getAmount().add(amount);
             wallet.setAmount(sum);
-            return walletDao.update(wallet);
+            return  walletDao.update(wallet);
         } catch (DAOException e) {
             throw new WalletServiceException(e.getMessage());
         }
@@ -74,12 +74,12 @@ public class UserAccountServiceImpl implements UserAccountService{
     }
 
     @Override
-    public boolean update(UserAccountDto userAccountDto) {
+    public boolean update(UserAccountDto userAccountDto) throws UserServiceException {
         try {
             return userAccountDao.update(userAccountDto);
         } catch (DAOException e) {
             log.error("User updating exception");
-            return false;
+            throw new UserServiceException(e.getMessage());
         }
     }
 
@@ -117,10 +117,8 @@ public class UserAccountServiceImpl implements UserAccountService{
             userAccountDao.update(user);
             ContactDto contact = user.getContact();
             contactDao.update(contact);
-            List<WalletDto> wallets = user.getWallets();
-            for (WalletDto i : wallets) {
-                walletDao.update(i);
-            }
+            WalletDto wallet = user.getWallet();
+            walletDao.update(wallet);
             LocationDto location = user.getLocation();
             locationDao.update(location);
             if (DRIVER == user.getRole()) {

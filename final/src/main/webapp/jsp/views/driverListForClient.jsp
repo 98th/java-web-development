@@ -14,14 +14,9 @@
                     <tr>
                         <th class="mdl-data-table__cell--non-numeric"><fmt:message key="contact.f.name"/></th>
                         <th class="mdl-data-table__cell--non-numeric"><fmt:message key="contact.l.name"/></th>
-                        <th class="mdl-data-table__cell--non-numeric"><fmt:message key="contact.phone"/></th>
                         <th class="mdl-data-table__cell--non-numeric"><fmt:message key="driver.drivingLicenceNum"/></th>
                         <th class="mdl-data-table__cell--non-numeric"><fmt:message key="driver.carModel"/></th>
-                        <c:choose>
-                            <c:when test="${Role.ADMIN == sessionScope.userRole}">
-                                <th class="mdl-data-table__cell--non-numeric"><fmt:message key="user.blocking"/></th>
-                            </c:when>
-                        </c:choose>
+                        <th class="mdl-data-table__cell--non-numeric"><fmt:message key="user.blocking"/></th>
                     </tr>
                     </thead>
                     <tbody>

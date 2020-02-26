@@ -30,8 +30,6 @@ public class RequestDaoImpl implements RequestDao {
     private static final String DELETE_QUERY = "delete from car_request where request_id = ?";
     private static final String SELECT_ALL_FOR_CLIENT_QUERY = "SELECT request_id, client_id, driver_id, request_date, " +
             "pick_location, drop_location, request_price, request_status FROM car_request WHERE client_id=?";
-    private static final String SELECT_ALL_FOR_DRIVER_QUERY = "SELECT request_id, client_id, driver_id, request_date, " +
-            "pick_location, drop_location, request_price, request_status FROM car_request WHERE driver_id=?";
 
     private ConnectionManager connectionManager;
 
@@ -62,29 +60,10 @@ public class RequestDaoImpl implements RequestDao {
     }
 
     @Override
-    public List<RequestDto> getAllByClientId (long id) throws  DAOException{
+    public List<RequestDto> getAllForClient(long id) throws  DAOException{
         List<RequestEntity> result = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement selectStmt = connection.prepareStatement(SELECT_ALL_FOR_CLIENT_QUERY)) {
-            selectStmt.setLong(1, id);
-            try (ResultSet resultSet = selectStmt.executeQuery()) {
-                while (resultSet.next()) {
-                    RequestEntity entity = parseResultSet(resultSet);
-                    result.add(entity);
-                }
-            }
-        } catch (SQLException e) {
-            log.error("Failed to find all requests");
-            throw new DAOException();
-        }
-        return result.stream().map(this::fromEntity).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<RequestDto> getAllByDriverId(long id) throws  DAOException {
-        List<RequestEntity> result = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement selectStmt = connection.prepareStatement(SELECT_ALL_FOR_DRIVER_QUERY)) {
             selectStmt.setLong(1, id);
             try (ResultSet resultSet = selectStmt.executeQuery()) {
                 while (resultSet.next()) {
