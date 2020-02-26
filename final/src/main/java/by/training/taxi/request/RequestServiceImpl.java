@@ -50,7 +50,15 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<RequestDto> getAllByClientId(long id) throws RequestServiceException {
         try {
-            return requestDao.getAllForClient(id);
+            return requestDao.getAllByClientId(id);
+        } catch (DAOException e) {
+            throw new RequestServiceException();
+        }
+    }
+    @Override
+    public List<RequestDto> getAllByDriverId(long id) throws RequestServiceException {
+        try {
+            return requestDao.getAllByDriverId(id);
         } catch (DAOException e) {
             throw new RequestServiceException();
         }

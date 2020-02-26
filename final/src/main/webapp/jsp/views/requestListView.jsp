@@ -39,7 +39,9 @@
                 </table>
             </c:when>
             <c:otherwise>
-                <fmt:message key="message.no.data"/>
+                <div class="text-uppercase">
+                    <h1><fmt:message key="message.no.data"/></h1>
+                </div>
             </c:otherwise>
         </c:choose>
     </div>

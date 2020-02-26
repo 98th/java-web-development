@@ -9,6 +9,9 @@ import by.training.taxi.util.ImageUtil;
 import by.training.taxi.wallet.WalletDto;
 import lombok.*;
 
+import java.io.IOException;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,7 +25,7 @@ public class UserAccountDto {
     private byte[] avatar;
 
     private ContactDto contact;
-    private WalletDto wallet;
+    private List<WalletDto> wallets;
 
     private DriverDto driver;
     private LocationDto location;
@@ -32,7 +35,7 @@ public class UserAccountDto {
         return isLocked;
     }
 
-    public  String getToBase64()  {
+    public String toBase64() throws IOException {
         return ImageUtil.toBase64(avatar);
     }
 }

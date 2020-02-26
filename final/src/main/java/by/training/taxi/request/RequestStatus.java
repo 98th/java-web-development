@@ -5,7 +5,8 @@ import java.util.Optional;
 
 public enum RequestStatus {
     OFFERED("offered"),
-    CONFIRM("confirmed"),
+    ACCEPTED("accepted"),
+    CONFIRMED("confirmed"),
     DECLINED("declined"),
     CANCELLED("cancelled");
 

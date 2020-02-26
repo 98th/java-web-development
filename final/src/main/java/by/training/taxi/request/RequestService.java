@@ -8,4 +8,5 @@ public interface RequestService {
     long registerRequest(RequestDto requestDto) throws  RequestServiceException;
     boolean update(RequestDto requestDto) throws RequestServiceException;
     RequestDto getById(long id) throws RequestServiceException;
+    List<RequestDto> getAllByDriverId(long id) throws RequestServiceException;
 }

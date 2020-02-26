@@ -21,8 +21,6 @@ public class UserAccountValidator implements Validator {
         String login = request.getParameter(PARAM_USER_LOGIN);
         String password = request.getParameter(PARAM_USER_PASSWORD);
         String passwordRepeated = request.getParameter(PARAM_USER_PASSWORD_REPEATED);
-        String email = request.getParameter(PARAM_USER_EMAIL);
-        String phone =  request.getParameter(PARAM_USER_PHONE);
 
         if(isStrEmpty(login) || !login.matches(LOGIN_REGEX)) {
             validationResult.addMessage(PARAM_ERROR, "error.invalid.login");

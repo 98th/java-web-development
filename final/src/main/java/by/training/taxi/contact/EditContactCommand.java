@@ -26,11 +26,17 @@ public class EditContactCommand implements Command {
     private ContactService contactService;
     private DriverService driverService;
     private ContactValidator contactValidator;
+    private DriverValidator driverValidator;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             ValidationResult clientResult = contactValidator.validate(request);
+            if (!clientResult.isValid()) {
+                RequestUtil.setErrors(request, clientResult);
+                RequestUtil.forward(request, response, GET_EDIT_CONTACT_VIEW);
+                return;
+            }
             UserAccountDto userAccountDto = (UserAccountDto) request.getSession().getAttribute(PARAM_USER);
             long id = userAccountDto.getId();
             ContactDto contact = userAccountDto.getContact();
@@ -50,17 +56,21 @@ public class EditContactCommand implements Command {
                 contactService.update(contact);
             }
             if (DRIVER == userAccountDto.getRole()) {
+                ValidationResult driverResult = driverValidator.validate(request);
+                if (!driverResult.isValid()) {
+                    RequestUtil.setErrors(request, driverResult);
+                    RequestUtil.forward(request, response, GET_EDIT_CONTACT_VIEW);
+                    return;
+                }
                 driverService.updateWithInfo(buildDriver(request, response, userAccountDto, contact));
             }
-            RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
+            RequestUtil.sendRedirectToCommand(request, response, GET_USER_PROFILE_VIEW);
         } catch (ContactServiceException | DriverServiceException e) {
             throw new CommandException(e.getMessage());
         }
     }
 
     private DriverDto buildDriver(HttpServletRequest request, HttpServletResponse response, UserAccountDto user, ContactDto contact) {
-        DriverValidator driverValidator = new DriverValidator();
-        ValidationResult driverResult = driverValidator.validate(request);
         DriverDto driver = user.getDriver();
         CarDto car = driver.getCar();
         String drivingLicence = request.getParameter(PARAM_DRIVER_LICENCE_NUM);

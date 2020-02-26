@@ -32,7 +32,7 @@
                             <td class="mdl-data-table__cell--non-numeric">${d.contact.phone}</td>
                             <td class="mdl-data-table__cell--non-numeric">${d.drivingLicenceNum}</td>
                             <td class="mdl-data-table__cell--non-numeric">${d.car.model}</td>
-                            <td class="mdl-data-table__cell--non-numeric">${d.userAccount.isBlocking}</td>
+                            <td class="mdl-data-table__cell--non-numeric">${d.userAccount.isLocked}</td>
                             <td class="mdl-data-table__cell--non-numeric">
                                 <form action="${pageContext.request.contextPath}/" method="POST">
                                     <input type="hidden" name="userId" value="${d.userId}"/>

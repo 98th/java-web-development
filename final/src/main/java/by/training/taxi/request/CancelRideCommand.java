@@ -23,7 +23,7 @@ public class CancelRideCommand implements Command {
             RequestDto requestDto = (RequestDto) request.getSession().getAttribute(PARAM_REQUEST);
             requestDto.setRequestStatus(CANCELLED);
             requestService.update(requestDto);
-            RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
+            RequestUtil.sendRedirectToCommand(request, response, GET_USER_PROFILE_VIEW);
         } catch (RequestServiceException e) {
             throw new CommandException(e.getMessage());
         }

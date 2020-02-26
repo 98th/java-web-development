@@ -18,6 +18,15 @@ public class WalletServiceImpl implements WalletService {
     private WalletDao walletDao;
 
     @Override
+    public long save(WalletDto walletDto) throws WalletServiceException {
+       try{
+           return walletDao.save(walletDto);
+       } catch (DAOException e) {
+            throw new WalletServiceException(e.getMessage(), e);
+       }
+    }
+
+    @Override
     public boolean update (WalletDto wallet) throws  WalletServiceException {
         try {
             return  walletDao.update(wallet);

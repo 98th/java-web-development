@@ -38,7 +38,7 @@ public class LoginUserCommand implements Command {
                 UserAccountDto userAccountDto = userAccountDtoOptional.get();
                 request.getSession().setAttribute(PARAM_USER, userAccountDto);
                 request.getSession().setAttribute(PARAM_USER_ROLE, userAccountDto.getRole());
-                RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
+                RequestUtil.sendRedirectToCommand(request, response, GET_USER_PROFILE_VIEW);
             } else {
                 request.setAttribute(PARAM_ERROR, "error.wrong.login.or.pass");
                 RequestUtil.forward(request, response, GET_LOGIN_VIEW);

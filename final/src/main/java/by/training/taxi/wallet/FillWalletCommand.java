@@ -25,11 +25,11 @@ public class FillWalletCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
+            long walletId = Long.parseLong(request.getParameter("walletId"));
             BigDecimal amount = new BigDecimal(request.getParameter("amount"));
-            UserAccountDto user = (UserAccountDto)request.getSession().getAttribute(PARAM_USER);
-            userAccountService.fill(user.getId(), amount);
+            userAccountService.fill(walletId, amount);
             log.info("wallet was updated with value " + amount);
-            RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
+            RequestUtil.sendRedirectToCommand(request, response, GET_USER_PROFILE_VIEW);
         } catch (WalletServiceException e) {
             throw new CommandException("Failed to fill the wallet ");
         }
