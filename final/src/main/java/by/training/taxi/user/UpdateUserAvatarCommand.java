@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import static by.training.taxi.ApplicationConstants.*;
 
-@Bean(name = POST_UPDATE_AVATAR)
+@Bean(name = UPDATE_AVATAR_CMD)
 @AllArgsConstructor
 public class UpdateUserAvatarCommand implements Command {
     private UserAccountService userAccountService;
@@ -29,7 +29,7 @@ public class UpdateUserAvatarCommand implements Command {
             UserAccountDto user = (UserAccountDto) request.getSession().getAttribute(PARAM_USER);
             user.setAvatar(imageByte);
             userAccountService.update(user);
-            RequestUtil.sendRedirectToCommand(request, response, GET_USER_PROFILE_VIEW);
+            RequestUtil.sendRedirectToCommand(request, response, USER_PROFILE_CMD);
         } catch (IOException | ServletException | UserServiceException e) {
             throw new CommandException(e.getMessage());
         }

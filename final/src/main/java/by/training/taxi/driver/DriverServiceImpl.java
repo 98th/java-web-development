@@ -29,15 +29,6 @@ public class DriverServiceImpl implements DriverService  {
     }
 
     @Override
-    public DriverDto getByCarId(Long id) throws DriverServiceException {
-        try {
-            return driverDao.getByCarId(id);
-        } catch (DAOException e) {
-            throw new DriverServiceException("exception while getting driver by id");
-        }
-    }
-
-    @Override
     public  DriverDto getWithInfo(Long id) throws DriverServiceException {
         try {
             return  driverDao.getWithInfo(id);

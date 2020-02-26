@@ -24,36 +24,16 @@ public class CarDaoImpl implements CarDao {
     private static final String UPDATE_QUERY = "update car set car_model=?, car_color=?, licence_plate_number=?" +
                                                 "  where car_id = ?";
     private static final String DELETE_QUERY = "delete from car where car_id = ?";
-    private static final String SELECT_BY_REQUIREMENT_QUERY = "SELECT C.car_id,  CR.requirement_type, C.car_model," +
-            "           C.car_color, C.licence_plate_number, D.is_working " +
-            "                       FROM car_requirement_relation AS CR JOIN car AS C ON C.car_id = CR.car_id " +
-            "                       JOIN driver AS D ON D.car_id = C.car_id " +
-            "            WHERE CR.requirement_type = ?::requirement_type  AND D.is_working = true";
+    private static final String SELECT_BY_REQUIREMENT_QUERY = "SELECT car.car_id,  CR.requirement_type, car_model," +
+            " car.car_color, car.licence_plate_number, car.driver_id, car.is_working " +
+            "            FROM car_requirement_relation AS CR JOIN car ON car.car_id = CR.car_id " +
+            "            WHERE CR.requirement_type = ?::requirement_type  AND car.is_working = true";
     private static final String INSERT_REQUIREMENT_QUERY = "INSERT INTO car_requirement_relation (car_id, requirement_type) " +
             "VALUES (?, ?::requirement_type )";
-    private static final String SELECT_ALL_FREE_QUERY = "Select C.car_id, C.car_model, C.car_color, C.licence_plate_number " +
-            " FROM car AS C JOIN driver AS D ON D.car_id = C.car_id  WHERE D.is_working = true";
     private ConnectionManager connectionManager;
 
     public CarDaoImpl(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
-    }
-
-    @Override
-    public List<CarDto> getAllFree()throws DAOException {
-        List<CarEntity> output = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FREE_QUERY)) {
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    CarEntity entity = parseResultSet(resultSet);
-                    output.add(entity);
-                }
-            }
-        }catch (SQLException e) {
-            throw new DAOException();
-        }
-        return output.stream().map(this::fromEntity).collect(Collectors.toList());
     }
 
     @Override

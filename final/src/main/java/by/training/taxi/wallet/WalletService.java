@@ -10,5 +10,5 @@ public interface WalletService {
     boolean update(WalletDto wallet) throws WalletServiceException;
     boolean delete(Long id);
     List<WalletDto> getByUserId(Long id) throws WalletServiceException;
-    long save(WalletDto walletDto) throws WalletServiceException;
+
 }

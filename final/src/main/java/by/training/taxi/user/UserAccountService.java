@@ -20,7 +20,7 @@ public interface UserAccountService {
 
     List<UserAccountDto> findAll() throws UserServiceException;
 
-    boolean isLoginUnique(String login) throws UserServiceException;
+    boolean isLoginUnique(String email) throws UserServiceException;
 
     void fullUpdate(UserAccountDto userAccountDto) throws UserServiceException;
 

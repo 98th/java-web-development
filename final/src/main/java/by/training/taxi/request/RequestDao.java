@@ -6,6 +6,5 @@ import by.training.taxi.dao.DAOException;
 import java.util.List;
 
 public interface RequestDao extends CRUDDao<Long, RequestDto> {
-    List<RequestDto> getAllByClientId (long id) throws DAOException;
-    List<RequestDto> getAllByDriverId(long id) throws  DAOException;
+    List<RequestDto> getAllForClient (long id) throws DAOException;
 }

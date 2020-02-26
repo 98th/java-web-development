@@ -22,17 +22,13 @@ import by.training.taxi.wallet.WalletServiceException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.util.List;
 
 import static by.training.taxi.ApplicationConstants.*;
 import static by.training.taxi.user.Role.DRIVER;
 
-@Bean(name=GET_USER_PROFILE_VIEW)
+@Bean(name=USER_PROFILE_CMD)
 @AllArgsConstructor
 @Log4j
 public class UserProfileViewCommand implements Command {
@@ -52,19 +48,18 @@ public class UserProfileViewCommand implements Command {
             userAccountDto.setContact(contact);
             LocationDto location = locationService.getById(id);
             userAccountDto.setLocation(location);
-            List<WalletDto> wallets = walletService.getByUserId(id);
+            WalletDto wallet = walletService.getById(id);
             DiscountDto discount = discountService.getById(id);
             userAccountDto.setDiscount(discount);
-            userAccountDto.setWallets(wallets);
+            userAccountDto.setWallet(wallet);
             if (DRIVER == userAccountDto.getRole()) {
                 //TODO
                 DriverDto driver = driverService.getByUserId(id);
                 userAccountDto.setDriver(driver);
             }
             request.getSession().setAttribute(PARAM_USER, userAccountDto);
-            request.setAttribute(VIEWNAME_REQ_PARAMETER, GET_USER_PROFILE_VIEW);
-            request.getRequestDispatcher("/jsp/layout.jsp").forward(request, response);
-        } catch (WalletServiceException | ServletException | IOException | ContactServiceException | LocationServiceException |
+            RequestUtil.forward(request, response, GET_USER_PROFILE_VIEW);
+        } catch (WalletServiceException | ContactServiceException | LocationServiceException |
                 DiscountServiceException | DriverServiceException e) {
             throw new CommandException(e.getMessage());
         }

@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.Date;
-import by.training.module3.validator.*;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
@@ -31,9 +31,14 @@ public class GemServiceTest {
 
     @Test
     public void shouldAddSomeGems () {
-        String hello = "Hello";
-        String lo = "lo";
-        System.out.println(hello == (by.training.module3.validator.FileValidator.hello));
+        VisualParameters visualParameters1 = new VisualParameters("green", 25.5, 8);
+        Gem gem1 = new PreciousGem(5.9, 1, "Emerald", "columbia", visualParameters1, 2.5, new Date() );
+        VisualParameters visualParameters2 = new VisualParameters("blue", 2.67, 6);
+        Gem gem2 = new SemipreciousGem(true,2,"Ametrine", "Colombia",
+                visualParameters2, 2.0, new Date());
+        service.add(gem1);
+        service.add(gem2);
+        assertEquals(2, service.getAll().size());
     }
 
     @Test

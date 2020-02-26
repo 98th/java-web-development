@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 
 public class FileValidator {
     private static final Logger log = LogManager.getLogger(FileValidator.class);
-    public static  String hello = "hello";
 
     public ValidationResult validateFile(String path) {
         ValidationResult validationResult = new ValidationResult();
