@@ -1,24 +1,12 @@
-# XML\XSD # 
 
-Create xml-file storing info about  entities of a certain area. XSD-schema must be disigned for xml-file  validation. Parsing of xml-file must be performed using DOM, SAX, StAX parsers. 
+# Information handling light #
 
-* Using required & optional attributes
-* enum
-* patterns and limit values 
-*  ID  type
-* setting attribute values ​​by default
-* type extension (imitation of inheritance)
-*  data-time
-* at least 16 entities in xml
-* using Builder pattern for parsers
-*  Log4J2 
-* tests
-
-### Diamond Fund ###
-
-* Precious and semiprecious gems: 
-* Name – gem's name. 
-* Preciousness – presious or semipresious. 
-* Origin – quarry. 
-* Visual parameters (several) – color, transparency, number of facets   
-* Value – gem's weight
+Create an application that parses a text from a file and then it must allow to perform some actions with test 
+## Requirements ##
+* Parsed text must be presented as objects  (words, paragraphs, etc) 
+*  Composite pattern
+* Information classes are entity classes and should not be overloaded with logic
+* Parsed text must be able to restore to its origin form
+* Using regex 
+* Chain of Responsibility pattern
+*  Log4J.
