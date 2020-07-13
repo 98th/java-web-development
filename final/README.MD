@@ -1,6 +1,6 @@
 # Taxi Service 
 
-The application for booking a car.  
+Car booking web app.  
 
 
 **Web Project:**
